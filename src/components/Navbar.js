@@ -22,6 +22,11 @@ const Navbar = () => {
 
                 <ul className={click ? "nav-options active" : "nav-options"}>
                     <li className="option" onClick={closeMobileMenu}>
+                        <NavLink className="aStyle" to="/main">
+                            HOME
+                        </NavLink>
+                    </li>
+                    <li className="option" onClick={closeMobileMenu}>
                         <NavLink className="aStyle" to="/about">
                             ABOUT
                         </NavLink>

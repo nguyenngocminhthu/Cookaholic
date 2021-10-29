@@ -4,6 +4,7 @@ import pho from '../img/pho.png';
 import { useSelector } from "react-redux";
 
 const Main = () => {
+
     const menus = useSelector((state) => state.food.listFood) || [
         {
             name: "Món nước",
@@ -109,12 +110,12 @@ const Main = () => {
 
                 <div className="col-3 right">
                     <div className="aside">
-                        <h2>What?</h2>
-                        <p>Chania is a city on the island of Crete.</p>
-                        <h2>Where?</h2>
-                        <p>Crete is a Greek island in the Mediterranean Sea.</p>
-                        <h2>How?</h2>
-                        <p>You can reach Chania airport from all over Europe.</p>
+                        <h2>What is Cookaholic?</h2>
+                        <p>We are the Web that allow you to find and share cooking recipes.</p>
+                        <h2>How can I share my recipes?</h2>
+                        <p>First, you should Login. If you don't have an account, please register.</p>
+                        <h2>Why haven't my Post published?</h2>
+                        <p>Any Posts need to be accepted by the Admin, please wait for a shortime.</p>
                     </div>
                 </div>
             </div>
