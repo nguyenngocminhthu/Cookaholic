@@ -55,15 +55,15 @@
 }
 .sign-in :hover {
   color: white;
+  cursor: pointer;
 }
-.signup-btn {
-  padding: 10px 10px;
-  height: 2.4rem;
-  border-radius: 3px;
-  background: rgb(222, 9, 241);
+
+.sign-in {
+  align-self: center;
+}
+.sign-up :hover {
   color: white;
   cursor: pointer;
-  align-items: center;
 }
 
 .mobile-menu {
