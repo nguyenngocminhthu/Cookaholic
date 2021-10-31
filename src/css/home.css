@@ -10,9 +10,14 @@
 @media only screen and (max-width: 600px) {
   .hero-image {
     background-image: url("../img/bgmobi.jpg");
+    transition: all 0.5s ease;
   }
   .hero-text {
     top: 30%;
+    transition: all 0.5s ease;
+  }
+  .egg {
+    display: none;
   }
 }
 

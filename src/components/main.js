@@ -1,9 +1,17 @@
 import React from 'react';
 import '../css/main.css';
+import { useState } from 'react';
+import Modal from 'react-awesome-modal';
 import pho from '../img/pho.png';
 import { useSelector } from "react-redux";
 
 const Main = () => {
+
+    const [visible, setVisible] = useState(false);
+    const openModal = () => setVisible(!visible);
+    const closeModal = () => setVisible(false);
+
+
 
     const menus = useSelector((state) => state.food.listFood) || [
         {
@@ -81,25 +89,58 @@ const Main = () => {
     const renderListCook = menus.map((value, index) => {
         return (
             <div key={index}>
+
                 <div className="sub">
                     <h3>
                         {value.name}
                     </h3>
                 </div>
-                <div className="card-deck">
+                <div className="card-deck" value="Open" onClick={openModal} >
+
                     {value.list.map((vl, idx) => {
                         return (<div className="card" key={idx}>
-                            <img src={pho} alt="pho" />
+                            <img className="imgnor" src={pho} alt="pho" />
                             <div className="container">
                                 <h4><b>{vl.name}</b></h4>
                                 <p>{vl.desc}</p>
                             </div>
                         </div>)
                     })}
+
                 </div>
+                <Modal
+                    visible={visible}
+                    width="90%"
+                    height="90%"
+                    effect="fadeInUp"
+                    onClickAway={closeModal}
+                >
+                    <div>
+                        <div className="close-detail">
+                            <a href="javascript:void(0);" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></a>
+                        </div>
+
+                        <div className="detail">
+                            <div className="row">
+                                <div className="col-6">
+                                    <img className="imgdetail" src={pho} alt="pho" />
+                                </div>
+                                <div className="col-6">
+                                    <h4><b>Phở bò</b></h4>
+                                    <p>Ẩm thực Việt Nam</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </Modal>
             </div>
+
         )
     })
+
 
     return (
         <>
@@ -126,6 +167,12 @@ const Main = () => {
 
         </>
     );
+
+
+
+
+
+
 }
 
 export default Main;

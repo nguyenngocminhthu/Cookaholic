@@ -15,7 +15,7 @@ const Navbar = () => {
         <div className="nav">
             <div className="logo-nav">
                 <div className="logo-container">
-                    <NavLink to="/main">
+                    <NavLink to="/">
                         <Logo className="logo" />
                     </NavLink>
                 </div>
@@ -27,6 +27,11 @@ const Navbar = () => {
                         </NavLink>
                     </li>
                     <li className="option" onClick={closeMobileMenu}>
+                        <NavLink className="aStyle" to="/menu">
+                            MENU
+                        </NavLink>
+                    </li>
+                    <li className="option" onClick={closeMobileMenu}>
                         <NavLink className="aStyle" to="/about">
                             ABOUT
                         </NavLink>
@@ -34,11 +39,6 @@ const Navbar = () => {
                     <li className="option" onClick={closeMobileMenu}>
                         <NavLink className="aStyle" to="/about">
                             CONTACT
-                        </NavLink>
-                    </li>
-                    <li className="option" onClick={closeMobileMenu}>
-                        <NavLink className="aStyle" to="/about">
-                            BLOG
                         </NavLink>
                     </li>
 
