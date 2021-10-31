@@ -88,78 +88,95 @@ const Navbar = () => {
             </div>
             <Modal
                 visible={visible}
-                width="90%"
+                width="50%"
                 height="90%"
                 effect="fadeInUp"
                 onClickAway={closeModal}
             >
-                <div>
-                    <div className="close-detail">
-                        <a href="javascript:void(0);" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></a>
-                    </div>
-
-                    <div>
-                        <h3>Sign In</h3>
-                        <div className="form-group">
-                            <label>Email address</label>
-                            <input type="email" className="form-control" placeholder="Enter email" />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Password</label>
-                            <input type="password" className="form-control" placeholder="Enter password" />
-                        </div>
-
-                        <div className="form-group">
-                            <div>
-                                <input type="checkbox" id="customCheck1" />
-                                <label htmlFor="customCheck1">Remember me</label>
+                <div className="go">
+                <div class="backdrop"></div>
+                    <div class="login-wrapper">
+                        <form class="login-html">
+                            <div class="login-heading">
+                                <h1 class="tab">Login</h1>
                             </div>
-                        </div>
-
-                        <button type="submit">Submit</button>
-                        <p className="forgot-password text-right">
-                            Forgot <a href="#">password?</a>
-                        </p>
+                            <div class="login-form">
+                                <div class="sign-in-html">
+                                    <div class="group">
+                                        <label for="user" class="label">Email</label>
+                                        <input type="text" id="user" autocomplete="off" class="input"/>
+                                    </div>
+                                    <div class="group">
+                                        <label for="pass" class="label">Password</label>
+                                        <div class="pass-container">
+                                            <input type="password" id="pass" class="input"
+                                                data-type="password"/>
+                                            <span class="show-pass" id="show-pass" onclick="toggle()">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="group">
+                                        <input type="checkbox" id="check" class="check" checked/>
+                                        <label for="check">
+                                            <span class="icon"></span>Keep me Signed in
+                                        </label>
+                                    </div>
+                                    <div class="group">
+                                        <input type="submit" class="button" value="Sign In"/>
+                                    </div>
+                                    <div class="hr"></div>
+                                    <div class="foot-link">
+                                        <a href="#forgot">Forgot Password?</a>
+                                    </div>
+                                    <div class="sign-up">
+                                        <h4>Dont have an Account? <a href="#sign-up">SIGN UP</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
             </Modal>
             <Modal
                 visible={signup}
-                width="90%"
+                width="50%"
                 height="90%"
                 effect="fadeInUp"
                 onClickAway={closeSignUp}
             >
-                <div>
-                    <div className="close-detail">
-                        <a href="javascript:void(0);" onClick={closeSignUp}><i className="fa fa-times" aria-hidden="true"></i></a>
-                    </div>
-
-                    <div>
-                        <h3>Sign Up</h3>
-                        <div className="form-group">
-                            <label>Email address</label>
-                            <input type="email" className="form-control" placeholder="Enter email" />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Password</label>
-                            <input type="password" className="form-control" placeholder="Enter password" />
-                        </div>
-
-                        <div className="form-group">
-                            <div>
-                                <input type="checkbox" id="customCheck1" />
-                                <label htmlFor="customCheck1">Remember me</label>
+             <div className="go">
+                <div class="backdrop1"></div>
+                    <div class="login-wrapper1">
+                        <form class="login-html">
+                            <div class="login-heading">
+                                <h1 class="tab">Register</h1>
                             </div>
-                        </div>
+                            <div class="login-form">
+                                <div class="sign-in-html">
+                                    <div class="group">
+                                        <label for="user" class="label">Email</label>
+                                        <input type="text" id="user" autocomplete="off" class="input"/>
+                                    </div>
+                                    <div class="group">
+                                        <label for="pass" class="label">Password</label>
+                                        <div class="pass-container">
+                                            <input type="password" id="pass" class="input"
+                                                data-type="password"/>
+                                            <span class="show-pass" id="show-pass" onclick="toggle()">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="group">
+                                        <input type="submit" class="button" value="Sign Up"/>
+                                    </div>
+                                    <div class="hr"></div>
 
-                        <button type="submit">Submit</button>
-                        <p className="forgot-password text-right">
-                            Forgot <a href="#">password?</a>
-                        </p>
+                                    <div class="sign-up">
+                                        <h4>Already have account? <a href="#sign-up">SIGN IN</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
