@@ -1,21 +1,31 @@
 import React from "react";
-import Home from "../components/home";
-import Main from '../components/main';
-import About from '../components/about';
+import Home from "../components/Home";
+import Main from '../components/Main';
+import About from '../components/About';
 import Menu from '../components/Menu';
-import { Switch } from "react-router-dom";
-import Navbar from '../components/Navbar'
-import AppRoute from '../components/AppRoute';
+import { Switch, Route } from "react-router-dom";
+import { ComponentTransition, AnimationTypes } from "react-component-transition";
+import { useLocation } from "react-router-dom";
+import Login from "../components/Authentication/Login";
 
 const HomeRoute = () => {
+    const location = useLocation();
     return (
-        <Switch>
-            <AppRoute path="/" exact component={Home} />
-            <AppRoute path="/main" component={Main} navBar={Navbar} />
-            <AppRoute path="/about" component={About} navBar={Navbar} />
-            <AppRoute path="/menu" component={Menu} navBar={Navbar} />
+        <ComponentTransition
+            enterAnimation={AnimationTypes.slideUp.enter}
+            exitAnimation={AnimationTypes.slideDown.exit}
+        >
+            <Switch key={location.key} location={location}>
 
-        </Switch>
+                <Route path="/" exact component={Home} />
+                <Route path="/main" component={Main} />
+                <Route path="/about" component={About} />
+                <Route path="/menu" component={Menu} />
+                <Route path="/signin" component={Login} />
+
+            </Switch>
+        </ComponentTransition>
+
     );
 }
 

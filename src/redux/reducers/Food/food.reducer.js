@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { GET_FOOD_LIST_SUCCESS, GET_FOOD_LIST_FAIL } from '../../actions/Food/type';
 
 const initState = {

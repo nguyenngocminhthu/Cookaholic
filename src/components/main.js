@@ -1,50 +1,68 @@
-import React from 'react';
-import '../css/main.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-awesome-modal';
-import pho from '../img/pho.png';
 import { useSelector } from "react-redux";
-
+import '../css/main.css';
+import phoDel from '../img/pho-detail.png';
+import pho from '../img/Food/pho.png';
+import bunbo from '../img/Food/bunbo.png';
+import Rating from './Rating';
+import RecipesDetail from './RecipesDetail';
 const Main = () => {
 
     const [visible, setVisible] = useState(false);
-    const openModal = () => setVisible(!visible);
+    const openModal = () => {
+        setVisible(!visible)
+        setShowDetail(true);
+        setShowRating(false);
+
+    };
     const closeModal = () => setVisible(false);
 
+    const [showDetail, setShowDetail] = useState(true);
+    const [showRating, setShowRating] = useState(false);
+    const showComp = (element) => {
+        if (element === "detail") {
+            setShowDetail(true);
+            setShowRating(false);
+        } else {
+            setShowDetail(false);
+            setShowRating(true);
+        }
 
+    }
 
     const menus = useSelector((state) => state.food.listFood) || [
         {
             name: "Món nước",
             list: [
                 {
-                    image: ".png",
+                    image: "require('../img/Food/pho.png')",
                     name: "Phở Bò",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "bunbo",
+                    name: "Bún Bò",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Mỳ Quảng",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Hủ Tiếu",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Bún Riêu Cua",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Bánh Canh Cua",
                     desc: "Ẩm thực Việt Nam"
                 },
             ]
@@ -53,33 +71,33 @@ const Main = () => {
             name: "Món chiên",
             list: [
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Khoai Tây Chiên",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Nem Chua Rán",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Cánh Gà Chiên Nước Mắm",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Cơm Chiên Hải Sản",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Bánh Bao Chiên",
                     desc: "Ẩm thực Việt Nam"
                 },
                 {
-                    image: ".png",
-                    name: "Phở Bò",
+                    image: "pho",
+                    name: "Hoành Thánh Chiên",
                     desc: "Ẩm thực Việt Nam"
                 },
             ]
@@ -110,7 +128,7 @@ const Main = () => {
                 </div>
                 <Modal
                     visible={visible}
-                    width="90%"
+                    width="80%"
                     height="90%"
                     effect="fadeInUp"
                     onClickAway={closeModal}
@@ -122,12 +140,28 @@ const Main = () => {
 
                         <div className="detail">
                             <div className="row">
-                                <div className="col-6">
-                                    <img className="imgdetail" src={pho} alt="pho" />
+                                <div className="col-6 ">
+                                    <div className="img-del">
+                                        <img className="imgdetail" src={phoDel} alt="pho" />
+                                    </div>
+
                                 </div>
                                 <div className="col-6">
-                                    <h4><b>Phở bò</b></h4>
-                                    <p>Ẩm thực Việt Nam</p>
+                                    <div className="title">
+                                        <button className="detailrating" onClick={() => showComp("detail")}>
+                                            Detail
+                                        </button>
+                                        <button className="detailrating" onClick={() => showComp()}>
+                                            Rating
+                                        </button>
+                                    </div>
+
+
+                                    {showDetail && <RecipesDetail />}
+
+                                    {showRating && <Rating />}
+
+
                                 </div>
                             </div>
 

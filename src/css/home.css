@@ -119,8 +119,8 @@
 
 .egg {
   position: absolute;
-  top: 45vh;
-  left: 73vw;
+  top: 35vh;
+  left: 68vw;
   transform: scale(0.2);
   animation-name: egg-ani;
   animation-duration: 3s;

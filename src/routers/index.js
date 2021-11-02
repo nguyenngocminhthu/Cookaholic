@@ -1,10 +1,12 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import HomeRoute from "./HomeRoute";
+import Navbar from '../components/Navbar'
 
 const Routers = () => {
     return (
         <Router>
+            <Navbar />
             <HomeRoute />
         </Router>
     );

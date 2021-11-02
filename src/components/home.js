@@ -8,7 +8,7 @@ const Home = () => {
     return (
         <>
             <div className="hero-image fadein">
-                <div className="head"><marquee direction="right"> FB: https://www.facebook.com/Cookaholic - Hotline : 19001009 </marquee></div>
+
                 <div className="hero-text">
                     <h1 className="fadein">WELCOME TO COOKAHOLIC</h1>
                     <h3 className="text fadein">Find and share Cooking Recipe</h3>
