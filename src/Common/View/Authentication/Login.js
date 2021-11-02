@@ -2,7 +2,7 @@ import React from 'react';
 import '../../css/navbar.css';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { loginAction } from "../../redux/actions/Auth/authActions";
+import { loginAction } from "../../../redux/actions/Auth/authActions";
 import Validate from "./Validate";
 
 const Login = () => {

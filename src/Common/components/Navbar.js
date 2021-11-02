@@ -7,8 +7,8 @@ import { NavLink } from "react-router-dom";
 import Search from "./Search";
 import Modal from 'react-awesome-modal';
 import "../css/auth.css";
-import Login from "./Authentication/Login";
-import Register from "./Authentication/Register";
+import Login from "../View/Authentication/Login";
+import Register from "../View/Authentication/Register";
 
 const Navbar = () => {
     const [click, setClick] = useState(false);

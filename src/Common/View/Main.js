@@ -5,8 +5,8 @@ import '../css/main.css';
 import phoDel from '../img/pho-detail.png';
 import pho from '../img/Food/pho.png';
 import bunbo from '../img/Food/bunbo.png';
-import Rating from './Rating';
-import RecipesDetail from './RecipesDetail';
+import Rating from '../View/Detail/Rating';
+import RecipesDetail from '../View/Detail/RecipesDetail';
 const Main = () => {
 
     const [visible, setVisible] = useState(false);

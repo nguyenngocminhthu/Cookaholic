@@ -1,5 +1,5 @@
 import Cookie from "js-cookie";
-import toastNotify from "../Toastify/toastNotify";
+import toastNotify from "../Common/Toastify/toastNotify";
 import axiosClient from "./axiosClient";
 
 const url = "/api/auth/";
