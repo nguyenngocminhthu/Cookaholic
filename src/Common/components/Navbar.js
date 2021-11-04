@@ -90,8 +90,8 @@ const Navbar = () => {
             </div>
             <Modal
                 visible={visible}
-                width="50%"
-                height="90%"
+                width="60%"
+                height="80%"
                 effect="fadeInUp"
                 onClickAway={closeModal}
             >
@@ -99,7 +99,7 @@ const Navbar = () => {
             </Modal>
             <Modal
                 visible={signup}
-                width="50%"
+                width="60%"
                 height="90%"
                 effect="fadeInUp"
                 onClickAway={closeSignUp}

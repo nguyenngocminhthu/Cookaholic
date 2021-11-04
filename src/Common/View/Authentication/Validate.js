@@ -1,8 +1,12 @@
 import validator from "validator";
 import toastNotify from "../../Toastify/toastNotify";
 
-const Validate = (username, password) => {
-    const isEmail = validator.isEmail(username);
+const validate = (email, password) => {
+    console.log("log at ==> validate.js ==> line5 ==>  data: ", email + password)
+
+    const isEmail = validator.isEmail(email);
+    console.log("log at ==> Login.js ==> line 8 ==>  is email: ", isEmail)
+
     if (!isEmail) {
         toastNotify("Email không hợp lệ");
         return false;
@@ -13,9 +17,9 @@ const Validate = (username, password) => {
         return false;
     }
     return {
-        username,
+        email,
         password,
     };
 };
 
-export default Validate;
+export default validate;

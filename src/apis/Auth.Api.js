@@ -18,7 +18,10 @@ const getAuth = async () => {
 
 const login = async (body) => {
     try {
-        const res = await axiosClient.post(`${url}/signin`, { ...body });
+        console.log("log at ==> Auth.Api.js ==> line 21 ==>  body: ", body)
+        const res = await axiosClient.post(`${url}/signin`, body);
+        console.log("log at ==> Auth.Api.js ==> line 23 ==>  body: ", res)
+
         if (res && res.data) {
             Cookie.set("accessToken", res.data.accessToken);
             toastNotify(res.message.VN);

@@ -5,7 +5,7 @@ import '../css/main.css';
 import phoDel from '../img/pho-detail.png';
 import pho from '../img/Food/pho.png';
 import bunbo from '../img/Food/bunbo.png';
-import Rating from '../View/Detail/Rating';
+import RatingShow from './Detail/Rating';
 import RecipesDetail from '../View/Detail/RecipesDetail';
 const Main = () => {
 
@@ -13,20 +13,20 @@ const Main = () => {
     const openModal = () => {
         setVisible(!visible)
         setShowDetail(true);
-        setShowRating(false);
+        setShowRatingShow(false);
 
     };
     const closeModal = () => setVisible(false);
 
     const [showDetail, setShowDetail] = useState(true);
-    const [showRating, setShowRating] = useState(false);
+    const [showRatingShow, setShowRatingShow] = useState(false);
     const showComp = (element) => {
         if (element === "detail") {
             setShowDetail(true);
-            setShowRating(false);
+            setShowRatingShow(false);
         } else {
             setShowDetail(false);
-            setShowRating(true);
+            setShowRatingShow(true);
         }
 
     }
@@ -159,7 +159,7 @@ const Main = () => {
 
                                     {showDetail && <RecipesDetail />}
 
-                                    {showRating && <Rating />}
+                                    {showRatingShow && <RatingShow />}
 
 
                                 </div>
