@@ -1,53 +1,65 @@
 .photo {
-    height: 650px;
-    width: 420px;
-  }
+  height: 650px;
+  width: 420px;
+}
 
-  .photologin {
-    height: 578px;
-    width: 380px;
-  }
+.photologin {
+  background-image: url(../../img/LoginBG.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
-  .btn-grad {background-image: linear-gradient(to right, #ff6e7f 0%, #bfe9ff  51%, #ff6e7f  100%)}
-  .btn-grad {
-     margin: 10px;
-     padding: 15px 45px;
-     text-align: center;
-     text-transform: uppercase;
-     transition: 0.5s;
-     background-size: 200% auto;
-     color: white;            
-     box-shadow: 0 0 20px #eee;
-     border-radius: 10px;
-     display: block;
-   }
+.btn-grad {
+  background-image: linear-gradient(
+    to right,
+    #ff6e7f 0%,
+    #bfe9ff 51%,
+    #ff6e7f 100%
+  );
+}
+.btn-grad {
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
 
-   .btn-grad:hover {
-     background-position: right center; /* change the direction of the change here */
-     color: #fff;
-     text-decoration: none;
-   }
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
 
-   
-   .btn-grud {background-image: linear-gradient(to right, #C9FFBF 0%, #FFAFBD  51%, #C9FFBF  100%)}
-   .btn-grud {
-      margin: 10px;
-      padding: 15px 45px;
-      text-align: center;
-      text-transform: uppercase;
-      transition: 0.5s;
-      background-size: 200% auto;
-      color: white;            
-      box-shadow: 0 0 20px #eee;
-      border-radius: 10px;
-      display: block;
-    }
+.btn-grud {
+  background-image: linear-gradient(
+    to right,
+    #c9ffbf 0%,
+    #ffafbd 51%,
+    #c9ffbf 100%
+  );
+}
+.btn-grud {
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
 
-    .btn-grud:hover {
-      background-position: right center; /* change the direction of the change here */
-      color: #fff;
-      text-decoration: none;
-    }
-   
-  
-  
+.btn-grud:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}

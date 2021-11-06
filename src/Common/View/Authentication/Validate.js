@@ -1,12 +1,8 @@
 import validator from "validator";
 import toastNotify from "../../Toastify/toastNotify";
 
-const validate = (email, password) => {
-    console.log("log at ==> validate.js ==> line5 ==>  data: ", email + password)
-
-    const isEmail = validator.isEmail(email);
-    console.log("log at ==> Login.js ==> line 8 ==>  is email: ", isEmail)
-
+const validateLogin = (username, password) => {
+    const isEmail = validator.isEmail(username);
     if (!isEmail) {
         toastNotify("Email không hợp lệ");
         return false;
@@ -17,9 +13,34 @@ const validate = (email, password) => {
         return false;
     }
     return {
-        email,
+        username,
         password,
     };
 };
 
-export default validate;
+
+const validateRegister = (data) => {
+    const isEmail = validator.isEmail(data.email);
+    if (!isEmail) {
+        toastNotify("Email không hợp lệ");
+        return false;
+    }
+    const isPassword = validator.isEmpty(data.password);
+    if (isPassword) {
+        toastNotify("Mật khẩu không được bỏ trống");
+        return false;
+    }
+    const isFirstName = validator.isEmpty(data.firstName);
+    if (isFirstName) {
+        toastNotify("concac")
+        return false;
+    }
+    const isLastName = validator.isEmpty(data.lastName);
+    if (isLastName) {
+        toastNotify("concac")
+        return false;
+    }
+    return data
+};
+
+export { validateLogin, validateRegister }

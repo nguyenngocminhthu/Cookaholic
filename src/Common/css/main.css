@@ -195,6 +195,12 @@ h3 {
   margin: 20px;
 }
 
+.close {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+}
+
 .title {
   border-bottom: 2px solid brown;
   display: block;

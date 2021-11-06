@@ -20,7 +20,7 @@ app.use(session({
 }))
 
 var corsOptions = {
-    origin: "http://localhost:3000"
+    origin: ["http://localhost:3000"]
 };
 
 app.use(cors(corsOptions));
@@ -96,14 +96,14 @@ passport.use(new GoogleStrategy({
                     })
                     user.save((err, user) => {
                         if (err) {
-                            res.status(500).send({ message: err })
+                            res.status(500).json({ message: err, success: false })
                             return
                         }
 
                         // Tim 1 document trong collection roles co name : "user"
                         Role.findOne({ name: "user" }, (err, role) => {
                             if (err) {
-                                res.status(500).send({ message: err })
+                                res.status(500).json({ message: err, success: false })
                                 return
                             }
 
@@ -192,7 +192,7 @@ app.get('/auth/google/callback',
             .populate("roles", "-__v")
             .exec(async (err, user) => {
                 if (err) {
-                    res.status(500).send({ message: err })
+                    res.status(500).json({ message: err, success: false });
                     return
                 }
 
@@ -211,13 +211,14 @@ app.get('/auth/google/callback',
                     authorities.push("ROLE_" + user.roles[i].name.toUpperCase())
                 }
 
-                res.status(200).send({
+                res.status(200).json({
                     id: user._id,
                     username: user.username,
                     email: user.email,
                     roles: authorities,
                     accessToken: token,
-                    refreshToken: refreshToken
+                    refreshToken: refreshToken,
+                    success: true,
                 });
             });
     });

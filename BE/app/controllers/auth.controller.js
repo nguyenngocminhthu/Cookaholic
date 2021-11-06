@@ -7,8 +7,7 @@ const { user: User, role: Role, refreshToken: RefreshToken } = db;
 // var jwt = require("jsonwebtoken")
 // var bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const bcrypt = require("bcryptjs")
-
+const bcrypt = require("bcrypt")
 // Kiem tra, them roles va luu user vao db
 exports.signup = (req, res) => {
 
@@ -21,7 +20,7 @@ exports.signup = (req, res) => {
 
     user.save((err, user) => {
         if (err) {
-            res.status(500).send({ message: err })
+            res.status(500).json({ message: err, success: false })
             return
         }
 
@@ -34,18 +33,18 @@ exports.signup = (req, res) => {
                 },
                 (err, roles) => {
                     if (err) {
-                        res.status(500).send({ message: err })
+                        res.status(500).json({ message: err, success: false })
                         return
                     }
 
                     user.roles = roles.map(role => role._id)
                     user.save(err => {
                         if (err) {
-                            res.status(500).send({ message: err })
+                            res.status(500).json({ message: err, success: false })
                             return
                         }
 
-                        res.send({ message: "User was registered successfully!" })
+                        res.json({ message: "User was registered successfully!", success: true })
                     })
 
                 }
@@ -55,18 +54,17 @@ exports.signup = (req, res) => {
             // Tim 1 document trong collection roles co name : "user"
             Role.findOne({ name: "user" }, (err, role) => {
                 if (err) {
-                    res.status(500).send({ message: err })
+                    res.status(500).json({ message: err, success: false })
                     return
                 }
-
                 user.roles = [role._id]
                 user.save(err => {
                     if (err) {
-                        res.status(500).send({ message: err })
+                        res.status(500).json({ message: err, success: false })
                         return
                     }
 
-                    res.send({ message: "User was registered successfully!" })
+                    res.json({ message: "User was registered successfully!", success: true })
                 })
             })
         }
@@ -78,20 +76,20 @@ exports.signin = (req, res) => {
     // Tim user co username giong username vua nhap 
     User.findOne({
         // username: req.body.username
-        email:req.body.email
+        email: req.body.username
     })
         // Ket voi du lieu ben collection roles
         .populate("roles", "-__v")
         .exec(async (err, user) => {
             if (err) {
-                res.status(500).send({ message: err })
+                res.status(500).json({ message: err, success: false });
                 return
             }
 
             // Kiem tra co user trung khong
             if (!user) {
                 // return res.status(404).send({ message: "User not found." })
-                return res.status(404).send({message:"Email not found."})
+                return res.status(404).json({ message: "Email not found.", success: false });
             }
 
             // So password nhap va password db
@@ -102,9 +100,10 @@ exports.signin = (req, res) => {
 
             // Kiem tra password co hop le khong
             if (!passwordIsValid) {
-                return res.status(401).send({
+                return res.status(401).json({
                     accessToken: null,
-                    message: "Invalid Password"
+                    message: "Invalid Password",
+                    success: false
                 })
             }
 
@@ -123,50 +122,53 @@ exports.signin = (req, res) => {
                 authorities.push("ROLE_" + user.roles[i].name.toUpperCase())
             }
 
-            res.status(200).send({
+            res.status(200).json({
                 id: user._id,
                 username: user.username,
                 email: user.email,
                 roles: authorities,
                 accessToken: token,
-                refreshToken: refreshToken
+                refreshToken: refreshToken,
+                success: true,
             });
         });
 };
 
-exports.refreshToken= async (req, res)=>{
-    const {refreshToken: requestToken}=req.body;
+exports.refreshToken = async (req, res) => {
+    const { refreshToken: requestToken } = req.body;
 
-    if(requestToken==null){
-        return res.status(403).json({message: "Refresh Token is required!"});
+    if (requestToken == null) {
+        return res.status(403).json({ message: "Refresh Token is required!", success: false });
     }
 
     try {
-        let refreshToken = await RefreshToken.findOne({token: requestToken});
+        let refreshToken = await RefreshToken.findOne({ token: requestToken });
 
-        if(!refreshToken){
-            res.status(403).json({message: "Refresh token is not in database!"});
+        if (!refreshToken) {
+            res.status(403).json({ message: "Refresh token is not in database!", success: false });
             return;
         }
 
-        if(RefreshToken.verifyExpiration(refreshToken)){
-            RefreshToken.findByIdAndRemove(refreshToken._id, {useFindAndModify: false}).exec();
+        if (RefreshToken.verifyExpiration(refreshToken)) {
+            RefreshToken.findByIdAndRemove(refreshToken._id, { useFindAndModify: false }).exec();
 
             res.status(404).json({
-                message:"Refresh token was expired. Please make a new signin request"
+                message: "Refresh token was expired. Please make a new signin request",
+                success: false,
             });
             return;
         }
 
-        let newAccessToken=jwt.sign({id:refreshToken.user._id}, config.secret, {
+        let newAccessToken = jwt.sign({ id: refreshToken.user._id }, config.secret, {
             expiresIn: config.jwtExpiration
         });
 
         return res.status(200).json({
             accessToken: newAccessToken,
-            refreshToken: refreshToken.token
+            refreshToken: refreshToken.token,
+            success: true,
         });
-    }catch(err){
-        return res.status(500).send({message:err})
+    } catch (err) {
+        return res.status(500).json({ message: err, success: false });
     }
 }

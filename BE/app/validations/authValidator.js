@@ -13,7 +13,7 @@ signupValidator = (req, res, next) => {
     console.log(error)
 
     if (error)
-        return res.status(422).send(error.details[0].message);
+        return res.status(422).json(error.details[0].message);
 
     next()
 }
@@ -21,7 +21,7 @@ signupValidator = (req, res, next) => {
 signinValidator = (req, res, next) => {
 
     const rule = Joi.object({
-        username: Joi.string().required(),
+        username: Joi.string().required(), // change to email
         password: Joi.string().required(),
     })
 
@@ -30,7 +30,7 @@ signinValidator = (req, res, next) => {
     console.log(error)
 
     if (error)
-        return res.status(422).send(error.details[0].message);
+        return res.status(422).json(error.details[0].message);
 
     next()
 }

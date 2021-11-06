@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { ReactComponent as CloseMenu } from "../img/x.svg";
-import { ReactComponent as MenuIcon } from "../img/menu.svg";
-import { ReactComponent as Logo } from "../img/logo.svg";
-import "../css/navbar.css";
-import { NavLink } from "react-router-dom";
-import Search from "./Search";
+import React, { useEffect, useState } from "react";
 import Modal from 'react-awesome-modal';
+import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import "../css/auth.css";
+import "../css/navbar.css";
+import { ReactComponent as Logo } from "../img/logo.svg";
+import { ReactComponent as MenuIcon } from "../img/menu.svg";
+import { ReactComponent as CloseMenu } from "../img/x.svg";
 import Login from "../View/Authentication/Login";
 import Register from "../View/Authentication/Register";
+import Search from "./Search";
 
 const Navbar = () => {
+    const isLogin = useSelector((state) => state.auth.isLogin)
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
@@ -23,6 +25,12 @@ const Navbar = () => {
     const openSignUp = () => setSignUp(!signup);
     const closeSignUp = () => setSignUp(false);
 
+    useEffect(() => {
+        if (isLogin) {
+            closeModal();
+            closeSignUp();
+        }
+    }, [isLogin])
     return (
         <div className="nav">
             <div className="logo-nav">

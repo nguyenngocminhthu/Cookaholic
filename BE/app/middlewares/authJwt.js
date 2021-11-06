@@ -4,26 +4,26 @@ const db = require("../models");
 const User = db.user;
 const Role = db.role;
 
-const {TokenExpiredError}=jwt;
+const { TokenExpiredError } = jwt;
 
-const catchError=(err,res)=>{
-    if(err instanceof TokenExpiredError){
+const catchError = (err, res) => {
+    if (err instanceof TokenExpiredError) {
         console.log(err.expiredAt);
-        return res.status(401).send({message: "Unauthorized! Access Token was expired!"})
+        return res.status(401).json({ message: "Unauthorized! Access Token was expired!", success: false })
     }
 
-    return res.sendStatus(401).send({message:"Unauthorized!"})
+    return res.sendStatus(401).json({ message: "Unauthorized!", success: false })
 }
 
 verifyToken = (req, res, next) => {
     let token = req.headers["x-access-token"]
 
     if (!token) {
-        return res.status(403).send({ message: "No token provided!" })
+        return res.status(403).json({ message: "No token provided!", success: false })
     }
 
     jwt.verify(token, config.secret, (err, decoded) => {
-        console.log("1_"+err);
+        console.log("1_" + err);
         if (err) {
             // return res.status(401).send({ message: "Unauthorized!" })
             return catchError(err, res)
@@ -39,18 +39,18 @@ verifyToken = (req, res, next) => {
 isAdmin = (req, res, next) => {
     User.findById(req.userId).exec((err, user) => {
         if (err) {
-            res.status(500).send({ message: err })
+            res.status(500).json({ message: err, success: false })
             return
         }
 
         Role.find(
             {
-                _id: { $in: user.roles}
+                _id: { $in: user.roles }
             },
             (err, roles) => {
                 console.log(user.roles)
                 if (err) {
-                    res.status(500).send({ message: err })
+                    res.status(500).json({ message: err, success: false })
                     return
                 }
 
@@ -61,7 +61,7 @@ isAdmin = (req, res, next) => {
                     }
                 }
 
-                res.status(403).send({ message: "Require Admin Role!" })
+                res.status(403).json({ message: "Require Admin Role!", success: false })
                 return
             }
         )

@@ -7,6 +7,7 @@ import pho from '../img/Food/pho.png';
 import bunbo from '../img/Food/bunbo.png';
 import RatingShow from './Detail/Rating';
 import RecipesDetail from '../View/Detail/RecipesDetail';
+
 const Main = () => {
 
     const [visible, setVisible] = useState(false);
@@ -135,7 +136,7 @@ const Main = () => {
                 >
                     <div>
                         <div className="close-detail">
-                            <a href="javascript:void(0);" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></a>
+                            <button className="close" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></button>
                         </div>
 
                         <div className="detail">

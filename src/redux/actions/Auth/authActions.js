@@ -111,6 +111,8 @@ export const registerAction = (body) => async (dispatch) => {
     try {
         // dispatch(loading(true));
         const res = await authAPI.register(body);
+        console.log("log at ==> authAction.js ==> line 114 ==>  res: ", res)
+
         if (!res.success) {
             // dispatch(loading());
             dispatch(registerFail());
