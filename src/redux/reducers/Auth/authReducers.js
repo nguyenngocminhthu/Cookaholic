@@ -11,8 +11,9 @@ import {
 } from "../../actions/Auth/types";
 
 const initState = {
-    user: {},
+    //user: { identify, role },
     isLogin: false,
+    isRegister: false,
 };
 export default function (state = initState, action) {
     switch (action.type) {
@@ -29,9 +30,9 @@ export default function (state = initState, action) {
         case LOGOUT:
             return { ...state, user: action.payload, isLogin: false };
         case REGISTER_FAIL:
-            return { ...state, user: action.payload };
+            return { ...state, user: action.payload, isRegister: false };
         case REGISTER_SUCCESS:
-            return { ...state, user: action.payload };
+            return { ...state, user: action.payload, isRegister: true };
         default:
             return state;
     }

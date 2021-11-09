@@ -15,7 +15,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import myImage from "../../img/egg.png";
-import ImageRe from "../../img/ResgiterBG.png";
+
 import './LoRe.css';
 import { validateRegister } from "./validate";
 import { registerAction } from "../../../redux/actions/Auth/authActions";
@@ -38,7 +38,7 @@ export function Register() {
     if (!isValid) return;
     const res = await dispatch(registerAction({ username: firstName + " " + lastName, password, email }));
     if (res) {
-      history.push("/login")
+      //history.push("/main")
       return;
     }
   };
@@ -49,7 +49,7 @@ export function Register() {
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container height="100%">
       <Grid item xs={7}>
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs">
@@ -147,8 +147,8 @@ export function Register() {
           </Container>
         </ThemeProvider>
       </Grid>
-      <Grid item xs={5}>
-        <img className="photo" src={ImageRe} />
+      <Grid className="imgRe" item xs={5}>
+
       </Grid>
     </Grid>
   );

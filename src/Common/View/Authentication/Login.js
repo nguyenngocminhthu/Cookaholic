@@ -15,14 +15,17 @@ import Paper from '@mui/material/Paper';
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+
 import { loginAction } from "../../../redux/actions/Auth/authActions";
 import myImage from "../../img/egg.png";
 import "./LoRe.css";
 import { validateLogin } from "./validate";
+
 const theme = createTheme();
 
 const Item = styled(Paper)(({ theme }) => ({

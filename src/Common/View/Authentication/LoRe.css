@@ -10,6 +10,13 @@
   background-size: cover;
 }
 
+.imgRe {
+  background-image: url(../../img/ResgiterBG.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .btn-grad {
   background-image: linear-gradient(
     to right,
