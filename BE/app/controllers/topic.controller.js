@@ -15,8 +15,8 @@ exports.create = async (req, res) => {
         await topic.save()
     } catch (error) {
         return res.status(400).json({
-            message: `failed, check to see the ${error}`,
-            status: "error"
+            message: error,
+            success: false
         })
     }
 }
@@ -25,12 +25,20 @@ exports.findAll = async (req, res) => {
 
     Topic.find()
         .then(data => {
-            if (!data)
-                res.status(404).send({ message: "Not found Tutorial with id " + id })
+            if (!data) {
+                res.status(404).json({ message: "Not found", success: false })
+                return
+            }
             else
-                res.send(data)
+                // res.send(data)
+                res.status(200).json({
+                    id: data._id,
+                    name: data.name,
+                    image: data.image,
+                    success: true
+                })
         })
         .catch(err => {
-            res.status(500).send({ message: "Error retrieving Tutorial with id=" + id });
+            res.status(500).json({ message: err, success: false });
         })
 }
