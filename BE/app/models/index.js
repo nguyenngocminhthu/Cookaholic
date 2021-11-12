@@ -10,7 +10,7 @@ db.url = dbConfig.url
 db.user = require('./user.model')
 db.role = require('./role.model')
 db.refreshToken = require('./refreshToken')
-
+db.topic=require('./topic.model')
 db.ROLES = ["user", "admin"]
 
 module.exports = db
