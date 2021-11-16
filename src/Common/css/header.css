@@ -1,0 +1,36 @@
+.jumbotron {
+    border-radius: 1.5rem;
+    background-color: #fce0dc;
+    font-family: "Open Sans", sans-serif;
+    margin: 2.5rem 0rem 2rem 0rem;
+}
+
+.jumbotron h1 {
+    width: 220px;
+    color: black;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.jumbotron p {
+    width: 220px;
+    color: #5f5d5d;
+    font-size: 0.9rem;
+}
+
+.jumbotron .btn {
+    font-weight: bold;
+}
+
+.jumbotron .btn:hover {
+    opacity: 0.8;
+}
+img{
+    margin-left: 3rem;
+    max-width: 80%;
+    height: auto;
+
+}
+.MGleft{
+
+}

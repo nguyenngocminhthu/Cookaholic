@@ -1,0 +1,22 @@
+.avt{
+    line-height: 0;		/* remove line-height */ 
+	display: inline-block;	/* circle wraps image */
+	border-radius: 50%;	/* relative value */
+	border: 3px solid white;/* border width   */
+	box-shadow: 0px 0px 5px rgba(0,0,0,0.4);	
+	transition: linear 0.25s;
+}
+.AvatarInfor{
+    margin: 40px;
+}
+.Nameprofile{
+    margin: 30px;
+}
+.background{
+    background: #654ea3;
+    background: linear-gradient(to right, #e96443, #904e95);
+    min-height: 100vh;
+    overflow-x: hidden
+
+    
+}
