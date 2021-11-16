@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import Modal from 'react-awesome-modal';
 import { useSelector } from "react-redux";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Checkbox from '@mui/material/Checkbox';
+import Avatar from '@mui/material/Avatar';
 
 import '../css/main.css';
 import phoDel from '../img/pho-detail.png';
@@ -9,6 +16,20 @@ import RatingShow from './Detail/Rating';
 import RecipesDetail from '../View/Detail/RecipesDetail';
 
 const Main = () => {
+    const [checked, setChecked] = React.useState([1]);
+
+    const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
 
     const [visible, setVisible] = useState(false);
     const openModal = () => {
@@ -34,7 +55,7 @@ const Main = () => {
 
     const menus = useSelector((state) => state.food.listFood) || [
         {
-            name: "Món nước",
+            // name: "Món nước",
             list: [
                 {
                     image: "require('../img/Food/pho.png')",
@@ -69,7 +90,7 @@ const Main = () => {
             ]
         },
         {
-            name: "Món chiên",
+            //name: "Món chiên",
             list: [
                 {
                     image: "pho",
@@ -108,12 +129,9 @@ const Main = () => {
     const renderListCook = menus.map((value, index) => {
         return (
             <div key={index}>
-
-                <div className="sub">
                     <h3>
                         {value.name}
                     </h3>
-                </div>
                 <div className="card-deck" value="Open" onClick={openModal} >
 
                     {value.list.map((vl, idx) => {
@@ -180,19 +198,33 @@ const Main = () => {
     return (
         <>
             <div className="row">
+                <div className="col-3">
+                    <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                        {["Trứng", "Bún", "Phở", "Pizza", "Mì", "Món nước", "Món khô", "Miền Trung", "Miền Bắc", "Miền Nam"].map((value) => {
+                            const labelId = `checkbox-list-secondary-label-${value}`;
+                            return (
+                            <ListItem
+                                key={value}
+                                secondaryAction={
+                                <Checkbox
+                                    edge="end"
+                                    onChange={handleToggle(value)}
+                                    checked={checked.indexOf(value) !== -1}
+                                    inputProps={{ 'aria-labelledby': labelId }}
+                                />
+                                }
+                                disablePadding
+                            >
+                                <ListItemButton>
+                                <ListItemText id={labelId} primary={`${value}`} />
+                                </ListItemButton>
+                            </ListItem>
+                            );
+                        })}
+                    </List>
+                </div>
                 <div className="col-9">
                     {renderListCook}
-                </div>
-
-                <div className="col-3 right">
-                    <div className="aside">
-                        <h2>What is Cookaholic?</h2>
-                        <p>We are the Web that allow you to find and share cooking recipes.</p>
-                        <h2>How can I share my recipes?</h2>
-                        <p>First, you should Login. If you don't have an account, please register.</p>
-                        <h2>Why haven't my Post published?</h2>
-                        <p>Any Posts need to be accepted by the Admin, please wait for a shortime.</p>
-                    </div>
                 </div>
             </div>
 

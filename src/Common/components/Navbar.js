@@ -77,12 +77,12 @@ const Navbar = () => {
             <ul className="signin-up">
                 <li className="sign-in" onClick={closeMobileMenu}>
                     <p className="aStyle" value="Open" onClick={openModal}>
-                        SIGN IN
+                        <button class="button-56" role="button">SIGN IN</button>
                     </p>
                 </li>
                 <li className="sign-up" onClick={closeMobileMenu}>
                     <p className="aStyle" value="Open" onClick={openSignUp}>
-                        SIGN UP
+                        <button class="button-56" role="button">SIGN UP</button>
                     </p>
                 </li>
             </ul>
@@ -122,7 +122,6 @@ const Navbar = () => {
                         </NavLink>
                     </li>
 
-                    <Search />
 
 
                 </ul>
