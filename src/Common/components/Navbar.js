@@ -11,7 +11,6 @@ import { ReactComponent as MenuIcon } from "../img/menu.svg";
 import { ReactComponent as CloseMenu } from "../img/x.svg";
 import Login from "../View/Authentication/Login";
 import Register from "../View/Authentication/Register";
-import Search from "./Search";
 import { logoutAction } from "../../redux/actions/Auth/authActions";
 
 const Navbar = () => {
@@ -92,68 +91,68 @@ const Navbar = () => {
     }
 
     return (
-        <div className="nav">
-            <div className="logo-nav">
-                <div className="logo-container">
-                    <NavLink to="/">
-                        <Logo className="logo" />
-                    </NavLink>
+            <div className="nav">
+                <div className="logo-nav">
+                    <div className="logo-container">
+                        <NavLink to="/">
+                            <Logo className="logo" />
+                        </NavLink>
+                    </div>
+
+                    <ul className={click ? "nav-options active" : "nav-options"}>
+                        <li className="option" onClick={closeMobileMenu}>
+                            <NavLink className="aStyle" to="/main">
+                                HOME
+                            </NavLink>
+                        </li>
+                        <li className="option" onClick={closeMobileMenu}>
+                            <NavLink className="aStyle" to="/menu">
+                                MENU
+                            </NavLink>
+                        </li>
+                        <li className="option" onClick={closeMobileMenu}>
+                            <NavLink className="aStyle" to="/about">
+                                ABOUT
+                            </NavLink>
+                        </li>
+                        <li className="option" onClick={closeMobileMenu}>
+                            <NavLink className="aStyle" to="/about">
+                                CONTACT
+                            </NavLink>
+                        </li>
+
+
+
+                    </ul>
+
                 </div>
-
-                <ul className={click ? "nav-options active" : "nav-options"}>
-                    <li className="option" onClick={closeMobileMenu}>
-                        <NavLink className="aStyle" to="/main">
-                            HOME
-                        </NavLink>
-                    </li>
-                    <li className="option" onClick={closeMobileMenu}>
-                        <NavLink className="aStyle" to="/menu">
-                            MENU
-                        </NavLink>
-                    </li>
-                    <li className="option" onClick={closeMobileMenu}>
-                        <NavLink className="aStyle" to="/about">
-                            ABOUT
-                        </NavLink>
-                    </li>
-                    <li className="option" onClick={closeMobileMenu}>
-                        <NavLink className="aStyle" to="/about">
-                            CONTACT
-                        </NavLink>
-                    </li>
-
-
-
-                </ul>
-
+                <USER />
+                <div className="mobile-menu" onClick={handleClick}>
+                    {click ? (
+                        <CloseMenu className="menu-icon" />
+                    ) : (
+                        <MenuIcon className="menu-icon" />
+                    )}
+                </div>
+                <Modal
+                    visible={visible}
+                    width="60%"
+                    height="80%"
+                    effect="fadeInUp"
+                    onClickAway={closeModal}
+                >
+                    <Login />
+                </Modal>
+                <Modal
+                    visible={signup}
+                    width="60%"
+                    height="90%"
+                    effect="fadeInUp"
+                    onClickAway={closeSignUp}
+                >
+                    <Register />
+                </Modal>
             </div>
-            <USER />
-            <div className="mobile-menu" onClick={handleClick}>
-                {click ? (
-                    <CloseMenu className="menu-icon" />
-                ) : (
-                    <MenuIcon className="menu-icon" />
-                )}
-            </div>
-            <Modal
-                visible={visible}
-                width="60%"
-                height="80%"
-                effect="fadeInUp"
-                onClickAway={closeModal}
-            >
-                <Login />
-            </Modal>
-            <Modal
-                visible={signup}
-                width="60%"
-                height="90%"
-                effect="fadeInUp"
-                onClickAway={closeSignUp}
-            >
-                <Register />
-            </Modal>
-        </div>
     );
 };
 

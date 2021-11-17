@@ -11,7 +11,7 @@ export const Header = () => {
        <div className="jumbotron">
            <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <div ClassName="MGleft">
+                    <div className="MGleft">
                         <h1>Receipe Contest</h1>
                         <p>Receipe contests are like our big, constantly-in-progress dinner party—and you're invited.</p>
                         <a>how they work?</a>

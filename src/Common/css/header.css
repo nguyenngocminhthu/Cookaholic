@@ -8,21 +8,23 @@
 .jumbotron h1 {
     width: 220px;
     color: black;
-    font-size: 3rem;
+    font-size: 4rem;
     font-weight: 600;
 }
 
 .jumbotron p {
     width: 220px;
     color: #5f5d5d;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    margin-left: 3rem;
 }
 
-.jumbotron .btn {
+.jumbotron a {
     font-weight: bold;
+    margin-right: 4rem;
 }
 
-.jumbotron .btn:hover {
+.jumbotron .a:hover {
     opacity: 0.8;
 }
 img{
@@ -32,5 +34,6 @@ img{
 
 }
 .MGleft{
-
+    margin-top: 3rem;
+    margin-left: 4rem;
 }

@@ -10,6 +10,12 @@
   padding: 0px 40px;
   height: 70px;
   margin-top:10px;
+  border: 3px solid #333333;
+  border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
+  letter-spacing: 0.3ch;
+  background: #ffffff;
+  position: relative;
+  margin-bottom: 20px;
 }
 .logo-nav {
   display: flex;
