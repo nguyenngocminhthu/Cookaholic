@@ -40,7 +40,7 @@ const About = () => {
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-                                            height="140"
+
                                             image={FLeft}
                                             alt="green iguana"
                                         />
@@ -64,7 +64,7 @@ const About = () => {
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-                                            height="140"
+
                                             image={FCenter}
                                             alt="green iguana"
                                         />
@@ -87,7 +87,7 @@ const About = () => {
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-                                            height="140"
+
                                             image={FRight}
                                             alt="green iguana"
                                         />
