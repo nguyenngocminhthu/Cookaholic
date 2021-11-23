@@ -11,6 +11,7 @@ const toastNotify = (content) => {
         draggable: true,
         progress: undefined,
         theme: "colored",
+
     });
 };
 

@@ -1,7 +1,7 @@
 export const GET_AUTH = "get auth";
 
-export const GET_USER_FAIL = "get fail";
-export const GET_USER_SUCCESS = "get success";
+export const GET_AUTH_FAIL = "get fail";
+export const GET_AUTH_SUCCESS = "get success";
 
 export const LOGIN_FAIL = "login fail";
 export const LOGIN_SUCCESS = "login success";

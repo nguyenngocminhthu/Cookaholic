@@ -2,6 +2,7 @@ import Home from "../Common/View/Home";
 import Main from '../Common/View/Main';
 import About from '../Common/View/About';
 import Menu from '../Common/View/Menu';
+import Admin from '../Common/View/Admin/Admin';
 import Login from "../Common/View/Authentication/Login";
 import Profile from "../Common/View/Profile/Profile";
 import React from "react";
@@ -24,6 +25,7 @@ const HomeRoute = () => {
                 <Route path="/menu" component={Menu} />
                 <Route path="/signin" component={Login} />
                 <Route path="/profile" component={Profile} />
+                <Route path="/admin" component={Admin} />
 
             </Switch>
         </ComponentTransition>

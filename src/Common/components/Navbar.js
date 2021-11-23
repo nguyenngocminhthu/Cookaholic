@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 
-import "../css/auth.css";
 import "../css/navbar.css";
 import { ReactComponent as Logo } from "../img/logo.svg";
 import { ReactComponent as MenuIcon } from "../img/menu.svg";
@@ -33,13 +32,10 @@ const Navbar = () => {
 
     const handleLogout = () => {
         dispatch(logoutAction());
-        if (history.location.pathname === "/") {
-            history.push("/main");
-            return;
-        }
-        history.goBack()
+        history.push("/");
         return;
     };
+
 
     useEffect(() => {
         if (isLogin) {
@@ -60,14 +56,14 @@ const Navbar = () => {
         if (isLogin)
             return (
                 <ul className="signin-up">
-                    <li className="sign-in" onClick={closeMobileMenu}>
-                        <NavLink to="/profile" className="aStyle" value="Open">
-                            PROFILE
+                    <li className="pro5" onClick={closeMobileMenu}>
+                        <NavLink to="/profile" className="aStyle" value="Profile">
+                            <i className="fa fa-user" aria-hidden="true"></i>
                         </NavLink>
                     </li>
-                    <li className="sign-up" onClick={closeMobileMenu}>
-                        <p className="aStyle" value="Open" onClick={handleLogout}>
-                            LOG OUT
+                    <li className="pro5" onClick={closeMobileMenu}>
+                        <p className="aStyle" value="Logout" onClick={handleLogout}>
+                            <i className="fa fa-sign-out" aria-hidden="true"></i>
                         </p>
                     </li>
                 </ul>
@@ -76,12 +72,12 @@ const Navbar = () => {
             <ul className="signin-up">
                 <li className="sign-in" onClick={closeMobileMenu}>
                     <p className="aStyle" value="Open" onClick={openModal}>
-                        <button class="button-56" role="button">SIGN IN</button>
+                        <button className="button-56" role="button">SIGN IN</button>
                     </p>
                 </li>
                 <li className="sign-up" onClick={closeMobileMenu}>
                     <p className="aStyle" value="Open" onClick={openSignUp}>
-                        <button class="button-56" role="button">SIGN UP</button>
+                        <button className="button-56" role="button">SIGN UP</button>
                     </p>
                 </li>
             </ul>
@@ -90,70 +86,78 @@ const Navbar = () => {
         );
     }
 
-    return (
-            <div className="nav">
-                <div className="logo-nav">
-                    <div className="logo-container">
-                        <NavLink to="/">
-                            <Logo className="logo" />
-                        </NavLink>
+    const roles = useSelector((state) => state.auth.user.roles) || []
+    console.log("log at ==> Header.js ==> roles: ", roles)
+    return roles.find((role) => role === "ROLE_ADMIN") ?
+        (<></>) :
+        (
+            <header className="navb">
+                <div className="nav">
+                    <div className="logo-nav">
+                        <div className="logo-container">
+                            <NavLink to="/">
+                                <Logo className="logo" />
+                            </NavLink>
+                        </div>
+
+                        <ul className={click ? "nav-options active" : "nav-options"}>
+                            <li className="option" onClick={closeMobileMenu}>
+                                <NavLink className="aStyle" to="/main">
+                                    HOME
+                                </NavLink>
+                            </li>
+                            <li className="option" onClick={closeMobileMenu}>
+                                <NavLink className="aStyle" to="/menu">
+                                    MENU
+                                </NavLink>
+                            </li>
+                            <li className="option" onClick={closeMobileMenu}>
+                                <NavLink className="aStyle" to="/about">
+                                    ABOUT
+                                </NavLink>
+                            </li>
+                            <li className="option" onClick={closeMobileMenu}>
+                                <NavLink className="aStyle" to="/about">
+                                    CONTACT
+                                </NavLink>
+                            </li>
+
+
+
+
+                        </ul>
+
                     </div>
+                    <USER />
+                    <div className="mobile-menu" onClick={handleClick}>
+                        {click ? (
+                            <CloseMenu className="menu-icon" />
+                        ) : (
+                            <MenuIcon className="menu-icon" />
+                        )}
+                    </div>
+                    <Modal
+                        visible={visible}
+                        width="60%"
+                        height="80%"
+                        effect="fadeInUp"
+                        onClickAway={closeModal}
+                    >
+                        <Login />
+                    </Modal>
+                    <Modal
+                        visible={signup}
+                        width="60%"
+                        height="90%"
+                        effect="fadeInUp"
+                        onClickAway={closeSignUp}
+                    >
 
-                    <ul className={click ? "nav-options active" : "nav-options"}>
-                        <li className="option" onClick={closeMobileMenu}>
-                            <NavLink className="aStyle" to="/main">
-                                HOME
-                            </NavLink>
-                        </li>
-                        <li className="option" onClick={closeMobileMenu}>
-                            <NavLink className="aStyle" to="/menu">
-                                MENU
-                            </NavLink>
-                        </li>
-                        <li className="option" onClick={closeMobileMenu}>
-                            <NavLink className="aStyle" to="/about">
-                                ABOUT
-                            </NavLink>
-                        </li>
-                        <li className="option" onClick={closeMobileMenu}>
-                            <NavLink className="aStyle" to="/about">
-                                CONTACT
-                            </NavLink>
-                        </li>
-
-
-
-                    </ul>
-
+                        <Register />
+                    </Modal>
                 </div>
-                <USER />
-                <div className="mobile-menu" onClick={handleClick}>
-                    {click ? (
-                        <CloseMenu className="menu-icon" />
-                    ) : (
-                        <MenuIcon className="menu-icon" />
-                    )}
-                </div>
-                <Modal
-                    visible={visible}
-                    width="60%"
-                    height="80%"
-                    effect="fadeInUp"
-                    onClickAway={closeModal}
-                >
-                    <Login />
-                </Modal>
-                <Modal
-                    visible={signup}
-                    width="60%"
-                    height="90%"
-                    effect="fadeInUp"
-                    onClickAway={closeSignUp}
-                >
-                    <Register />
-                </Modal>
-            </div>
-    );
+            </header>
+        );
 };
 
 export default Navbar;

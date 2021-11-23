@@ -1,39 +1,42 @@
+.hd {
+  margin: 0% 15% 0% 15%;
+}
+
 .jumbotron {
-    border-radius: 1.5rem;
-    background-color: #fce0dc;
-    font-family: "Open Sans", sans-serif;
-    margin: 2.5rem 0rem 2rem 0rem;
+  border-radius: 1.5rem;
+  background-color: #fce0dc;
+  font-family: "Open Sans", sans-serif;
+  margin: 2rem 0rem 2rem 0rem;
 }
 
 .jumbotron h1 {
-    width: 220px;
-    color: black;
-    font-size: 4rem;
-    font-weight: 600;
+  width: 220px;
+  color: black;
+  font-size: 4rem;
+  font-weight: 600;
 }
 
 .jumbotron p {
-    width: 220px;
-    color: #5f5d5d;
-    font-size: 1rem;
-    margin-left: 3rem;
+  width: 220px;
+  color: #5f5d5d;
+  font-size: 1rem;
+  margin-left: 3rem;
 }
 
 .jumbotron a {
-    font-weight: bold;
-    margin-right: 4rem;
+  font-weight: bold;
+  margin-right: 4rem;
 }
 
 .jumbotron .a:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
-img{
-    margin-left: 3rem;
-    max-width: 80%;
-    height: auto;
-
+.img-header {
+  margin-left: 3rem;
+  max-width: 80%;
+  height: auto;
 }
-.MGleft{
-    margin-top: 3rem;
-    margin-left: 4rem;
+.MGleft {
+  margin-top: 3rem;
+  margin-left: 4rem;
 }

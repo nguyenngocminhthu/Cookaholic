@@ -6,7 +6,7 @@ import egg from "../img/egg.png"
 
 const Home = () => {
     return (
-        <>
+        <div className="home">
             <div className="hero-image fadein">
 
                 <div className="hero-text">
@@ -18,7 +18,7 @@ const Home = () => {
                 <img className="egg" src={egg} alt="egg" />
 
             </div>
-        </>
+        </div>
     );
 }
 

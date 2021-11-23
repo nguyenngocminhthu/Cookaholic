@@ -18,14 +18,12 @@ const getAuth = async () => {
 
 const login = async (body) => {
     try {
-        console.log("log at ==> Auth.Api.js ==> line 21 ==>  body: ", body)
         const res = await axiosClient.post(`${url}/signin`, body);
         console.log("log at ==> Auth.Api.js ==> line 23 ==>  res: ", res)
-
-        if (res) {
+        if (res.success) {
             Cookie.set("accessToken", res.accessToken);
             toastNotify(res.message);
-            return { data: {}, success: true };
+            return { data: res, success: true };
         }
         toastNotify(res.message);
         return { data: {}, success: false };

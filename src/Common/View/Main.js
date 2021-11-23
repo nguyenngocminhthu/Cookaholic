@@ -5,9 +5,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
+
 import Checkbox from '@mui/material/Checkbox';
-import Avatar from '@mui/material/Avatar';
+
 
 import '../css/main.css';
 import phoDel from '../img/pho-detail.png';
@@ -19,17 +19,17 @@ const Main = () => {
     const [checked, setChecked] = React.useState([1]);
 
     const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
 
-    setChecked(newChecked);
-  };
+        setChecked(newChecked);
+    };
 
     const [visible, setVisible] = useState(false);
     const openModal = () => {
@@ -129,9 +129,9 @@ const Main = () => {
     const renderListCook = menus.map((value, index) => {
         return (
             <div key={index}>
-                    <h3>
-                        {value.name}
-                    </h3>
+                <h3>
+                    {value.name}
+                </h3>
                 <div className="card-deck" value="Open" onClick={openModal} >
 
                     {value.list.map((vl, idx) => {
@@ -196,29 +196,29 @@ const Main = () => {
 
 
     return (
-        <>
+        <div className="main">
             <div className="row">
                 <div className="col-3">
-                    <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                    <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', position: 'unset' }}>
                         {["Trứng", "Bún", "Phở", "Pizza", "Mì", "Món nước", "Món khô", "Miền Trung", "Miền Bắc", "Miền Nam"].map((value) => {
                             const labelId = `checkbox-list-secondary-label-${value}`;
                             return (
-                            <ListItem
-                                key={value}
-                                secondaryAction={
-                                <Checkbox
-                                    edge="end"
-                                    onChange={handleToggle(value)}
-                                    checked={checked.indexOf(value) !== -1}
-                                    inputProps={{ 'aria-labelledby': labelId }}
-                                />
-                                }
-                                disablePadding
-                            >
-                                <ListItemButton>
-                                <ListItemText id={labelId} primary={`${value}`} />
-                                </ListItemButton>
-                            </ListItem>
+                                <ListItem
+                                    key={value}
+                                    secondaryAction={
+                                        <Checkbox
+                                            edge="end"
+                                            onChange={handleToggle(value)}
+                                            checked={checked.indexOf(value) !== -1}
+                                            inputProps={{ 'aria-labelledby': labelId }}
+                                        />
+                                    }
+                                    disablePadding
+                                >
+                                    <ListItemButton>
+                                        <ListItemText id={labelId} primary={`${value}`} />
+                                    </ListItemButton>
+                                </ListItem>
                             );
                         })}
                     </List>
@@ -232,7 +232,7 @@ const Main = () => {
                 <p>Resize the browser window to see how the content respond to the resizing.</p>
             </div>
 
-        </>
+        </div>
     );
 
 

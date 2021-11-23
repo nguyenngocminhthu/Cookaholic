@@ -1,16 +1,9 @@
 * {
   box-sizing: border-box;
 }
-
-body {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  height: 100vh;
-  background-color: #f6fd8aa9;
+.main {
+  margin: 0% 15% 0% 15%;
 }
-
 .row::after {
   content: "";
   clear: both;
@@ -155,6 +148,7 @@ html {
 
 .imgnor {
   width: 40%;
+  align-items: center;
 }
 
 .imgdetail {

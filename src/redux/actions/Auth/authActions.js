@@ -2,8 +2,8 @@ import Cookies from "js-cookie";
 import authAPI from "../../../apis/Auth.Api";
 import { changeLoading } from "../System/systemActions";
 import {
-    GET_USER_FAIL,
-    GET_USER_SUCCESS,
+    GET_AUTH_FAIL,
+    GET_AUTH_SUCCESS,
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT,
@@ -34,12 +34,13 @@ export function loginFail() {
 export function loginAction(dataSubmit) {
     return async (dispatch) => {
         try {
-            // dispatch(loading(true));
+            // dispatch(loading(true)); 
             const res = await authAPI.login(dataSubmit);
+            console.log("log at ==> authAction ==> res: ", res)
             if (res.success) {
                 // dispatch(loading());
                 dispatch(loginSuccess(res.data));
-                return true;
+                return res.data;
             }
             // dispatch(loading());
             dispatch(loginFail());
@@ -52,16 +53,16 @@ export function loginAction(dataSubmit) {
     };
 }
 
-export const getUserSuccess = (data) => {
+export const getAuthSuccess = (data) => {
     return {
-        type: GET_USER_SUCCESS,
+        type: GET_AUTH_SUCCESS,
         payload: data,
     };
 };
 
-export const getUserFail = () => {
+export const getAuthFail = () => {
     return {
-        type: GET_USER_FAIL,
+        type: GET_AUTH_FAIL,
         payload: {},
     };
 };
@@ -72,15 +73,15 @@ export const getAuthAction = () => async (dispatch) => {
         const res = await authAPI.getAuth();
         if (res.success) {
             // dispatch(loading());
-            dispatch(getUserSuccess(res.data));
+            dispatch(getAuthSuccess(res.data));
             return { ...res.data, isAuth: true };
         }
         // dispatch(loading());
-        dispatch(getUserFail());
+        dispatch(getAuthFail());
         return { isAuth: false };
     } catch {
         // dispatch(loading());
-        dispatch(getUserFail());
+        dispatch(getAuthFail());
         return { isAuth: false };
     }
 };

@@ -160,6 +160,10 @@ const Login = () => {
     const res = await dispatch(loginAction({ username: email, password }));
     console.log("res: ", res);
     if (res) {
+      if (res.roles.includes("ROLE_ADMIN")) {
+        history.push("/admin");
+        return;
+      }
       if (history.location.pathname === "/") {
         history.push("/main");
         return;

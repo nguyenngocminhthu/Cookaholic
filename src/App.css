@@ -1,4 +1,76 @@
 .App {
-  margin: 0% 15% 0% 15%;
   text-align: center;
+}
+
+.food {
+  width: 60%;
+}
+
+.test {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+
+  animation-name: food;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  z-index: -1;
+}
+
+@keyframes food {
+  0% {
+    left: 50px;
+    top: 100%;
+  }
+
+  100% {
+    left: 50px;
+    top: 30%;
+  }
+}
+
+.test1 {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+
+  animation-name: food1;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  z-index: -1;
+}
+
+@keyframes food1 {
+  0% {
+    left: 50%;
+    top: 50%;
+  }
+
+  100% {
+    left: 50%;
+    top: -200px;
+  }
+}
+
+.test2 {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+
+  animation-name: food2;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  z-index: -1;
+}
+
+@keyframes food2 {
+  0% {
+    left: 90%;
+    top: 100%;
+  }
+
+  100% {
+    left: 90%;
+    top: 40%;
+  }
 }
