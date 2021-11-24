@@ -11,7 +11,7 @@ const Comment = mongoose.model(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Recipe"
         },
-        rate: mongoose.Schema.Types.Decimal128,
+        rate: Number,
         content: String,
         image:String
     },
