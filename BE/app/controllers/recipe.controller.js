@@ -19,7 +19,7 @@ exports.create = async (req, res) => {
         ingre: data.ingre,
         directions: data.directions,
         rate: 0,
-        status: 0
+        status: 1.5
     })
 
     // recipe.ingre = [{ "_id": 1, "name": "aaa" }]

@@ -24,7 +24,7 @@ const Recipe = mongoose.model(
                 ref: "Comment"
             }
         ],
-        rate: mongoose.Schema.Types.Decimal128,
+        rate: Number,
         status: Number
     },
         { timestamps: true }

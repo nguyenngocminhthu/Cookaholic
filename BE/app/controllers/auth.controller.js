@@ -93,7 +93,7 @@ exports.signin = (req, res) => {
             }
 
             // So password nhap va password db
-            var passwordIsValid = bcrypt.compareSync(
+            var passwordIsValid = bcrypt.comparseSync(
                 req.body.password,
                 user.password
             )
@@ -124,7 +124,7 @@ exports.signin = (req, res) => {
 
             res.status(200).json({
                 id: user._id,
-                username: user.username,
+                username: user.username ,
                 email: user.email,
                 roles: authorities,
                 accessToken: token,
