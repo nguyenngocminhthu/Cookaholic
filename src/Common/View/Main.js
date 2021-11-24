@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-awesome-modal';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-
+import { getAllRecipeAction } from "../../redux/actions/Recipe/recipe.action"
 import Checkbox from '@mui/material/Checkbox';
 
 
@@ -15,7 +15,8 @@ import pho from '../img/Food/pho.png';
 import RatingShow from './Detail/Rating';
 import RecipesDetail from '../View/Detail/RecipesDetail';
 
-const Main = () => {
+const Main = (props) => {
+    const dispatch = useDispatch();
     const [checked, setChecked] = React.useState([1]);
 
     const handleToggle = (value) => () => {
@@ -53,97 +54,25 @@ const Main = () => {
 
     }
 
-    const menus = useSelector((state) => state.food.listFood) || [
-        {
-            // name: "Món nước",
-            list: [
-                {
-                    image: "require('../img/Food/pho.png')",
-                    name: "Phở Bò",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "bunbo",
-                    name: "Bún Bò",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "pho",
-                    name: "Mỳ Quảng",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "pho",
-                    name: "Hủ Tiếu",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "pho",
-                    name: "Bún Riêu Cua",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "pho",
-                    name: "Bánh Canh Cua",
-                    desc: "Ẩm thực Việt Nam"
-                },
-            ]
-        },
-        {
-            //name: "Món chiên",
-            list: [
-                {
-                    image: "pho",
-                    name: "Khoai Tây Chiên",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "pho",
-                    name: "Nem Chua Rán",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "pho",
-                    name: "Cánh Gà Chiên Nước Mắm",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "pho",
-                    name: "Cơm Chiên Hải Sản",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "pho",
-                    name: "Bánh Bao Chiên",
-                    desc: "Ẩm thực Việt Nam"
-                },
-                {
-                    image: "pho",
-                    name: "Hoành Thánh Chiên",
-                    desc: "Ẩm thực Việt Nam"
-                },
-            ]
-        },
-    ]
+    const menus = useSelector((state) => state.recipe.listRecipe) || []
+
+
+    useEffect(() => {
+        dispatch(getAllRecipeAction())
+    }, [])
+    useEffect(() => {
+        console.log("log at ==> Main.js => menus: ", menus);
+    }, [menus])
 
     const renderListCook = menus.map((value, index) => {
         return (
             <div key={index}>
-                <h3>
-                    {value.name}
-                </h3>
-                <div className="card-deck" value="Open" onClick={openModal} >
-
-                    {value.list.map((vl, idx) => {
-                        return (<div className="card" key={idx}>
-                            <img className="imgnor" src={pho} alt="pho" />
-                            <div className="container">
-                                <h4><b>{vl.name}</b></h4>
-                                <p>{vl.desc}</p>
-                            </div>
-                        </div>)
-                    })}
-
+                <div className="card" value="Open" onClick={openModal}>
+                    <img className="imgnor" src={value.image} alt={value.name} />
+                    <div className="container">
+                        <h4><b>{value.name}</b></h4>
+                        <p>{value.title}</p>
+                    </div>
                 </div>
                 <Modal
                     visible={visible}
@@ -152,7 +81,7 @@ const Main = () => {
                     effect="fadeInUp"
                     onClickAway={closeModal}
                 >
-                    <div>
+                    <div key={index}>
                         <div className="close-detail">
                             <button className="close" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></button>
                         </div>
@@ -161,7 +90,7 @@ const Main = () => {
                             <div className="row">
                                 <div className="col-6 ">
                                     <div className="img-del">
-                                        <img className="imgdetail" src={phoDel} alt="pho" />
+                                        <img className="imgdetail" src={value.image} alt={value.name} />
                                     </div>
 
                                 </div>
@@ -223,8 +152,13 @@ const Main = () => {
                         })}
                     </List>
                 </div>
-                <div className="col-9">
+                <div className="col-9 card-deck">
+
                     {renderListCook}
+
+
+
+
                 </div>
             </div>
 

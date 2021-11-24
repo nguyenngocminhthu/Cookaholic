@@ -1,7 +1,8 @@
-import foodReducer from './Food/food.reducer';
+
 import authReducer from "./Auth/authReducers"
+import recipeReducer from './Recipe/recipe.reducer';
 const rootReducers = {
     auth: authReducer,
-    food: foodReducer,
+    recipe: recipeReducer,
 };
 export default rootReducers;
