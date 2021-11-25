@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import HomeRoute from "./HomeRoute";
 import Navbar from '../Common/components/Navbar'
-import Header from '../Common/components/Header'
+
 import '../index.css'
 
 import food1 from '../Common/img/food1.png'
@@ -13,7 +13,7 @@ const Routers = () => {
     return (
         <Router>
             <Navbar />
-            <Header />
+
             <HomeRoute />
             <div className="test">
                 <img className="food" src={food1} alt="food1" />

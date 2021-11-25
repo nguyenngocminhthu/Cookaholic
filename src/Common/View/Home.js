@@ -2,11 +2,13 @@ import React from 'react';
 import '../css/home.css';
 import { NavLink } from "react-router-dom";
 import egg from "../img/egg.png"
+import Header from '../components/Header';
 
 
 const Home = () => {
     return (
         <div className="home">
+            <Header />
             <div className="hero-image fadein">
 
                 <div className="hero-text">

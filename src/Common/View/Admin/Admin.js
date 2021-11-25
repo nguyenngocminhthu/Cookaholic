@@ -10,6 +10,7 @@ import './Admin.css';
 import Dashboard from './Dashboard';
 import User from './User';
 import Post from './Post';
+import NotFound from '../../components/404';
 import { logoutAction } from "../../../redux/actions/Auth/authActions";
 
 import { FaRegNewspaper, FaRegUser } from "react-icons/fa";
@@ -57,57 +58,62 @@ const Admin = () => {
         return;
     };
 
+    const roles = useSelector((state) => state.auth.user.roles) || []
+    console.log("log at ==> Header.js ==> roles: ", roles)
+    return roles.find((role) => role === "ROLE_ADMIN") ?
 
-    return (
-        <div>
-            <Grid container height="100%">
-                <Grid item xs={menuCollapse ? 1 : 2}>
-                    <div id="header">
-                        {/* collapsed props to change menu size using menucollapse state */}
-                        <ProSidebar collapsed={menuCollapse}>
-                            <SidebarHeader>
-                                <div className="logotext">
-                                    {/* Icon change using menucollapse state */}
-                                    <p>{menuCollapse ? <GiAbstract050 /> : <SiApacheairflow />}</p>
-                                </div>
-                                <div className="closemenu" onClick={menuIconClick}>
-                                    {/* changing menu collapse icon on click */}
-                                    {menuCollapse ? (
-                                        <FiArrowRightCircle />
-                                    ) : (
-                                        <FiArrowLeftCircle />
-                                    )}
-                                </div>
-                            </SidebarHeader>
-                            <SidebarContent>
-                                <Menu iconShape="square">
-                                    <MenuItem active={true} icon={<FiHome />} onClick={() => showRight("dashboard")}>
-                                        Dashboard
-                                    </MenuItem>
-                                    <MenuItem icon={<FaRegUser />} onClick={() => showRight("user")}>User</MenuItem>
-                                    <MenuItem icon={<FaRegNewspaper />} onClick={() => showRight("post")}>Post</MenuItem>
-                                    <MenuItem icon={<RiPencilLine />}>Author</MenuItem>
-                                    <MenuItem icon={<BiCog />}>Settings</MenuItem>
-                                </Menu>
-                            </SidebarContent>
-                            <SidebarFooter>
-                                <Menu iconShape="square">
-                                    <MenuItem icon={<FiLogOut />} onClick={handleLogout}>Logout</MenuItem>
-                                </Menu>
-                            </SidebarFooter>
-                        </ProSidebar>
-                    </div>
+
+        (
+            <div>
+                <Grid container height="100%">
+                    <Grid item xs={menuCollapse ? 1 : 2}>
+                        <div id="header">
+                            {/* collapsed props to change menu size using menucollapse state */}
+                            <ProSidebar collapsed={menuCollapse}>
+                                <SidebarHeader>
+                                    <div className="logotext">
+                                        {/* Icon change using menucollapse state */}
+                                        <p>{menuCollapse ? <GiAbstract050 /> : <SiApacheairflow />}</p>
+                                    </div>
+                                    <div className="closemenu" onClick={menuIconClick}>
+                                        {/* changing menu collapse icon on click */}
+                                        {menuCollapse ? (
+                                            <FiArrowRightCircle />
+                                        ) : (
+                                            <FiArrowLeftCircle />
+                                        )}
+                                    </div>
+                                </SidebarHeader>
+                                <SidebarContent>
+                                    <Menu iconShape="square">
+                                        <MenuItem active={true} icon={<FiHome />} onClick={() => showRight("dashboard")}>
+                                            Dashboard
+                                        </MenuItem>
+                                        <MenuItem icon={<FaRegUser />} onClick={() => showRight("user")}>User</MenuItem>
+                                        <MenuItem icon={<FaRegNewspaper />} onClick={() => showRight("post")}>Post</MenuItem>
+                                        <MenuItem icon={<RiPencilLine />}>Author</MenuItem>
+                                        <MenuItem icon={<BiCog />}>Settings</MenuItem>
+                                    </Menu>
+                                </SidebarContent>
+                                <SidebarFooter>
+                                    <Menu iconShape="square">
+                                        <MenuItem icon={<FiLogOut />} onClick={handleLogout}>Logout</MenuItem>
+                                    </Menu>
+                                </SidebarFooter>
+                            </ProSidebar>
+                        </div>
+                    </Grid>
+                    <Grid item xs={menuCollapse ? 11 : 10}>
+                        {showDashboard && <Dashboard />}
+
+                        {showUser && <User />}
+
+                        {showPost && <Post />}
+                    </Grid>
                 </Grid>
-                <Grid item xs={menuCollapse ? 11 : 10}>
-                    {showDashboard && <Dashboard />}
-
-                    {showUser && <User />}
-
-                    {showPost && <Post />}
-                </Grid>
-            </Grid>
-        </div>
-    );
+            </div>
+        )
+        : (<NotFound />);
 }
 
 

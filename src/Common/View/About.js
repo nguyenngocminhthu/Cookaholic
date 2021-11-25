@@ -14,6 +14,7 @@ import FRight from '../img/About3.jpg'
 import DC from '../img/About4.png'
 import DC1 from '../img/About5.jpg'
 import DC2 from '../img/FlowerDraw.png'
+import Header from '../components/Header';
 
 import '../css/about.css'
 import { height } from '@mui/system';
@@ -30,6 +31,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const About = () => {
     return (
         <div className="ab">
+            <Header />
             <div ClassName="Content">
 
                 <Box sx={{ flexGrow: 1 }}>
@@ -40,7 +42,7 @@ const About = () => {
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-
+                                            height="265px"
                                             image={FLeft}
                                             alt="green iguana"
                                         />
@@ -64,7 +66,7 @@ const About = () => {
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-
+                                            height="345px"
                                             image={FCenter}
                                             alt="green iguana"
                                         />
@@ -87,7 +89,7 @@ const About = () => {
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-
+                                            height="265px"
                                             image={FRight}
                                             alt="green iguana"
                                         />

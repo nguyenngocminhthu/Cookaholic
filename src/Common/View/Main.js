@@ -7,6 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { getAllRecipeAction } from "../../redux/actions/Recipe/recipe.action"
 import Checkbox from '@mui/material/Checkbox';
+import Header from '../components/Header';
 
 
 import '../css/main.css';
@@ -31,14 +32,17 @@ const Main = (props) => {
 
         setChecked(newChecked);
     };
-
+    const [currentRecipe, setCurrentRecipe] = useState(false);
     const [visible, setVisible] = useState(false);
-    const openModal = () => {
-        setVisible(!visible)
+    const openModal = (index) => {
+        setCurrentRecipe(menus[index]);
+        setVisible(!visible);
         setShowDetail(true);
         setShowRatingShow(false);
 
     };
+
+
     const closeModal = () => setVisible(false);
 
     const [showDetail, setShowDetail] = useState(true);
@@ -67,57 +71,14 @@ const Main = (props) => {
     const renderListCook = menus.map((value, index) => {
         return (
             <div key={index}>
-                <div className="card" value="Open" onClick={openModal}>
+                <div className="card" value="Open" onClick={() => openModal(index)}>
                     <img className="imgnor" src={value.image} alt={value.name} />
                     <div className="container">
                         <h4><b>{value.name}</b></h4>
                         <p>{value.title}</p>
                     </div>
                 </div>
-                <Modal
-                    visible={visible}
-                    width="80%"
-                    height="90%"
-                    effect="fadeInUp"
-                    onClickAway={closeModal}
-                >
-                    <div key={index}>
-                        <div className="close-detail">
-                            <button className="close" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></button>
-                        </div>
 
-                        <div className="detail">
-                            <div className="row">
-                                <div className="col-6 ">
-                                    <div className="img-del">
-                                        <img className="imgdetail" src={value.image} alt={value.name} />
-                                    </div>
-
-                                </div>
-                                <div className="col-6">
-                                    <div className="title">
-                                        <button className="detailrating" onClick={() => showComp("detail")}>
-                                            Detail
-                                        </button>
-                                        <button className="detailrating" onClick={() => showComp()}>
-                                            Rating
-                                        </button>
-                                    </div>
-
-
-                                    {showDetail && <RecipesDetail />}
-
-                                    {showRatingShow && <RatingShow />}
-
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </Modal>
             </div>
 
         )
@@ -126,6 +87,7 @@ const Main = (props) => {
 
     return (
         <div className="main">
+            <Header />
             <div className="row">
                 <div className="col-3">
                     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', position: 'unset' }}>
@@ -165,7 +127,51 @@ const Main = (props) => {
             <div className="footer">
                 <p>Resize the browser window to see how the content respond to the resizing.</p>
             </div>
+            <Modal
+                visible={visible}
+                width="80%"
+                height="90%"
+                effect="fadeInUp"
+                onClickAway={closeModal}
 
+            >
+                <div key={currentRecipe}>
+                    <div className="close-detail">
+                        <button className="close" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></button>
+                    </div>
+
+                    <div className="detail">
+                        <div className="row">
+                            <div className="col-6 ">
+                                <div className="img-del">
+                                    <img className="imgdetail" src={currentRecipe.image} alt={currentRecipe.name} />
+                                </div>
+
+                            </div>
+                            <div className="col-6">
+                                <div className="title">
+                                    <button className="detailrating" onClick={() => showComp("detail")}>
+                                        Detail
+                                    </button>
+                                    <button className="detailrating" onClick={() => showComp()}>
+                                        Rating
+                                    </button>
+                                </div>
+
+
+                                {showDetail && <RecipesDetail recipe={currentRecipe} />}
+
+                                {showRatingShow && <RatingShow recipe={currentRecipe} />}
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </Modal>
         </div>
     );
 
