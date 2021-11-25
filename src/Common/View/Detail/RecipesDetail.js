@@ -1,18 +1,51 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './Details.css';
+import ScrollArea from 'react-scrollbar';
+
 
 const RecipesDetail = (props) => {
   const { recipe } = props
   const [expanded, setExpanded] = React.useState(false);
 
+  useEffect(() => {
+    console.log("log at => Recipes Detail ==> recipe: ", recipe)
+  }, [recipe])
+  useEffect(() => {
+    console.log("log at => Recipes Detail ==> recipe: ", recipe)
+  }, [])
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  const recipeIngre = recipe.ingre || []
+
+  const renderListIngre = recipeIngre.map((vl, idx) => {
+    return (
+      <div key={idx}>
+        <div>
+          <p>{vl}</p>
+        </div>
+      </div>
+    )
+  })
+
+  const recipeDirection = recipe.directions || []
+
+  const renderListDirection = recipeDirection.map((vl, idx) => {
+    return (
+      <div key={idx}>
+        <div>
+          <p>{vl}</p>
+        </div>
+      </div>
+    )
+  })
+
 
   return (
     <>
@@ -26,12 +59,14 @@ const RecipesDetail = (props) => {
             <Typography sx={{ width: '33%', flexShrink: 0 }}>
               Giới thiệu món ăn
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>{recipe.title}</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>{recipe.name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              Nguồn gốc của món Phở - Phở thường được cho là định hình vào đầu thế kỷ 20. Về nơi xuất hiện đầu tiên ở Việt Nam,
-              người ta có hai quan điểm khác nhau là: Nam Định và Hà Nội, đây cũng là nơi làm cho món ăn này trở nên nổi tiếng.
+              <ScrollArea className="area2" smoothScrolling >
+                <div className="items">{recipe.title}</div>
+              </ScrollArea>
+
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -49,33 +84,12 @@ const RecipesDetail = (props) => {
           <AccordionDetails>
             <Typography>
 
-              - 0.5kg đuôi bò.
+              <ScrollArea className="area2" smoothScrolling >
+                <div className="items">
+                  {renderListIngre}
 
-              - 0.5kg sườn bò.
-
-              - 0.5kg bắp bò (hoặc thay bằng thịt nạm, gầu tùy thích) thịt bò tái (tùy thích).
-
-              - 1/4 củ hành tây to.
-
-              - 1 củ gừng (to khoảng gấp rưỡi ngón tay cái).
-
-              - 5-6 củ hành khô (hành hương, có thể thay bằng hành tím).
-
-              - 1 thìa café hạt mùi già (không bắt buộc).
-
-              - 5-6 rễ cây mùi.
-
-              - 1 thảo quả.
-
-              - 2 hoa hồi.
-
-              - 1 thanh quế nhỏ.
-
-              - 2 lóng mía (mỗi lóng dài khoảng 10cm).
-
-              - Bột nêm hoặc muối.
-
-              - Bánh phở, hành, mùi thái nhỏ ,tương ớt, chanh.
+                </div>
+              </ScrollArea>
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -94,23 +108,9 @@ const RecipesDetail = (props) => {
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              - Đuôi và sườn bò chặt miếng nhỏ.
-
-              - Thịt bắp bò để nguyên miếng.
-
-              - Pha nước muối loãng (mặn vừa như nấu canh là được), ngâm đuôi bò, sườn bò và thịt bò trong khoảng 2h. Thịt bò giờ không được sạch lắm, nhất là phần đuôi có thể còn có mùi hôi, việc ngâm muối sẽ giúp cho thịt “sạch” hơn, khi ăn cũng mềm ngon hơn.
-
-              - Trong lúc đợi ngâm thịt thì chuẩn bị các nguyên liệu khác:
-
-              + Hành tây, hành khô (hành hương), gừng, mía để nguyên vỏ, nướng chín thơm. Nướng trực tiếp trên bếp điện, để lửa vừa để các thứ hành gừng có thể chín bên trong mà bên vỏ ngoài không bị cháy quá mức. Sau khi nướng xong thì cạo sạch vỏ gừng và hành (mía để nguyên vỏ).
-
-              + Rửa lại tất cả cho sạch. Hành tây có thể bổ đôi hoặc bổ tư.
-
-              + Gừng đập dập hoặc thái lát.
-
-              + Rễ mùi rửa sạch.
-
-              + Hoa hồi, quế, thảo quả, hạt mùi (nếu có) cho lên chảo rang ở lửa vừa đến khi dậy mùi thơm. Cho tất cả vào túi vải, buộc chặt miệng.
+              <ScrollArea className="area2" smoothScrolling >
+                {renderListDirection}
+              </ScrollArea>
             </Typography>
           </AccordionDetails>
         </Accordion>

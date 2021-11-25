@@ -6,13 +6,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { getAllRecipeAction } from "../../redux/actions/Recipe/recipe.action"
+import { getAllTopicAction } from "../../redux/actions/Topic/topic.action"
 import Checkbox from '@mui/material/Checkbox';
 import Header from '../components/Header';
 
 
 import '../css/main.css';
-import phoDel from '../img/pho-detail.png';
-import pho from '../img/Food/pho.png';
 import RatingShow from './Detail/Rating';
 import RecipesDetail from '../View/Detail/RecipesDetail';
 
@@ -32,8 +31,8 @@ const Main = (props) => {
 
         setChecked(newChecked);
     };
-    const [currentRecipe, setCurrentRecipe] = useState(false);
-    const [visible, setVisible] = useState(false);
+    const [currentRecipe, setCurrentRecipe] = useState({});
+    const [visible, setVisible] = useState();
     const openModal = (index) => {
         setCurrentRecipe(menus[index]);
         setVisible(!visible);
@@ -84,6 +83,15 @@ const Main = (props) => {
         )
     })
 
+    const topics = useSelector((state) => state.topic.listTopic) || []
+
+    useEffect(() => {
+        dispatch(getAllTopicAction())
+    }, [])
+    useEffect(() => {
+        console.log("log at ==> Main.js => topics: ", topics);
+    }, [topics])
+
 
     return (
         <div className="main">
@@ -91,23 +99,23 @@ const Main = (props) => {
             <div className="row">
                 <div className="col-3">
                     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', position: 'unset' }}>
-                        {["Trứng", "Bún", "Phở", "Pizza", "Mì", "Món nước", "Món khô", "Miền Trung", "Miền Bắc", "Miền Nam"].map((value) => {
-                            const labelId = `checkbox-list-secondary-label-${value}`;
+                        {topics.map((vl, idx) => {
+                            const labelId = `checkbox-list-secondary-label-${vl.name}`;
                             return (
                                 <ListItem
-                                    key={value}
+                                    key={idx}
                                     secondaryAction={
                                         <Checkbox
                                             edge="end"
-                                            onChange={handleToggle(value)}
-                                            checked={checked.indexOf(value) !== -1}
+                                            onChange={handleToggle(vl.name)}
+                                            checked={checked.indexOf(vl.name) !== -1}
                                             inputProps={{ 'aria-labelledby': labelId }}
                                         />
                                     }
                                     disablePadding
                                 >
                                     <ListItemButton>
-                                        <ListItemText id={labelId} primary={`${value}`} />
+                                        <ListItemText id={labelId} primary={`${vl.name}`} />
                                     </ListItemButton>
                                 </ListItem>
                             );

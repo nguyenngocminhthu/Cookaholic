@@ -15,8 +15,8 @@ const HomeRoute = () => {
     const location = useLocation();
     return (
         <ComponentTransition
-            enterAnimation={AnimationTypes.slideUp.enter}
-            exitAnimation={AnimationTypes.slideDown.exit}
+            enterAnimation={AnimationTypes.slideRight.enter}
+            exitAnimation={AnimationTypes.slideLeft.exit}
         >
             <Switch key={location.key} location={location}>
 

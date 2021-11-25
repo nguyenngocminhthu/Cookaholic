@@ -1,20 +1,16 @@
 import React from 'react';
-import '../css/main.css';
+import ScrollArea from 'react-scrollbar';
 import '../css/menu.css';
-import Header from '../components/Header';
+
+function Menu() {
 
 
-const Menu = () => {
+
     return (
         <>
-            <Header />
-            <div className="header">
-                <h1>Menu</h1>
-            </div>
 
 
-        </>
-    );
+        </>);
 }
 
 export default Menu;

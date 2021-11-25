@@ -6,11 +6,19 @@ exports.create = async (req, res) => {
     if (req.file)
         path = req.file.path
 
+    const data = req.body
     const topic = new Topic({
-        name: req.body.name,
+        name: data.name,
         image: path,
     })
+    topic.save((err, data) => {
+        if (err) {
+            res.status(500).json({ message: err, success: false })
+            return
+        }
 
+        res.status(200).json({ data, success: true })
+    })
     try {
         await topic.save()
     } catch (error) {
@@ -31,12 +39,7 @@ exports.findAll = async (req, res) => {
             }
             else
                 // res.send(data)
-                res.status(200).json({
-                    id: data._id,
-                    name: data.name,
-                    image: data.image,
-                    success: true
-                })
+                res.status(200).json({ data, success: true })
         })
         .catch(err => {
             res.status(500).json({ message: err, success: false });
