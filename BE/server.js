@@ -174,6 +174,7 @@ require('./app/routes/user.routes')(app);
 require('./app/routes/topic.routes')(app);
 require('./app/routes/recipe.routes')(app);
 require('./app/routes/comment.routes')(app);
+require('./app/routes/recipeSaved.routes')(app);
 
 const PORT = process.env.PORT || 8888;
 app.listen(PORT, () => {
