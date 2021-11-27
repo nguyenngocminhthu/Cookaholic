@@ -24,7 +24,7 @@ import { useHistory } from "react-router";
 import { loginAction } from "../../../redux/actions/Auth/authActions";
 import myImage from "../../img/egg.png";
 import "./LoRe.css";
-import { validateLogin } from "./Validate";
+import { validateLogin } from "./validate";
 
 const theme = createTheme();
 
