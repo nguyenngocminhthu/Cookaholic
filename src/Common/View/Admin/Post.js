@@ -5,27 +5,33 @@ import {
     Container,
     Typography,
     Grid
-  } from '@mui/material';
+} from '@mui/material';
+import { acceptPostAction } from "../../../redux/actions/Recipe/recipe.action";
+import { useSelector, useDispatch } from "react-redux";
 const Post = () => {
+    const dispatch = useDispatch();
+    /*
+        const post = useSelector((state) => state.recipe.listRecipe) || []
+    
+        useEffect(() => {
+            dispatch(getWaitingRecipeAction())
+        }, [])
+        useEffect(() => {
+            console.log("log at ==> cardpost.js => cardpost: ", post);
+        }, [post])
+    */
+
     return (
         <>
             <Container maxWidth="xl">
                 <Box sx={{ pb: 5 }}>
-                <Typography variant="h4">Post Manager</Typography>
+                    <Typography variant="h4">Post Manager</Typography>
                 </Box>
-                <Grid container spacing={3}>
-                <Grid item xs={12} sm={6} md={3}>
-                    <CardPost />
-                </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
-                < CardPost />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                    <CardPost />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                    <CardPost />
-                </Grid> 
+                <Grid container >
+                    <Grid item xs={4} sm={6} md={3}>
+                        <CardPost />
+                    </Grid>
+
                 </Grid>
             </Container>
         </>

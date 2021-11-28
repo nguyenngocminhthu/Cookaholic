@@ -5,6 +5,8 @@ import {
     GET_ALL_RECIPE_SUCCESS,
     FILTER_RECIPE_FAIL,
     FILTER_RECIPE_SUCCESS,
+    ACCEPT_POST_FAIL,
+    ACCEPT_POST_SUCCESS,
 } from "./type";
 import RecipeAPI from "../../../apis/Recipe.Api";
 
@@ -58,11 +60,11 @@ export function getAllRecipeSuccess(data) {
     };
 }
 
-export function getAllRecipeAction() {
+export function getAllRecipeAction(status) {
     return async (dispatch) => {
         try {
             // dispatch(loading(true));
-            const res = await RecipeAPI.getAll();
+            const res = await RecipeAPI.getAll(status);
             if (res.success) {
 
                 dispatch(getAllRecipeSuccess(res.data));
@@ -73,6 +75,41 @@ export function getAllRecipeAction() {
         } catch {
 
             dispatch(getAllRecipeFail());
+            return false;
+        }
+    };
+}
+
+export function acceptPostFail() {
+    return {
+        type: ACCEPT_POST_FAIL,
+        payload: {},
+    };
+}
+
+export function acceptPostSuccess(data) {
+    return {
+        type: ACCEPT_POST_SUCCESS,
+        payload: data,
+    };
+}
+
+export function acceptPostAction(dataSubmit) {
+    return async (dispatch) => {
+        try {
+
+            const res = await RecipeAPI.acceptPost(dataSubmit);
+            if (res.success) {
+
+                dispatch(acceptPostSuccess(res.data));
+                return true;
+            }
+
+            dispatch(acceptPostFail());
+            return false;
+        } catch {
+
+            dispatch(acceptPostFail());
             return false;
         }
     };

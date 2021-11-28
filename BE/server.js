@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require("cors");
-const dotenv= require("dotenv")
+const dotenv = require("dotenv")
 const logger = require("morgan")
 const passport = require("passport")
 const session = require("express-session")
@@ -18,12 +18,12 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
-}))
+}), cors())
 
 dotenv.config()
 
 var corsOptions = {
-    origin: ["http://localhost:3000"]
+    origin: ["http://localhost:3000", "https://cooking-tutorial.herokuapp.com/"]
 };
 
 app.use(cors(corsOptions));
