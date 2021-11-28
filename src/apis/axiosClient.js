@@ -3,7 +3,7 @@ import Cookie from "js-cookie";
 import queryString from "query-string";
 
 const axiosClient = axios.create({
-    baseURL: "http://localhost:8888",
+    baseURL: "https://thube.herokuapp.com/",
     timeout: 10000,
     headers: {
         Accept: "application/json, text/plain, */*",
