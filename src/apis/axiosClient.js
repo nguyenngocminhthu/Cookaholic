@@ -9,6 +9,7 @@ const axiosClient = axios.create({
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json; charset=UTF-8",
         "Access-Control-Allow-Origin": "*",
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     },
     paramsSerializer: (params) => queryString.stringify(params),
 });
