@@ -92,17 +92,15 @@ export function filterRecipeSuccess(data) {
     };
 }
 
-export function filterRecipeAction(queryParams) {
+export function filterRecipeAction(id) {
     return async (dispatch) => {
         try {
-
-            const res = await RecipeAPI.filter(queryParams);
+            const res = await RecipeAPI.filter(id);
+            console.log("log at ==> action: res: ", res)
             if (res.success) {
-
                 dispatch(filterRecipeSuccess(res.data));
                 return true;
             }
-
             dispatch(filterRecipeFail());
             return false;
         } catch {

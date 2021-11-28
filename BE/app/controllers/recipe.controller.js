@@ -1,5 +1,7 @@
 const db = require('../models')
 const Recipe = db.recipe
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 
 exports.create = async (req, res) => {
     const data = req.body
@@ -66,7 +68,6 @@ exports.findOne = async (req, res) => {
             }
             else
                 res.status(200).json({ data, success: true })
-
         })
         .catch(err => {
             res.status(500).json({ message: err, success: false })
@@ -77,9 +78,12 @@ exports.findOne = async (req, res) => {
 
 // Get recipe by topic 
 exports.findByTopic = async (req, res) => {
-    const id = req.params.id
-
-    Recipe.find({ topic: id, status: 1 })
+    const query = req.query.id
+    let id = [query];
+    if (Array.isArray(query)) {
+        id = query.map((item) => ObjectId(item))
+    }
+    Recipe.find({ topic: { "$in": id }, status: 0 })
         .then(data => {
             if (!data) {
                 res.status(404).json({ message: "Not found ", success: false })
@@ -90,6 +94,7 @@ exports.findByTopic = async (req, res) => {
 
         })
         .catch(err => {
+            console.log(err)
             res.status(500).json({ message: err, success: false })
             return
         })
@@ -136,7 +141,7 @@ exports.update = async (req, res) => {
 // Update Status (Admin)
 exports.updateStatus = (req, res) => {
     const id = req.params.id
-    Recipe.updateOne({ _id: id }, { $set: { status: 1 } }, (err) => {
+    Recipe.updateOne({ _id: id }, { $set: { status: 0 } }, (err) => {
         if (err) {
             res.status(500).json({ message: err, success: false })
             return

@@ -37,9 +37,10 @@ export default function (state = initState, action) {
 
             };
         case FILTER_RECIPE_SUCCESS:
+            console.log("log at => reducer:", action.payload)
             return {
                 ...state,
-                listRecipe: payload.recipes,
+                listRecipe: action.payload,
 
             };
         default:

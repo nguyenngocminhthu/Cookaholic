@@ -5,7 +5,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { getAllRecipeAction } from "../../redux/actions/Recipe/recipe.action"
+import { getAllRecipeAction, filterRecipeAction } from "../../redux/actions/Recipe/recipe.action"
 import { getAllTopicAction } from "../../redux/actions/Topic/topic.action"
 import Checkbox from '@mui/material/Checkbox';
 import Header from '../components/Header';
@@ -21,7 +21,6 @@ const Main = (props) => {
     const dispatch = useDispatch();
 
     const isLogin = useSelector((state) => state.auth.isLogin)
-
     const ADDREC = () => {
         if (isLogin)
             return (
@@ -37,15 +36,25 @@ const Main = (props) => {
     }
 
     const [checked, setChecked] = useState([1]);
-
+    const filter = async (id) => {
+        await dispatch(filterRecipeAction(id))
+    }
     const handleToggle = (value) => () => {
+        console.log("log at Main js => value: ", value)
         const currentIndex = checked.indexOf(value);
+        console.log("log at Main js => Current index: ", currentIndex);
         const newChecked = [...checked];
 
+
+        const idList = { id: [value] }
         if (currentIndex === -1) {
             newChecked.push(value);
+            newChecked.shift(value);
+            filter(idList);
         } else {
             newChecked.splice(currentIndex, 1);
+            newChecked.push(currentIndex);
+            filter();
         }
 
         setChecked(newChecked);
@@ -112,6 +121,7 @@ const Main = (props) => {
     }, [topics])
 
 
+
     return (
         <div className="main">
             <Header />
@@ -126,9 +136,10 @@ const Main = (props) => {
                                     secondaryAction={
                                         <Checkbox
                                             edge="end"
-                                            onChange={handleToggle(vl.name)}
-                                            checked={checked.indexOf(vl.name) !== -1}
+                                            onChange={handleToggle(vl._id)}
+                                            checked={checked.indexOf(vl._id) != -1}
                                             inputProps={{ 'aria-labelledby': labelId }}
+
                                         />
                                     }
                                     disablePadding

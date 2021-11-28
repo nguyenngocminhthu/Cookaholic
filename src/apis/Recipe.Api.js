@@ -38,8 +38,12 @@ const getAll = async () => {
 const filter = async (queryParams) => {
     try {
         const query = queryString.stringify(queryParams);
-        console.log("log at ==> Brand.Api.js ==> line55 ==> query: ", query);
-        const res = await axiosClient.get(`/api/recipe/topic/:id?${query}`);
+        console.log("lpg at ==> recipe api ==> query: ", query)
+        let res;
+        if (query) {
+            res = await axiosClient.get(`/api/recipe/topic?${query}`);
+        } else
+            res = await axiosClient.get(`/api/recipe/0`);
         // toastNotify(res ? res.message.VN : "Tìm kiếm thương hiệu thất bại");
         return res && res.data
             ? { data: res.data || {}, success: true }
