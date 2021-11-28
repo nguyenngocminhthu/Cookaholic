@@ -2,19 +2,15 @@ const db = require('../models')
 const Recipe = db.recipe
 
 exports.create = async (req, res) => {
-    let path = null
-    if (req.file)
-        path = req.file.path
-
-    const data=req.body
-
+    const data = req.body
+    console.log(data)
     const recipe = new Recipe({
         user: data.user,
         topic: data.topic,
-        image: path,
+        image: data.image,
         name: data.name,
         title: data.title,
-        time:data.time,
+        time: data.time,
         serving: data.serving,
         ingre: data.ingre,
         directions: data.directions,
@@ -136,6 +132,20 @@ exports.update = async (req, res) => {
     })
 
 }
+
+// Update Status (Admin)
+exports.updateStatus = (req, res) => {
+    const id = req.params.id
+    Recipe.updateOne({ _id: id }, { $set: { status: 1 } }, (err) => {
+        if (err) {
+            res.status(500).json({ message: err, success: false })
+            return
+        }
+
+        res.status(200).json({ message: "Approved recipe!", success: true })
+    })
+}
+
 
 //================//
 

@@ -4,6 +4,21 @@ import queryString from "query-string";
 
 const url = "/api/recipe";
 
+const create = async (body) => {
+    try {
+        const res = await axiosClient.post(`${url}`, body);
+        toastNotify(res ? res.message.VN : "Add Recipe Fail");
+        return res && res.data
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Add Recipe Success");
+        return {
+            success: false,
+        };
+    }
+};
+
 const getAll = async () => {
     try {
         const res = await axiosClient.get(`${url}/0`);
@@ -24,7 +39,7 @@ const filter = async (queryParams) => {
     try {
         const query = queryString.stringify(queryParams);
         console.log("log at ==> Brand.Api.js ==> line55 ==> query: ", query);
-        const res = await axiosClient.get(`${url}/filter?${query}`);
+        const res = await axiosClient.get(`/api/recipe/topic/:id?${query}`);
         // toastNotify(res ? res.message.VN : "Tìm kiếm thương hiệu thất bại");
         return res && res.data
             ? { data: res.data || {}, success: true }
@@ -37,6 +52,6 @@ const filter = async (queryParams) => {
     }
 };
 
-const Recipe = { getAll, filter };
+const Recipe = { getAll, filter, create };
 
 export default Recipe;

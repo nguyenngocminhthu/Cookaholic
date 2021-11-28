@@ -2,12 +2,15 @@ const config = require("../config/auth.config")
 const db = require("../models")
 // const User = db.user
 // const Role = db.role
-const { user: User, role: Role, refreshToken: RefreshToken } = db;
+const { user: User, role: Role, refreshToken: RefreshToken, token: Token } = db;
 
 // var jwt = require("jsonwebtoken")
 // var bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const sendEmail = require("../utils/sendEmail");
+const crypto = require("crypto");
+
 // Kiem tra, them roles va luu user vao db
 exports.signup = (req, res) => {
 
@@ -16,6 +19,7 @@ exports.signup = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
+        sex: req.body.sex,
     })
 
     user.save((err, user) => {
@@ -174,5 +178,34 @@ exports.refreshToken = async (req, res) => {
         });
     } catch (err) {
         return res.status(500).json({ message: err, success: false });
+    }
+}
+
+exports.resetPassword = async (req, res) => {
+    try{
+        const user = await User.findOne({email: req.body.email})
+
+        console.log(process.env.HOST)
+        if(!user){
+            res.status(400).send("User with given email doesn't exist")
+            return
+        }
+
+        let token = await Token.findOne({userId: user._id})
+        if(!token){
+            token = await new Token({
+                userId: user._id,
+                token: crypto.randomBytes(32).toString("hex"),
+            }).save()
+        }
+
+        const link = `http://localhost:8888/api/resetPassword/${user._id}/${token.token}`
+        await sendEmail(user.email, "Password reset", link)
+
+        res.send("password reset link sent to your email account")
+
+    }catch(err){
+        res.send("An error occured")
+        console.log(err)
     }
 }

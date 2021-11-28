@@ -1,4 +1,4 @@
-import { storage } from "../../common/config/Firebase";
+import { storage } from "../config/Firebase";
 import { generateString } from "./tool";
 
 const uploadImagesToFirebase = (images = [], folder) => {

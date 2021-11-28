@@ -5,6 +5,7 @@ import Menu from '../Common/View/Menu';
 import Admin from '../Common/View/Admin/Admin';
 import Login from "../Common/View/Authentication/Login";
 import Profile from "../Common/View/Profile/Profile";
+import AddRecipes from "../Common/View/AddRecipes/AddRecipes";
 import NotFound from "../Common/components/404"
 import React from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
@@ -27,6 +28,7 @@ const HomeRoute = () => {
                 <Route path="/signin" component={Login} />
                 <Route path="/profile" component={Profile} />
                 <Route path="/admin" component={Admin} />
+                <Route path="/addrecipes" component={AddRecipes} />
                 <Route path="/404" component={NotFound} />
 
             </Switch>

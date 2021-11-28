@@ -15,6 +15,7 @@ db.topic=require('./topic.model')
 db.recipe = require('./recipe.model')
 db.comment = require('./comment.model')
 db.recipeSaved=require('./recipeSaved.model')
+db.token=require('./token.model')
 
 db.ROLES = ["user", "admin"]
 

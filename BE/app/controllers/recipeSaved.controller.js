@@ -81,7 +81,7 @@ exports.getByUser = (req, res)=>{
 
         if (!data) {
             // return res.status(404).send({ message: "User not found." })
-            return res.status(404).json({ message: "Not found.", success: false });
+            return res.status(400).json({ message: "Not found.", success: false });
         }
 
         res.status(200).json({
