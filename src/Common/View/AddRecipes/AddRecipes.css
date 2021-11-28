@@ -1,0 +1,25 @@
+.addRec {
+  margin: 5% 15% 5% 15%;
+  border: 1px solid gray;
+
+  border-radius: 5px;
+}
+.addLeft {
+  background-color: rgb(255, 239, 220);
+  border-right: 1px solid gray;
+}
+.imgUpload {
+  background-color: white;
+  border: 1px dashed gray;
+  margin: 20% 10% 0% 10%;
+  height: 40vh;
+}
+.imgUpload:hover {
+  cursor: pointer;
+}
+
+.imgUp {
+  width: 50%;
+
+  position: inherit;
+}

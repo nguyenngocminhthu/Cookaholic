@@ -9,15 +9,34 @@ import { getAllRecipeAction } from "../../redux/actions/Recipe/recipe.action"
 import { getAllTopicAction } from "../../redux/actions/Topic/topic.action"
 import Checkbox from '@mui/material/Checkbox';
 import Header from '../components/Header';
-
+import { NavLink } from "react-router-dom";
+import { FaPlusCircle } from "react-icons/fa";
 
 import '../css/main.css';
 import RatingShow from './Detail/Rating';
 import RecipesDetail from '../View/Detail/RecipesDetail';
 
+
 const Main = (props) => {
     const dispatch = useDispatch();
-    const [checked, setChecked] = React.useState([1]);
+
+    const isLogin = useSelector((state) => state.auth.isLogin)
+
+    const ADDREC = () => {
+        if (isLogin)
+            return (
+                <>
+                    <div style={{ textAlign: "right", marginBottom: "40px" }}>
+                        <NavLink className="addrec" to="/addrecipes" value="addrecipe"><FaPlusCircle /> ADD RECIPE</NavLink>
+                    </div>
+                </>
+            );
+        return (
+            <></>
+        );
+    }
+
+    const [checked, setChecked] = useState([1]);
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
@@ -122,9 +141,14 @@ const Main = (props) => {
                         })}
                     </List>
                 </div>
-                <div className="col-9 card-deck">
 
-                    {renderListCook}
+                <div className="col-9">
+                    <ADDREC />
+                    <div className="card-deck">
+
+                        {renderListCook}
+                    </div>
+
 
 
 

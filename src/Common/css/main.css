@@ -246,6 +246,27 @@ h3 {
   height: 70px;
 }
 
+.addrec {
+  padding: 20px;
+  margin-right: 10px;
+  border: 1px solid rgb(252, 70, 100);
+  background-color: rgb(252, 70, 100);
+  border-radius: 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+}
+.addrec:hover {
+  padding: 20px;
+  margin-right: 10px;
+  border: 1px solid rgb(252, 70, 100);
+  background-color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  color: black;
+  transition: 0.3s;
+}
+
 @media (max-width: 648px) {
   .card {
     width: 40%;
