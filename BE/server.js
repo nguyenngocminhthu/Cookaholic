@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require("cors");
+const dotenv= require("dotenv")
 const logger = require("morgan")
 const passport = require("passport")
 const session = require("express-session")
@@ -18,6 +19,8 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }))
+
+dotenv.config()
 
 var corsOptions = {
     origin: ["http://localhost:3000"]

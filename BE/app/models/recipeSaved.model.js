@@ -14,4 +14,4 @@ const RecipeSaved = mongoose.model(
     })
 )
 
-module.exports = RecipeSaved
+module.exports = RecipeSaved 

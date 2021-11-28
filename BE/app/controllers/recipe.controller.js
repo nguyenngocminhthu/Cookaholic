@@ -6,7 +6,7 @@ exports.create = async (req, res) => {
     if (req.file)
         path = req.file.path
 
-    const data=req.body
+    const data = req.body
 
     const recipe = new Recipe({
         user: data.user,
@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
         image: path,
         name: data.name,
         title: data.title,
-        time:data.time,
+        time: data.time,
         serving: data.serving,
         ingre: data.ingre,
         directions: data.directions,
@@ -149,6 +149,8 @@ exports.updateStatus = (req, res) => {
         res.status(200).json({message:"Approved recipe!", success: true})
     })
 }
+
+
 //================//
 
 //Delete a Recipe
