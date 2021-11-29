@@ -40,9 +40,9 @@ const Main = (props) => {
         await dispatch(filterRecipeAction(id))
     }
     const handleToggle = (value) => () => {
-        console.log("log at Main js => value: ", value)
+
         const currentIndex = checked.indexOf(value);
-        console.log("log at Main js => Current index: ", currentIndex);
+
         const newChecked = [...checked];
 
 
@@ -86,18 +86,20 @@ const Main = (props) => {
     }
 
     const menus = useSelector((state) => state.recipe.listRecipe) || []
-
+    const [status, setStatus] = useState(0);
 
     useEffect(() => {
-        dispatch(getAllRecipeAction())
-    }, [])
+        dispatch(getAllRecipeAction({ status: 0 }))
+        console.log("log at ==> Main.js => status: ", status);
+    }, [status])
     useEffect(() => {
+
         console.log("log at ==> Main.js => menus: ", menus);
     }, [menus])
 
     const renderListCook = menus.map((value, index) => {
         return (
-            <div key={index}>
+            <div key={index} >
                 <div className="card" value="Open" onClick={() => openModal(index)}>
                     <img className="imgnor" src={value.image} alt={value.name} />
                     <div className="container">

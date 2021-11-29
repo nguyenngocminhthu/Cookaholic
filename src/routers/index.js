@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import HomeRoute from "./HomeRoute";
 import Navbar from '../Common/components/Navbar'
-
 import '../index.css'
 
 import food1 from '../Common/img/food1.png'
@@ -10,10 +9,10 @@ import food2 from '../Common/img/food2.png'
 import food3 from '../Common/img/food3.png'
 
 const Routers = () => {
+
     return (
         <Router>
             <Navbar />
-
             <HomeRoute />
             <div className="test">
                 <img className="food" src={food1} alt="food1" />

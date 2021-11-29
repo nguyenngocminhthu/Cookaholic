@@ -19,9 +19,10 @@ const create = async (body) => {
     }
 };
 
-const getAll = async () => {
+const getAll = async (queryParams) => {
     try {
-        const res = await axiosClient.get(`${url}/0`);
+        const query = queryString.stringify(queryParams);
+        const res = await axiosClient.get(`${url}?${query}`);
         // toastNotify(res ? res.message.VN : "Lấy thương hiệu thất bại");
         console.log("log at ==> Recipe Api ==> res: ", res)
         return res && res.data
@@ -29,6 +30,21 @@ const getAll = async () => {
             : { success: false };
     } catch (error) {
         // toastNotify("Lấy thương hiệu thất bại");
+        return {
+            success: false,
+        };
+    }
+};
+
+const acceptPost = async (id) => {
+    try {
+        const res = await axiosClient.post(`/api/recipe/status/&{id}`, id);
+        toastNotify(res ? res.message.VN : "Cập nhật bài viết thất bại");
+        return res && res.data
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Cập nhật bài viết thất bại");
         return {
             success: false,
         };
@@ -43,7 +59,7 @@ const filter = async (queryParams) => {
         if (query) {
             res = await axiosClient.get(`/api/recipe/topic?${query}`);
         } else
-            res = await axiosClient.get(`/api/recipe/0`);
+            res = await axiosClient.get(`/api/recipe?status=0`);
         // toastNotify(res ? res.message.VN : "Tìm kiếm thương hiệu thất bại");
         return res && res.data
             ? { data: res.data || {}, success: true }
@@ -56,6 +72,6 @@ const filter = async (queryParams) => {
     }
 };
 
-const Recipe = { getAll, filter, create };
+const Recipe = { getAll, filter, create, acceptPost };
 
 export default Recipe;

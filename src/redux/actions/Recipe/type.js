@@ -4,3 +4,7 @@ export const FILTER_RECIPE_FAIL = "filter recipe fail";
 export const FILTER_RECIPE_SUCCESS = "filter recipe success";
 export const ADD_RECIPE_FAIL = "add recipe fail";
 export const ADD_RECIPE_SUCCESS = "add recipe success";
+export const ACCEPT_POST_FAIL = "accept post fail";
+export const ACCEPT_POST_SUCCESS = "accept post success";
+export const GET_WAITING_RECIPE_FAIL = "get waiting recipe fail";
+export const GET_WAITING_RECIPE_SUCCESS = "get waiting recipe success";
