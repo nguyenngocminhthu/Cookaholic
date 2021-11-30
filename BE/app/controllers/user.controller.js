@@ -65,8 +65,8 @@ exports.getUser = (req, res) => {
 
 exports.update = (req, res) => {
     const id = req.params.id
-
-    User.updateOne({ _id: id }, { $set: data }, (err) => {
+    const data=req.body
+    User.updateOne({ _id: id }, { $set: {avt:data.avt} }, (err) => {
         if (err) {
             console.log(err)
             res.status(500).json({ message: err, success: false })
@@ -139,5 +139,19 @@ exports.createAdmin = (req, res) => {
                 res.json({ message: "Add admin successfully!", success: true })
             })
         })
+    })
+}
+
+exports.delete = (req, res) => {
+    const id = req.params.id
+
+    User.deleteOne({ _id: id }, (err) => {
+        if (err) {
+            console.log(err)
+            res.status(500).json({ message: err, success: false })
+            return
+        }
+
+        res.status(200).json({ message: "Delete success!", success: true })
     })
 }
