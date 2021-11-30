@@ -8,7 +8,7 @@ const NotFound = () => {
     return (
         <div>
 
-            <div class="notfound">
+            <div className="notfound">
 
                 <Error />
 
