@@ -30,4 +30,5 @@ module.exports = (app) => {
     app.delete("/api/user/:id", controller.delete)
     app.put("/api/user/changePassword/:id", controller.changePassword)
     app.post("/api/admin", controller.createAdmin)
+    // app.get("/api/getauth", controller.handleGetAuth)
 }

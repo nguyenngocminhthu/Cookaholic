@@ -210,41 +210,41 @@ exports.sendLink = async (req, res) => {
     }
 }
 
-const getAuth = async (userId) => {
-    try {
-        const account = await Token.findOne({ userId: user._id });
-        if (!account)
-            return {
-                success: false,
-                message: "Unauthenticated",
+// const getAuth = async (userId) => {
+//     try {
+//         const account = await Token.findOne({ userId: user._id });
+//         if (!account)
+//             return {
+//                 success: false,
+//                 message: "Unauthenticated",
 
-            };
-        return {
-            data: {
-                user: account.userId,
-                role: account.role,
+//             };
+//         return {
+//             data: {
+//                 user: account.userId,
+//                 role: account.role,
 
-            },
-            success: true,
-            message: "Get auth successfully",
+//             },
+//             success: true,
+//             message: "Get auth successfully",
 
-        };
-    } catch (error) {
-        return {
-            success: false,
-            message: error.message,
+//         };
+//     } catch (error) {
+//         return {
+//             success: false,
+//             message: error.message,
 
-        };
-    }
-};
+//         };
+//     }
+// };
 
-exports.handleGetAuth = async (req, res) => {
-    const token = req.body.token;
-    const result = await getAuth(token.id);
-    if (result.success)
-        return sendSuccess(res, result.data, result.message, result.status);
-    return sendError(res, result.message, result.status);
-}
+// exports.handleGetAuth = async (req, res) => {
+//     const token = req.body.token;
+//     const result = await getAuth(token.id);
+//     if (result.success)
+//         return sendSuccess(res, result.data, result.message, result.status);
+//     return sendError(res, result.message, result.status);
+// }
 
 exports.resetPassword = async (req, res) => {
     try {
