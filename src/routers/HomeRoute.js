@@ -10,7 +10,7 @@ import NotFound from "../Common/components/404"
 import React from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { ComponentTransition, AnimationTypes } from "react-component-transition";
-
+import Auth from "../Common/components/Authentication";
 
 const HomeRoute = () => {
     const location = useLocation();
@@ -21,7 +21,7 @@ const HomeRoute = () => {
         >
             <Switch key={location.key} location={location}>
 
-                <Route path="/" exact component={Home} />
+                <Route path="/" exact component={Auth(Home, false, false)} />
                 <Route path="/main" component={Main} />
                 <Route path="/about" component={About} />
                 <Route path="/menu" component={Menu} />
