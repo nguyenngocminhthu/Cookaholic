@@ -2,18 +2,19 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getAuthAction } from "../redux/actions/Auth/authActions";
-import Login from "./Authentication/Login";
+import { getAuthAction } from "../../redux/actions/Auth/authActions";
+import Login from "../View/Authentication/Login";
 
 const Authentication = (SpecificComponent, option, adminRoute = null) => {
     function AuthenticationCheck(props) {
-        const user = useSelector((state) => state.user);
+        const user = useSelector((state) => state.auth.user);
         const dispatch = useDispatch();
         const history = useHistory();
 
         useEffect(() => {
             const fetchAuth = async () => {
                 const res = await dispatch(getAuthAction());
+                console.log("log at Authentication res: ", res)
                 if (res && !res.isAuth) {
                     if (option) {
                         history.push(<Login />);

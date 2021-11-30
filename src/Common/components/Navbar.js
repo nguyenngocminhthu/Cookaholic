@@ -53,6 +53,7 @@ const Navbar = () => {
     }, [isRegister])
 
     const USER = () => {
+        console.log("log at ==>  navbar ==> islogin:", isLogin)
         if (isLogin)
             return (
                 <ul className="signin-up">

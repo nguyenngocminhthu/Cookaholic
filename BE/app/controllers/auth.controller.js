@@ -186,7 +186,7 @@ exports.sendLink = async (req, res) => {
         const user = await User.findOne({ email: req.body.email })
 
         console.log(process.env.HOST)
-        if (!user || user.googleId!=null) {
+        if (!user || user.googleId != null) {
             res.status(400).send("User with given email doesn't exist")
             return
         }
@@ -202,7 +202,7 @@ exports.sendLink = async (req, res) => {
         const link = `http://localhost:8888/api/auth/${user._id}/${token.token}`
         await sendEmail(user.email, "Password reset", link)
 
-        res.json({message:"password reset link sent to your email account", success: true})
+        res.json({ message: "password reset link sent to your email account", success: true })
 
     } catch (err) {
         res.send("An error occured")
@@ -210,32 +210,68 @@ exports.sendLink = async (req, res) => {
     }
 }
 
+const getAuth = async (userId) => {
+    try {
+        const account = await Token.findOne({ userId: user._id });
+        if (!account)
+            return {
+                success: false,
+                message: "Unauthenticated",
+
+            };
+        return {
+            data: {
+                user: account.userId,
+                role: account.role,
+
+            },
+            success: true,
+            message: "Get auth successfully",
+
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+
+        };
+    }
+};
+
+exports.handleGetAuth = async (req, res) => {
+    const token = req.body.token;
+    const result = await getAuth(token.id);
+    if (result.success)
+        return sendSuccess(res, result.data, result.message, result.status);
+    return sendError(res, result.message, result.status);
+}
+
 exports.resetPassword = async (req, res) => {
-    try{
+    try {
         const user = await User.findById(req.params.userId);
-        if (!user){
-            res.status(400).json({message:"invalid link or expired",success: false}) 
+        if (!user) {
+            res.status(400).json({ message: "invalid link or expired", success: false })
             return
-        } 
+        }
 
         const token = await Token.findOne({
             userId: user._id,
             token: req.params.token,
         });
-        if (!token){
-            res.status(400).json({message:"invalid link or expired",success: false}) 
+        if (!token) {
+            res.status(400).json({ message: "invalid link or expired", success: false })
             return
-        } 
+        }
 
         user.password = bcrypt.hashSync(req.body.password, 8)
         // user.password=req.body.password
-        
+
         await user.save();
         await token.delete();
 
-        res.json({message:"password reset sucessfully.", success: true});
+        res.json({ message: "password reset sucessfully.", success: true });
     } catch (error) {
-        res.json({message:"An error occured", success: false});
+        res.json({ message: "An error occured", success: false });
         console.log(error);
     }
 }

@@ -31,9 +31,15 @@ module.exports = function (app) {
         // ],
         controller.signin)
 
+    app.get("/api/auth/getauth",
+        // [
+        //     signinValidator
+        // ],
+        controller.handleGetAuth)
+
     app.post("/api/auth/refreshtoken", controller.refreshToken);
 
-    app.post("/api/auth/sendLink", controller.sendLink )
+    app.post("/api/auth/sendLink", controller.sendLink)
 
     app.post("/api/auth/:userId/:token", controller.resetPassword)
 }
