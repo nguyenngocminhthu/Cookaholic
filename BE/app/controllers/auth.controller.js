@@ -213,7 +213,7 @@ exports.sendLink = async (req, res) => {
 const getAuth = async (userId) => {
     try {
         const user = await User.findOne({_id: userId }).populate("roles");
-
+        console.log(user)
         let authorities = []
 
         for (let i = 0; i < user.roles.length; i++) {
@@ -248,6 +248,7 @@ const getAuth = async (userId) => {
 exports.handleGetAuth = async (req, res) => {
     try{
         const token = req.body.token;
+        console.log(1)
         // console.log(token)
         const result = await getAuth(token.id);
         console.log(result)
