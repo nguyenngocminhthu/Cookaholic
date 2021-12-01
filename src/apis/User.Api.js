@@ -2,7 +2,7 @@ import toastNotify from "../Common/Toastify/toastNotify";
 import axiosClient from "./axiosClient";
 import queryString from "query-string";
 
-const url = "/admin";
+const url = "/api/user";
 const insert = async (body) => {
   try {
     console.log("log at ==> User.Api.js ==> body: ", body);
@@ -19,11 +19,9 @@ const insert = async (body) => {
   }
 };
 
-const getAll = async (queryParams) => {
+const getAll = async () => {
   try {
-    const query = queryString.stringify(queryParams);
-
-    const res = await axiosClient.get(`${url}/user/get-all?${query}`);
+    const res = await axiosClient.get(`${url}`);
     // toastNotify(res ? res.message.VN : "Lấy user thất bại");
     return res && res.data
       ? { data: res.data || {}, success: true }

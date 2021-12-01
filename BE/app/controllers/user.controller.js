@@ -65,8 +65,8 @@ exports.getUser = (req, res) => {
 
 exports.update = (req, res) => {
     const id = req.params.id
-    const data=req.body
-    User.updateOne({ _id: id }, { $set: {avt:data.avt} }, (err) => {
+    const data = req.body
+    User.updateOne({ _id: id }, { $set: { avt: data.avt } }, (err) => {
         if (err) {
             console.log(err)
             res.status(500).json({ message: err, success: false })
@@ -116,7 +116,7 @@ exports.createAdmin = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        sex: req.body.sex,
+        gender: req.body.sex,
     })
 
     user.save((err, user) => {

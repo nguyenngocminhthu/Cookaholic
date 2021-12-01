@@ -23,3 +23,19 @@
 
   position: inherit;
 }
+
+.imgUploadTopic {
+  background-color: white;
+  border: 1px dashed gray;
+  margin: 10% 20% 0% 20%;
+  height: 20vh;
+}
+.imgUploadTopic:hover {
+  cursor: pointer;
+}
+
+.imgUpTopic {
+  width: 50%;
+
+  position: inherit;
+}

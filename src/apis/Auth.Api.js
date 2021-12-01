@@ -4,7 +4,7 @@ import axiosClient from "./axiosClient";
 
 const url = "/api/auth";
 
-const getAuth = async () => {
+/*const getAuth = async () => {
     try {
         const res = await axiosClient.get(`${url}/getauth`);
         if (res) return { data: res, success: true };
@@ -14,7 +14,7 @@ const getAuth = async () => {
             success: false,
         };
     }
-};
+};*/
 
 const login = async (body) => {
     try {
@@ -50,6 +50,6 @@ const register = async (body) => {
     }
 };
 
-const Auth = { getAuth, login, register };
+const Auth = { login, register };
 
 export default Auth;
