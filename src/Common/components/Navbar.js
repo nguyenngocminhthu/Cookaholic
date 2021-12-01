@@ -36,7 +36,6 @@ const Navbar = () => {
         return;
     };
 
-
     useEffect(() => {
         if (isLogin) {
             closeModal();

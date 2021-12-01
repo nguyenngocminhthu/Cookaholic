@@ -72,9 +72,7 @@ const Admin = () => {
 
     const roles = useSelector((state) => state.auth.user.roles) || []
     console.log("log at ==> Header.js ==> roles: ", roles)
-    return roles.find((role) => role === "ROLE_ADMIN") ?
-
-
+    return roles.includes("ROLE_ADMIN") ?
         (
             <div>
                 <Grid container height="100%">

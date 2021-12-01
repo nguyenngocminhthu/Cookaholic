@@ -71,6 +71,7 @@ export const getAuthAction = () => async (dispatch) => {
     try {
         // dispatch(loading());
         const res = await authAPI.getAuth();
+        console.log(res)
         if (res.success) {
             // dispatch(loading());
             dispatch(getAuthSuccess(res.data));

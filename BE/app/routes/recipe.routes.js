@@ -1,5 +1,6 @@
 const controller = require('../controllers/recipe.controller')
 const { cloudinary } = require("../middlewares")
+const { authJwt } = require("../middlewares")
 
 module.exports = (app) => {
     app.post("/api/recipe", cloudinary.single('image'), controller.create)
@@ -7,7 +8,7 @@ module.exports = (app) => {
     app.get("/api/recipe", controller.findAll)
     app.get("/api/recipe/:id", controller.findOne)
     app.get("/api/recipe/user/:id/:status", controller.findByUser)
-    app.put("/api/recipe/:id", controller.update)
-    app.get("/api/recipe/delete/:id", controller.deleteOne)
-    app.put("/api/recipe/status/:id", controller.updateStatus)
+    app.put("/api/recipe/:id",[authJwt.verifyToken], controller.update)
+    app.get("/api/recipe/delete/:id",[authJwt.verifyToken], controller.deleteOne)
+    app.put("/api/recipe/status/:id",[authJwt.verifyToken], controller.updateStatus)
 }
