@@ -31,6 +31,10 @@ module.exports = function (app) {
         // ],
         controller.signin)
 
+<<<<<<< HEAD
+=======
+    app.get("/api/auth/getauth", [authJwt.verifyToken], controller.handleGetAuth)
+>>>>>>> 8f2dbc80b7df4707388b75e66f127ede6165c92d
 
     app.post("/api/auth/refreshtoken", controller.refreshToken);
 

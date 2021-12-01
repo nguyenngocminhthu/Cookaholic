@@ -21,13 +21,10 @@ const Authentication = (SpecificComponent, option, adminRoute = null) => {
                     }
                 } else {
                     //đã đăng nhập
-                    if (adminRoute && !res.payload.isAdmin) {
+                    if (adminRoute && !res.role.includes("ROLE_ADMIN")) {
                         //Kiểm tra khong phai admin
                         history.push("/main");
-                    } else {
-                        if (option === false) {
-                            history.push("/main");
-                        }
+                        return;
                     }
                 }
             };

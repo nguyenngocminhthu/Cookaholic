@@ -121,7 +121,7 @@ exports.signin = (req, res) => {
                 expiresIn: config.jwtExpiration
             });
 
-            let refreshToken = await RefreshToken.createToken(user);
+            // let refreshToken = await RefreshToken.createToken(user);
 
             // var authorities = []
             let authorities = []
@@ -136,7 +136,7 @@ exports.signin = (req, res) => {
                 email: user.email,
                 roles: authorities,
                 accessToken: token,
-                refreshToken: refreshToken,
+                // refreshToken: refreshToken,
                 success: true,
             });
         });
@@ -210,41 +210,59 @@ exports.sendLink = async (req, res) => {
     }
 }
 
-// const getAuth = async (userId) => {
-//     try {
-//         const account = await Token.findOne({ userId: user._id });
-//         if (!account)
-//             return {
-//                 success: false,
-//                 message: "Unauthenticated",
+const getAuth = async (userId) => {
+    try {
+        const user = await User.findOne({_id: userId }).populate("roles");
 
-//             };
-//         return {
-//             data: {
-//                 user: account.userId,
-//                 role: account.role,
+        let authorities = []
 
-//             },
-//             success: true,
-//             message: "Get auth successfully",
+        for (let i = 0; i < user.roles.length; i++) {
+            authorities.push("ROLE_" + user.roles[i].name.toUpperCase())
+        }
 
-//         };
-//     } catch (error) {
-//         return {
-//             success: false,
-//             message: error.message,
+        if (!user)
+            return {
+                success: false,
+                message: "Unauthenticated",
+            };
+        return {
+            data: {
+                // user: account.idUser,
+                // role: account.role, 
+                user: user,
+                role: authorities,
+            },
+            success: true,
+            message: "Get auth successfully",
 
-//         };
-//     }
-// };
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
 
-// exports.handleGetAuth = async (req, res) => {
-//     const token = req.body.token;
-//     const result = await getAuth(token.id);
-//     if (result.success)
-//         return sendSuccess(res, result.data, result.message, result.status);
-//     return sendError(res, result.message, result.status);
-// }
+        };
+    }
+};
+
+exports.handleGetAuth = async (req, res) => {
+    try{
+        const token = req.body.token;
+        // console.log(token)
+        const result = await getAuth(token.id);
+        console.log(result)
+        if (result.success) {
+            console.log(1)
+            res.status(200).json({ data: result.data, success: true })
+            return
+        }
+        res.json({ message: result.message, success: false })
+    } catch(err){
+        console.log(err)
+        res.status(500).json({message: err, success: false})
+    }
+    
+}
 
 exports.resetPassword = async (req, res) => {
     try {
@@ -269,9 +287,9 @@ exports.resetPassword = async (req, res) => {
         await user.save();
         await token.delete();
 
-        res.json({ message: "password reset sucessfully.", success: true });
+        res.status(200).json({ message: "password reset sucessfully.", success: true });
     } catch (error) {
-        res.json({ message: "An error occured", success: false });
+        res.status(500).json({ message: "An error occured", success: false });
         console.log(error);
     }
 }

@@ -20,17 +20,15 @@ const HomeRoute = () => {
             exitAnimation={AnimationTypes.slideLeft.exit}
         >
             <Switch key={location.key} location={location}>
-
                 <Route path="/" exact component={Auth(Home, false, false)} />
-                <Route path="/main" component={Main} />
-                <Route path="/about" component={About} />
-                <Route path="/menu" component={Menu} />
-                <Route path="/signin" component={Login} />
-                <Route path="/profile" component={Profile} />
-                <Route path="/admin" component={Admin} />
-                <Route path="/addrecipes" component={AddRecipes} />
+                <Route path="/main" component={Auth(Main)} />
+                <Route path="/about" component={Auth(About)} />
+                <Route path="/menu" component={Auth(Menu)} />
+                <Route path="/signin" component={Auth(Login)} />
+                <Route path="/profile" component={Auth(Profile)} />
+                <Route path="/admin" component={Auth(Admin, false, true)} />
+                <Route path="/addrecipes" component={Auth(AddRecipes)} />
                 <Route path="/404" component={NotFound} />
-
             </Switch>
         </ComponentTransition>
 
