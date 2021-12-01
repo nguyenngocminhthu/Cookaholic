@@ -10,15 +10,16 @@ import './Admin.css';
 import Dashboard from './Dashboard';
 import User from './User';
 import Post from './Post';
+import Topic from './Topic';
 import NotFound from '../../components/404';
 import { logoutAction } from "../../../redux/actions/Auth/authActions";
 
 import { FaRegNewspaper, FaRegUser } from "react-icons/fa";
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 import { RiPencilLine } from "react-icons/ri";
-import { BiCog } from "react-icons/bi";
 import { SiApacheairflow } from "react-icons/si";
 import { GiAbstract050 } from "react-icons/gi";
+import { BsBarChartSteps } from "react-icons/bs";
 
 const Admin = () => {
 
@@ -33,19 +34,30 @@ const Admin = () => {
     const [showDashboard, setShowDashboard] = useState(true);
     const [showUser, setShowUser] = useState(false);
     const [showPost, setShowPost] = useState(false);
+    const [showTopic, setShowTopic] = useState(false);
+
     const showRight = (element) => {
         if (element === "dashboard") {
             setShowDashboard(true);
             setShowUser(false);
             setShowPost(false);
+            setShowTopic(false);
         } else if (element === "user") {
             setShowDashboard(false);
             setShowUser(true);
             setShowPost(false);
+            setShowTopic(false);
         } else if (element === "post") {
             setShowDashboard(false);
             setShowUser(false);
             setShowPost(true);
+            setShowTopic(false);
+        }
+        else if (element === "topic") {
+            setShowDashboard(false);
+            setShowUser(false);
+            setShowPost(false);
+            setShowTopic(true);
         }
 
     }
@@ -60,9 +72,7 @@ const Admin = () => {
 
     const roles = useSelector((state) => state.auth.user.roles) || []
     console.log("log at ==> Header.js ==> roles: ", roles)
-    return roles.find((role) => role === "ROLE_ADMIN") ?
-
-
+    return roles.includes("ROLE_ADMIN") ?
         (
             <div>
                 <Grid container height="100%">
@@ -92,7 +102,7 @@ const Admin = () => {
                                         <MenuItem icon={<FaRegUser />} onClick={() => showRight("user")}>User</MenuItem>
                                         <MenuItem icon={<FaRegNewspaper />} onClick={() => showRight("post")}>Post</MenuItem>
                                         <MenuItem icon={<RiPencilLine />}>Author</MenuItem>
-                                        <MenuItem icon={<BiCog />}>Settings</MenuItem>
+                                        <MenuItem icon={<BsBarChartSteps />} onClick={() => showRight("topic")}>Topic</MenuItem>
                                     </Menu>
                                 </SidebarContent>
                                 <SidebarFooter>
@@ -109,6 +119,8 @@ const Admin = () => {
                         {showUser && <User />}
 
                         {showPost && <Post />}
+
+                        {showTopic && <Topic />}
                     </Grid>
                 </Grid>
             </div>

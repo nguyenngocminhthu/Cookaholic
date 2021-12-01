@@ -7,6 +7,8 @@ import {
     FILTER_RECIPE_SUCCESS,
     ACCEPT_POST_FAIL,
     ACCEPT_POST_SUCCESS,
+    DELETE_POST_FAIL,
+    DELETE_POST_SUCCESS,
 } from "./type";
 import RecipeAPI from "../../../apis/Recipe.Api";
 
@@ -110,6 +112,41 @@ export function acceptPostAction(dataSubmit) {
         } catch {
 
             dispatch(acceptPostFail());
+            return false;
+        }
+    };
+}
+
+export function deletePostFail() {
+    return {
+        type: DELETE_POST_FAIL,
+        payload: {},
+    };
+}
+
+export function deletePostSuccess(data) {
+    return {
+        type: DELETE_POST_SUCCESS,
+        payload: data,
+    };
+}
+
+export function deletePostAction(dataSubmit) {
+    return async (dispatch) => {
+        try {
+
+            const res = await RecipeAPI.deletePost(dataSubmit);
+            if (res.success) {
+
+                dispatch(deletePostSuccess(res.data));
+                return true;
+            }
+
+            dispatch(deletePostFail());
+            return false;
+        } catch {
+
+            dispatch(deletePostFail());
             return false;
         }
     };

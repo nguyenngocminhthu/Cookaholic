@@ -3,6 +3,21 @@ import axiosClient from "./axiosClient";
 
 const url = "/api/topic";
 
+const create = async (body) => {
+    try {
+        const res = await axiosClient.post(`${url}`, body);
+        toastNotify(res ? res.message : "Add Topic Fail");
+        return res && res.data
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Add Topic Success");
+        return {
+            success: false,
+        };
+    }
+};
+
 const getAll = async () => {
     try {
         const res = await axiosClient.get(`${url}`);
@@ -20,6 +35,6 @@ const getAll = async () => {
 };
 
 
-const Topic = { getAll };
+const Topic = { getAll, create };
 
 export default Topic;

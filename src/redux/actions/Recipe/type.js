@@ -6,5 +6,5 @@ export const ADD_RECIPE_FAIL = "add recipe fail";
 export const ADD_RECIPE_SUCCESS = "add recipe success";
 export const ACCEPT_POST_FAIL = "accept post fail";
 export const ACCEPT_POST_SUCCESS = "accept post success";
-export const GET_WAITING_RECIPE_FAIL = "get waiting recipe fail";
-export const GET_WAITING_RECIPE_SUCCESS = "get waiting recipe success";
+export const DELETE_POST_FAIL = "delete post fail";
+export const DELETE_POST_SUCCESS = "delete post success";

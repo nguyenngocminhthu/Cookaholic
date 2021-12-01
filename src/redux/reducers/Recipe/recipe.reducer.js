@@ -8,6 +8,8 @@ import {
     FILTER_RECIPE_SUCCESS,
     ACCEPT_POST_FAIL,
     ACCEPT_POST_SUCCESS,
+    DELETE_POST_FAIL,
+    DELETE_POST_SUCCESS,
 } from "../../actions/Recipe/type";
 
 const initState = {
@@ -35,6 +37,10 @@ export default function (state = initState, action) {
         case ACCEPT_POST_FAIL:
             return { ...state };
         case ACCEPT_POST_SUCCESS:
+            return { ...state, updateFlag: !state.updateFlag };
+        case DELETE_POST_FAIL:
+            return { ...state };
+        case DELETE_POST_SUCCESS:
             return { ...state, updateFlag: !state.updateFlag };
         case FILTER_RECIPE_FAIL:
             return {

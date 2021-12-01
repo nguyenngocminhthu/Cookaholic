@@ -11,7 +11,7 @@ import NotFound from "../Common/components/404"
 import React from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { ComponentTransition, AnimationTypes } from "react-component-transition";
-
+import Auth from "../Common/components/Authentication";
 
 
 const HomeRoute = () => {
@@ -22,6 +22,7 @@ const HomeRoute = () => {
             exitAnimation={AnimationTypes.slideLeft.exit}
         >
             <Switch key={location.key} location={location}>
+<<<<<<< HEAD
 
                 <Route path="/" exact component={Home} />
                 <Route path="/main" component={Main} />
@@ -35,6 +36,17 @@ const HomeRoute = () => {
                 <Route path="/post" component={PagePost} />
                 
 
+=======
+                <Route path="/" exact component={Auth(Home, false, false)} />
+                <Route path="/main" component={Auth(Main)} />
+                <Route path="/about" component={Auth(About)} />
+                <Route path="/menu" component={Auth(Menu)} />
+                <Route path="/signin" component={Auth(Login)} />
+                <Route path="/profile" component={Auth(Profile)} />
+                <Route path="/admin" component={Auth(Admin, false, true)} />
+                <Route path="/addrecipes" component={Auth(AddRecipes)} />
+                <Route path="/404" component={NotFound} />
+>>>>>>> 497a1f86f491f22ee04ce2eea6667878366a8ffe
             </Switch>
         </ComponentTransition>
 

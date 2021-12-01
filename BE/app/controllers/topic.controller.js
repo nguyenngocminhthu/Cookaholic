@@ -2,14 +2,10 @@ const db = require('../models')
 const Topic = db.topic
 
 exports.create = async (req, res) => {
-    let path = null
-    if (req.file)
-        path = req.file.path
-
     const data = req.body
     const topic = new Topic({
         name: data.name,
-        image: path,
+        image: data.image,
     })
     topic.save((err, data) => {
         if (err) {
@@ -19,14 +15,7 @@ exports.create = async (req, res) => {
 
         res.status(200).json({ data, success: true })
     })
-    try {
-        await topic.save()
-    } catch (error) {
-        return res.status(400).json({
-            message: error,
-            success: false
-        })
-    }
+
 }
 
 exports.findAll = async (req, res) => {
