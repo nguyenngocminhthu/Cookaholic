@@ -2,7 +2,7 @@ import React from 'react';
 import ScrollArea from 'react-scrollbar';
 import '../css/menu.css';
 
-function Menu() {
+function Policy() {
 
 
 
@@ -13,4 +13,4 @@ function Menu() {
         </>);
 }
 
-export default Menu;
+export default Policy;

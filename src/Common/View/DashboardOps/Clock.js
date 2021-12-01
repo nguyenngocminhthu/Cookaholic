@@ -17,6 +17,25 @@ export default function Clock() {
             Waiting line
         </Box>
         Post here
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        .<br/>
+        
+
     </Card>
   );
 }

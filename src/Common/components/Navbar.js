@@ -107,8 +107,8 @@ const Navbar = () => {
                                 </NavLink>
                             </li>
                             <li className="option" onClick={closeMobileMenu}>
-                                <NavLink className="aStyle" to="/menu">
-                                    MENU
+                                <NavLink className="aStyle" to="/policy">
+                                    POLICY
                                 </NavLink>
                             </li>
                             <li className="option" onClick={closeMobileMenu}>
