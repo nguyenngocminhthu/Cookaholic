@@ -1,8 +1,13 @@
 .addRec {
-  margin: 5% 15% 5% 15%;
+  margin: 1% 15% 5% 15%;
   border: 1px solid gray;
 
   border-radius: 5px;
+}
+.btnGoBack {
+  text-align: left;
+  margin-left: 15%;
+  margin-top: 3%;
 }
 .addLeft {
   background-color: rgb(255, 239, 220);

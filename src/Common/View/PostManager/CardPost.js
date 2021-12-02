@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink } from "react-router-dom";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -14,7 +15,7 @@ import { red } from '@mui/material/colors';
 import { BsCheckCircle } from 'react-icons/bs'
 import { ImCancelCircle } from 'react-icons/im'
 
-import { CgMoreO } from 'react-icons/cg'
+import { FaPlayCircle } from 'react-icons/fa'
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
@@ -62,10 +63,11 @@ export default function CardPost(props) {
     console.log("log at => CardPost => value.id:  ", value._id);
     return (
       <>
-        <Grid key={index} item xs={4} sm={6} md={3} mr={3}>
+        <Grid key={index} item xs={3} sm={6} md={3} mb={3}>
 
-          <Card sx={{ maxWidth: 345, minHeight: 500, position: "relative" }}>
+          <Card className="cardRec" sx={{ maxWidth: 240, minHeight: 400, position: "relative" }}>
             <CardHeader
+              className="customHeader"
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                   R
@@ -98,7 +100,10 @@ export default function CardPost(props) {
                 <ImCancelCircle />
               </IconButton>
               <IconButton aria-label="more">
-                <CgMoreO />
+                <NavLink
+                  to={`/pagepost/${value._id}`}>
+                  <FaPlayCircle />
+                </NavLink>
               </IconButton>
             </CardActions>
           </Card>

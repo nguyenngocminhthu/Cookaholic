@@ -2,6 +2,7 @@ import React, { useState, useEffect, forwardRef } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import ImageUploading from 'react-images-uploading';
 import imgUpload from '../../img/imgUpload.png'
+import { useHistory } from "react-router";
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -17,6 +18,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 
 import { getAllTopicAction } from "../../../redux/actions/Topic/topic.action"
 import './AddRecipes.css';
@@ -26,6 +28,7 @@ import { uploadImagesToFirebase } from "../../utils/imgFirebase";
 import {
     addRecipeAction,
 } from "../../../redux/actions/Recipe/recipe.action";
+import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/core/ButtonUnstyled';
 
 
 const AddRecipes = (props) => {
@@ -42,6 +45,12 @@ const AddRecipes = (props) => {
     useEffect(() => {
         console.log("log at ==> AddRecipes.js => topics: ", topics);
     }, [topics])
+
+    const history = useHistory();
+    const handleGoBack = () => {
+        history.goBack();
+        return;
+    };
 
 
     const [topic, setTopic] = useState('Asian');
@@ -76,6 +85,89 @@ const AddRecipes = (props) => {
     ButtonRoot.propTypes = {
         children: PropTypes.node,
     };
+    const CustomButtonRoot = styled(ButtonRoot)(
+        ({ theme }) => `
+  overflow: visible;
+  cursor: pointer;
+  --main-color: ${theme.palette.mode === 'light' ? 'rgb(25,118,210)' : 'rgb(144,202,249)'
+            };
+  --hover-color: ${theme.palette.mode === 'light'
+                ? 'rgba(25,118,210,0.04)'
+                : 'rgba(144,202,249,0.08)'
+            };
+  --active-color: ${theme.palette.mode === 'light'
+                ? 'rgba(25,118,210,0.12)'
+                : 'rgba(144,202,249,0.24)'
+            };
+
+  & polygon {
+    fill: transparent;
+    transition: all 800ms ease;
+    pointer-events: none;
+  }
+  
+  & .bg {
+    stroke: var(--main-color);
+    stroke-width: 0.5;
+    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.1));
+    fill: transparent;
+  }
+
+  & .borderEffect {
+    stroke: var(--main-color);
+    stroke-width: 2;
+    stroke-dasharray: 150 600;
+    stroke-dashoffset: 150;
+    fill: transparent;
+  }
+
+  &:hover,
+  &.${buttonUnstyledClasses.focusVisible} {
+    .borderEffect {
+      stroke-dashoffset: -600;
+    }
+
+    .bg {
+      fill: var(--hover-color);
+    }
+  }
+
+  &:focus,
+  &.${buttonUnstyledClasses.focusVisible} {
+    outline: none;
+  }
+
+  &.${buttonUnstyledClasses.active} { 
+    & .bg {
+      fill: var(--active-color);
+      transition: fill 300ms ease-out;
+    }
+  }
+
+  & foreignObject {
+    pointer-events: none;
+
+    & .content {
+      font-family: Helvetica, Inter, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 200;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--main-color);
+      text-transform: uppercase;
+    }
+
+    & svg {
+      margin: 0 5px;
+    }
+  }`,
+    );
+
+    const SvgButton = React.forwardRef(function SvgButton(props, ref) {
+        return <ButtonUnstyled {...props} component={CustomButtonRoot} ref={ref} />;
+    });
 
     const addRecipe = async (e) => {
         e.preventDefault();
@@ -83,6 +175,8 @@ const AddRecipes = (props) => {
             name: e.target.recipename.value,
             title: e.target.title.value,
             topic: e.target.topic.value,
+            time: e.target.time.value,
+            serving: e.target.serving.value,
             ingre: [e.target.ingredients.value],
             directions: [e.target.direction.value],
         }
@@ -100,6 +194,9 @@ const AddRecipes = (props) => {
         (
             <NotFound />
         ) : (<>
+            <div className="btnGoBack">
+                <SvgButton onClick={() => { handleGoBack() }}>Go Back</SvgButton>
+            </div>
             <div className="addRec">
 
                 <Grid component="form" onSubmit={addRecipe} container height="100%">
@@ -217,6 +314,24 @@ const AddRecipes = (props) => {
                                                         </MenuItem>
                                                     ))}
                                                 </TextField>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    fullWidth
+                                                    id={"time"}
+                                                    label={"Time"}
+                                                    name={"time"}
+
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    fullWidth
+                                                    id={"serving"}
+                                                    label={"Serving"}
+                                                    name={"serving"}
+
+                                                />
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <TextField

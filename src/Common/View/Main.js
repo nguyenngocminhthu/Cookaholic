@@ -9,7 +9,7 @@ import { getAllTopicAction } from "../../redux/actions/Topic/topic.action"
 import Checkbox from '@mui/material/Checkbox';
 import Header from '../components/Header';
 import { NavLink } from "react-router-dom";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle, FaPlayCircle } from "react-icons/fa";
 
 
 import Card from '@mui/material/Card';
@@ -23,8 +23,6 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-
-import { FaPlayCircle } from 'react-icons/fa'
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import '../css/main.css';
@@ -72,11 +70,6 @@ const Main = (props) => {
 
         setChecked(newChecked);
     };
-    const [currentRecipe, setCurrentRecipe] = useState({});
-
-    const handleDetail = (index) => {
-        setCurrentRecipe(menus[index]);
-    }
 
     const menus = useSelector((state) => state.recipe.listRecipe) || []
     const [status, setStatus] = useState(0);
@@ -143,8 +136,9 @@ const Main = (props) => {
                                 <>
                                     <Grid key={index} item xs={4} sm={6} md={3} margin={"30px"}>
 
-                                        <Card className="cardRec" sx={{ width: 240, minHeight: 400, position: "relative" }} >
+                                        <Card className="cardRec" sx={{ minWidth: 240, minHeight: 400, position: "relative" }} >
                                             <CardHeader
+                                                className="customHeader"
                                                 avatar={
                                                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                                                         R
@@ -173,7 +167,6 @@ const Main = (props) => {
                                             <CardActions disableSpacing sx={{ position: "absolute", bottom: 0, right: 0 }}>
                                                 <IconButton>
                                                     <NavLink
-
                                                         to={`/pagepost/${value._id}`}>
                                                         <FaPlayCircle />
                                                     </NavLink>
