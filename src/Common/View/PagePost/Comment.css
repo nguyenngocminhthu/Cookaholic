@@ -1,5 +1,6 @@
 
 .button-8 {
+  align-items: right;
   background-color: #e1ecf4;
   border-radius: 3px;
   border: 1px solid #7aa7c7;
@@ -7,7 +8,6 @@
   box-sizing: border-box;
   color: #39739d;
   cursor: pointer;
-  display: inline-block;
   font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
   font-size: 13px;
   font-weight: 400;
@@ -58,19 +58,6 @@
 }
 .comment-form-fields {
   margin-bottom: 0.25rem;
-}
-input, textarea {
-    border: none;
-    border-bottom: 1px solid #404040;
-    font-size: 0.85rem;
-    padding: 0.25rem 0;
-    width: 99%;
-  }
-  textarea {
-    font-style: italic;
-  }
-.comment-form-actions {
-  
 }
 .comment-count {
   color: #404040;

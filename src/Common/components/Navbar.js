@@ -117,8 +117,8 @@ const Navbar = () => {
                                 </NavLink>
                             </li>
                             <li className="option" onClick={closeMobileMenu}>
-                                <NavLink className="aStyle" to="/about">
-                                    CONTACT
+                                <NavLink className="aStyle" to="/support">
+                                    SUPPORT
                                 </NavLink>
                             </li>
 

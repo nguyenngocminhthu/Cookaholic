@@ -132,7 +132,7 @@ const About = () => {
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>
-                        <h1>Dinner Winner</h1>
+                        <h1 className="Decorh1">Dinner Winner</h1>
                         <img width="80%" src={DC} />
                         <h1>Happy to Cook!!!</h1>
                         <p className="noidung">Ready to cook?</p>

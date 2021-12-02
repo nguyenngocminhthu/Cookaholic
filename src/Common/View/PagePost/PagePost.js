@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { connect } from "react-redux";
 import { styled } from '@mui/material/styles';
 import {Box, Paper, Grid,Tabs, Tab, Card, CardActionArea, CardMedia, Typography, Rating, Divider  } from '@mui/material';
 import PropTypes from 'prop-types';
-import CommentComponent from './CommentComponent'
+import Comments from './Comments'
 import './PagePost.css'
 import Food from '../../img/food-post.jpg'
 import Clock from '../../img/clock.gif'
+
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -183,7 +185,8 @@ export default function PagePost() {
                 </Grid>
             </Grid>
             </Box>
-            <CommentComponent/>
+              <Comments/>
+            
       </div> 
   );
 }

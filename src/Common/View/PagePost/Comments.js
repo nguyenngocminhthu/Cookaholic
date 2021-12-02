@@ -1,21 +1,9 @@
 import * as React from 'react';
+import Box from '@mui/material/Box';
+import {TextField, Avatar} from '@mui/material';
 import './Comment.css'
-import { Rating, Box   } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
 
-const labels = {
-  0.5: 'Useless',
-  1: 'Useless+',
-  1.5: 'Poor',
-  2: 'Poor+',
-  2.5: 'Ok',
-  3: 'Ok+',
-  3.5: 'Good',
-  4: 'Good+',
-  4.5: 'Excellent',
-  5: 'Excellent+',
-};
-class CommentComponent extends React.Component {
+class Comments extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -33,7 +21,7 @@ class CommentComponent extends React.Component {
     const comments = this._getComments();
     let commentNodes;
     let buttonText = 'Show Comments';
-    
+
     if (this.state.showComments) {
       buttonText = 'Hide Comments';
       commentNodes = <div className="comment-list">{comments}</div>;
@@ -97,7 +85,16 @@ class CommentForm extends React.Component {
       <form className="comment-form" onSubmit={this._handleSubmit.bind(this)}>
         <div className="comment-form-fields">
           <input placeholder="Name" required ref={(input) => this._author = input}></input><br />
-          <textarea placeholder="Comment" rows="4" required ref={(textarea) => this._body = textarea}></textarea>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+            }}
+          >
+            <Avatar sx={{ marginRight: '10px'}} alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+            <TextField fullWidth label="Comment here" id="fullWidth" required ref={(TextField) => this._body = TextField}></TextField>
+          </Box>
+          {/* <textarea placeholder="Comment" rows="4" required ref={(textarea) => this._body = textarea}></textarea> */}
         </div>
         <div className="comment-form-actions">
           <button className="button-8" role="button" type="submit">Post Comment</button>
@@ -125,4 +122,4 @@ class Comment extends React.Component {
   }
 }
 
-export default CommentComponent;
+export default Comments;
