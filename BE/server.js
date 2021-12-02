@@ -209,7 +209,7 @@ app.get('/auth/google/callback',
                     expiresIn: config.jwtExpiration
                 });
 
-                let refreshToken = await RefreshToken.createToken(user);
+                // let refreshToken = await RefreshToken.createToken(user);
 
                 // var authorities = []
                 let authorities = []
@@ -224,7 +224,7 @@ app.get('/auth/google/callback',
                     email: user.email,
                     roles: authorities,
                     accessToken: token,
-                    refreshToken: refreshToken,
+                    // refreshToken: refreshToken,
                     success: true,
                 });
             });
