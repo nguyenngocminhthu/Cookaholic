@@ -9,6 +9,8 @@ import {
     ACCEPT_POST_SUCCESS,
     DELETE_POST_FAIL,
     DELETE_POST_SUCCESS,
+    FIND_RECIPE_BY_ID_FAIL,
+    FIND_RECIPE_BY_ID_SUCCESS,
 } from "./type";
 import RecipeAPI from "../../../apis/Recipe.Api";
 import { changeLoading } from "../System/systemActions";
@@ -192,6 +194,41 @@ export function filterRecipeAction(id) {
         } catch {
             dispatch(loading());
             dispatch(filterRecipeFail());
+            return false;
+        }
+    };
+}
+
+export function findRecipeByIdFail() {
+    return {
+        type: FIND_RECIPE_BY_ID_FAIL,
+        payload: {},
+    };
+}
+
+export function findRecipeByIdSuccess(data) {
+    return {
+        type: FIND_RECIPE_BY_ID_SUCCESS,
+        payload: data,
+    };
+}
+
+export function findRecipeByIdAction(id) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await RecipeAPI.findById(id);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(findRecipeByIdSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(findRecipeByIdFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(findRecipeByIdFail());
             return false;
         }
     };

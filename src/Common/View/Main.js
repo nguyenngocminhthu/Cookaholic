@@ -84,61 +84,13 @@ const Main = (props) => {
     useEffect(() => {
         dispatch(getAllRecipeAction({ status: 0 }))
         console.log("log at ==> Main.js => status: ", status);
-    }, [status])
+    }, [])
     useEffect(() => {
 
         console.log("log at ==> Main.js => menus: ", menus);
-    }, [menus])
-
-    const renderListCook = menus.map((value, index) => {
-        return (
-
-            <>
-                <Grid key={index} item xs={4} sm={6} md={3} margin={"30px"}>
-
-                    <Card className="cardRec" sx={{ width: 240, minHeight: 400, position: "relative" }} >
-                        <CardHeader
-                            avatar={
-                                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                    R
-                                </Avatar>
-                            }
-                            action={
-                                <IconButton aria-label="settings">
-                                    <MoreVertIcon />
-                                </IconButton>
-                            }
-                            title={value.name}
-                            subheader={value.createdAt}
-                        />
-                        <CardMedia
-                            component="img"
-                            height="194"
-                            width="80%"
-                            image={value.image}
-                            alt={value.name}
-                        />
-                        <CardContent>
-                            <Typography variant="body2" color="text.secondary">
-                                {value.title}
-                            </Typography>
-                        </CardContent>
-                        <CardActions disableSpacing sx={{ position: "absolute", bottom: 0, right: 0 }}>
-                            <NavLink to="/pagepost" onClick={() => handleDetail(menus[index])}>
-                                <FaPlayCircle />
-                            </NavLink>
-
-                        </CardActions>
-                    </Card>
+    }, [])
 
 
-                </Grid >
-
-            </>
-
-
-        )
-    })
 
     const topics = useSelector((state) => state.topic.listTopic) || []
 
@@ -184,8 +136,60 @@ const Main = (props) => {
 
                 <div className="col-9">
                     <ADDREC />
-                    <Grid container recipe={currentRecipe}>
-                        {renderListCook}
+                    <Grid container>
+                        {menus.map((value, index) => {
+                            return (
+
+                                <>
+                                    <Grid key={index} item xs={4} sm={6} md={3} margin={"30px"}>
+
+                                        <Card className="cardRec" sx={{ width: 240, minHeight: 400, position: "relative" }} >
+                                            <CardHeader
+                                                avatar={
+                                                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                                        R
+                                                    </Avatar>
+                                                }
+                                                action={
+                                                    <IconButton aria-label="settings">
+                                                        <MoreVertIcon />
+                                                    </IconButton>
+                                                }
+                                                title={value.name}
+                                                subheader={value.createdAt}
+                                            />
+                                            <CardMedia
+                                                component="img"
+                                                height="194"
+                                                width="80%"
+                                                image={value.image}
+                                                alt={value.name}
+                                            />
+                                            <CardContent>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    {value.title}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions disableSpacing sx={{ position: "absolute", bottom: 0, right: 0 }}>
+                                                <IconButton>
+                                                    <NavLink
+
+                                                        to={`/pagepost/${value._id}`}>
+                                                        <FaPlayCircle />
+                                                    </NavLink>
+                                                </IconButton>
+                                            </CardActions>
+                                        </Card>
+
+
+                                    </Grid >
+
+                                </>
+
+
+                            )
+                        })}
+
                     </Grid>
 
                 </div>

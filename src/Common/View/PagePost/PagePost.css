@@ -1,17 +1,20 @@
-.Center{
-    margin: 0% 15% 0% 15%;
+.Center {
+  margin: 0% 15% 0% 15%;
 }
-.Decitext{
-    text-align: left;
-    margin-right: 5rem;
+.Decitext {
+  text-align: left;
+  margin-right: 5rem;
 }
-.TextDetails{
-    font-weight: bold;
+.TextDetails {
+  font-weight: bold;
 }
-.Clock{
-    align: right;
-    width: 20%;
+.Clock {
+  text-align: right;
+  width: 20%;
 }
-.ingredients{
-    text-align: left;
+.ingredients {
+  text-align: left;
+}
+.btnBack {
+  text-align: left;
 }

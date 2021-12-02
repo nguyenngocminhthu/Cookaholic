@@ -26,7 +26,7 @@ const HomeRoute = () => {
                 <Route path="/" exact component={Auth(Home, false, false)} />
                 <Route path="/main" component={Auth(Main)} />
                 <Route path="/about" component={Auth(About)} />
-                <Route path="/pagepost" component={Auth(PagePost)} />
+                <Route path="/pagepost/:idRecipe?" component={Auth(PagePost)} />
                 <Route path="/policy" component={Auth(Policy)} />
                 <Route path="/signin" component={Auth(Login)} />
                 <Route path="/profile" component={Auth(Profile)} />
