@@ -58,8 +58,10 @@ exports.findAll = async (req, res) => {
 
 // Get a recipe 
 exports.findOne = async (req, res) => {
-
-    Recipe.findById(req.body.id)
+    const id = req.params.id
+    Recipe.findById(id)
+        .populate("user")
+        .populate("topic")
         .then(data => {
             if (!data) {
                 res.status(404).json({ message: "Not found ", success: false })
