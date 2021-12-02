@@ -1,12 +1,27 @@
 import React from "react"
-import loader from "../img/loader.gif"
+import { useSelector } from "react-redux";
+import { css } from "@emotion/react";
+import ReactLoading from "react-loading";
+import "../css/loader.css";
 
-const Loader = () => (
-    <div style={{ position: "fixed", top: "0", left:"0",right:"0",bottom:"0", height: "100%", width: "100%", backgroundColor: '#ffffff', opacity: 0.6, zIndex: 1000 }}>
-        <div style={{ position: "absolute", textAlign: "center", top: "47%", left: "47%", zIndex: 1001 }}>
-            <img src={loader} height={100} width={100} alt="loader" />
+const override = css`
+  display: block;
+`;
+const Loader = () => {
+    const isLoading = useSelector((state) => state.system.loading);
+    return isLoading ? (
+        <div id={`loading`}>
+            <div className="wave">
+                <ReactLoading
+                    type={"bubbles"}
+                    css={override}
+                    color={"#fce0dc"}
+                />
+            </div>
         </div>
-    </div>
-)
+    ) : (
+        ""
+    );
+}
 
-export default Loader
+export default Loader;

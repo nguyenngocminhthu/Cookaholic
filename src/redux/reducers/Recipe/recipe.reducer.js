@@ -10,11 +10,14 @@ import {
     ACCEPT_POST_SUCCESS,
     DELETE_POST_FAIL,
     DELETE_POST_SUCCESS,
+    FIND_RECIPE_BY_ID_FAIL,
+    FIND_RECIPE_BY_ID_SUCCESS,
 } from "../../actions/Recipe/type";
 
 const initState = {
     listRecipe: [],
     updateFlag: false,
+    recipeDetail: {},
 };
 export default function (state = initState, action) {
     const payload = action.payload;
@@ -54,6 +57,16 @@ export default function (state = initState, action) {
                 ...state,
                 listRecipe: action.payload,
 
+            };
+        case FIND_RECIPE_BY_ID_FAIL:
+            return {
+                ...state,
+                recipeDetail: {},
+            };
+        case FIND_RECIPE_BY_ID_SUCCESS:
+            return {
+                ...state,
+                recipeDetail: action.payload,
             };
         default:
             return state;

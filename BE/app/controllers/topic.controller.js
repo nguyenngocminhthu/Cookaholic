@@ -34,3 +34,17 @@ exports.findAll = async (req, res) => {
             res.status(500).json({ message: err, success: false });
         })
 }
+
+exports.delete=async(req,res)=>{
+    const id=req.query.id
+
+    Topic.deleteOne({_id:id},(err) => {
+        if (err) {
+            console.log(err)
+            res.status(500).json({ message: err, success: false })
+            return
+        }
+
+        res.status(200).json({ message: "Delete success!", success: true })
+    })
+}

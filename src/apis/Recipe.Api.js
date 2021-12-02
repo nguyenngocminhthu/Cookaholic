@@ -68,6 +68,21 @@ const deletePost = async (id) => {
     }
 };
 
+const findById = async (id) => {
+    try {
+        const res = await axiosClient.get(`${url}/${id}`);
+        // toastNotify(res ? res.message.VN : "Tìm kiếm điện thoại thất bại");
+        return res && res.data
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        // toastNotify("Tìm kiếm điện thoại thất bại");
+        return {
+            success: false,
+        };
+    }
+};
+
 const filter = async (queryParams) => {
     try {
         const query = queryString.stringify(queryParams);
@@ -89,6 +104,6 @@ const filter = async (queryParams) => {
     }
 };
 
-const Recipe = { getAll, filter, create, acceptPost, deletePost };
+const Recipe = { getAll, filter, create, acceptPost, deletePost, findById };
 
 export default Recipe;
