@@ -34,7 +34,7 @@ const Topic = () => {
 
     useEffect(() => {
         dispatch(getAllTopicAction())
-    }, [topics])
+    }, [])
     useEffect(() => {
         console.log("log at ==> Topic.js => topics: ", topics);
     }, [topics])

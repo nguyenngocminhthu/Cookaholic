@@ -18,9 +18,7 @@ import { CgMoreO } from 'react-icons/cg'
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import RatingShow from '../Detail/Rating';
-import RecipesDetail from '../Detail/RecipesDetail';
-import Modal from 'react-awesome-modal';
+
 import './CardPost.css';
 import { acceptPostAction, deletePostAction } from "../../../redux/actions/Recipe/recipe.action";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,33 +29,6 @@ export default function CardPost(props) {
 
   const { list } = props;
   const [currentPost, setCurrentPost] = useState({});
-  const [visible, setVisible] = useState();
-  const openModal = (index) => {
-    setCurrentPost(list[index]);
-    setVisible(!visible);
-    setShowDetail(true);
-    setShowRatingShow(false);
-
-  };
-
-
-  const closeModal = () => setVisible(false);
-
-  const [showDetail, setShowDetail] = useState(true);
-  const [showRatingShow, setShowRatingShow] = useState(false);
-  const showComp = (element) => {
-    if (element === "detail") {
-      setShowDetail(true);
-      setShowRatingShow(false);
-    } else {
-      setShowDetail(false);
-      setShowRatingShow(true);
-    }
-
-  }
-
-
-
 
   const accept = async (value) => {
 
@@ -126,7 +97,7 @@ export default function CardPost(props) {
               <IconButton aria-label="deny" onClick={() => handleDelete(value._id)}>
                 <ImCancelCircle />
               </IconButton>
-              <IconButton aria-label="more" onClick={() => openModal(index)}>
+              <IconButton aria-label="more">
                 <CgMoreO />
               </IconButton>
             </CardActions>
@@ -134,51 +105,7 @@ export default function CardPost(props) {
 
 
         </Grid >
-        <Modal
-          visible={visible}
-          width="80%"
-          height="90%"
-          effect="fadeInUp"
-          onClickAway={closeModal}
 
-        >
-          <div key={currentPost}>
-            <div className="close-detail">
-              <button className="close" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></button>
-            </div>
-
-            <div className="detail">
-              <div className="row">
-                <div className="col-6 ">
-                  <div className="img-del">
-                    <img className="imgdetail" src={currentPost.image} alt={currentPost.name} />
-                  </div>
-
-                </div>
-                <div className="col-6">
-                  <div className="title">
-                    <button className="detailrating" onClick={() => showComp("detail")}>
-                      Detail
-                    </button>
-                    <button className="detailrating" onClick={() => showComp()}>
-                      Rating
-                    </button>
-                  </div>
-
-
-                  {showDetail && <RecipesDetail recipe={currentPost} />}
-
-                  {showRatingShow && <RatingShow recipe={currentPost} />}
-
-
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-        </Modal>
       </>
     );
   })

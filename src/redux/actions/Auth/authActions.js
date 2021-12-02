@@ -11,11 +11,11 @@ import {
     REGISTER_SUCCESS,
 } from "./types";
 
-// const loading =
-//     (loading = false) =>
-//         (dispatch) => {
-//             dispatch(changeLoading(loading));
-//         };
+const loading =
+    (loading = false) =>
+        (dispatch) => {
+            dispatch(changeLoading(loading));
+        };
 
 export function loginSuccess(data) {
     return {
@@ -34,19 +34,19 @@ export function loginFail() {
 export function loginAction(dataSubmit) {
     return async (dispatch) => {
         try {
-            // dispatch(loading(true)); 
+            dispatch(loading(true));
             const res = await authAPI.login(dataSubmit);
             console.log("log at ==> authAction ==> res: ", res)
             if (res.success) {
-                // dispatch(loading());
+                dispatch(loading());
                 dispatch(loginSuccess(res.data));
                 return res.data;
             }
-            // dispatch(loading());
+            dispatch(loading());
             dispatch(loginFail());
             return false;
         } catch {
-            // dispatch(loading());
+            dispatch(loading());
             dispatch(loginFail());
             return false;
         }
@@ -69,19 +69,19 @@ export const getAuthFail = () => {
 
 export const getAuthAction = () => async (dispatch) => {
     try {
-        // dispatch(loading());
+        dispatch(loading());
         const res = await authAPI.getAuth();
         console.log(res)
         if (res.success) {
-            // dispatch(loading());
+            dispatch(loading());
             dispatch(getAuthSuccess(res.data));
             return { ...res.data, isAuth: true };
         }
-        // dispatch(loading());
+        dispatch(loading());
         dispatch(getAuthFail());
         return { isAuth: false };
     } catch {
-        // dispatch(loading());
+        dispatch(loading());
         dispatch(getAuthFail());
         return { isAuth: false };
     }
@@ -111,21 +111,21 @@ export const registerFail = () => {
 
 export const registerAction = (body) => async (dispatch) => {
     try {
-        // dispatch(loading(true));
+        dispatch(loading(true));
         const res = await authAPI.register(body);
         console.log("log at ==> authAction.js ==> line 114 ==>  res: ", res)
 
         if (!res.success) {
-            // dispatch(loading());
+            dispatch(loading());
             dispatch(registerFail());
         } else {
-            // dispatch(loading());
+            dispatch(loading());
             dispatch(registerSuccess(res.data));
         }
         return res.success;
     } catch (err) {
         console.log(err);
-        // dispatch(loading());
+        dispatch(loading());
         dispatch(registerFail());
         return false;
     }
@@ -133,19 +133,19 @@ export const registerAction = (body) => async (dispatch) => {
 
 export const verifyAction = (body) => async (dispatch) => {
     try {
-        // dispatch(loading(true));
+        dispatch(loading(true));
         const res = await authAPI.verify(body);
         if (!res.success) {
-            //   dispatch(loading());
+            dispatch(loading());
             dispatch(registerFail());
         } else {
-            //   dispatch(loading());
+            dispatch(loading());
             dispatch(registerSuccess(res.data));
         }
         return res.success;
     } catch (err) {
         console.log(err);
-        // dispatch(loading());
+        dispatch(loading());
         dispatch(registerFail());
         return false;
     }

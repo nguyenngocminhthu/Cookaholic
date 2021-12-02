@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-awesome-modal';
 import { useSelector, useDispatch } from "react-redux";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,9 +11,23 @@ import Header from '../components/Header';
 import { NavLink } from "react-router-dom";
 import { FaPlusCircle } from "react-icons/fa";
 
+
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import { Grid } from '@mui/material';
+
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+
+import { FaPlayCircle } from 'react-icons/fa'
+
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import '../css/main.css';
-import RatingShow from './Detail/Rating';
-import RecipesDetail from '../View/Detail/RecipesDetail';
 
 
 const Main = (props) => {
@@ -60,29 +73,9 @@ const Main = (props) => {
         setChecked(newChecked);
     };
     const [currentRecipe, setCurrentRecipe] = useState({});
-    const [visible, setVisible] = useState();
-    const openModal = (index) => {
+
+    const handleDetail = (index) => {
         setCurrentRecipe(menus[index]);
-        setVisible(!visible);
-        setShowDetail(true);
-        setShowRatingShow(false);
-
-    };
-
-
-    const closeModal = () => setVisible(false);
-
-    const [showDetail, setShowDetail] = useState(true);
-    const [showRatingShow, setShowRatingShow] = useState(false);
-    const showComp = (element) => {
-        if (element === "detail") {
-            setShowDetail(true);
-            setShowRatingShow(false);
-        } else {
-            setShowDetail(false);
-            setShowRatingShow(true);
-        }
-
     }
 
     const menus = useSelector((state) => state.recipe.listRecipe) || []
@@ -99,16 +92,50 @@ const Main = (props) => {
 
     const renderListCook = menus.map((value, index) => {
         return (
-            <div key={index} >
-                <div className="card" value="Open" onClick={() => openModal(index)}>
-                    <img className="imgnor" src={value.image} alt={value.name} />
-                    <div className="container">
-                        <h4><b>{value.name}</b></h4>
-                        <p>{value.title}</p>
-                    </div>
-                </div>
 
-            </div>
+            <>
+                <Grid key={index} item xs={4} sm={6} md={3} margin={"30px"}>
+
+                    <Card className="cardRec" sx={{ width: 240, minHeight: 400, position: "relative" }} >
+                        <CardHeader
+                            avatar={
+                                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                    R
+                                </Avatar>
+                            }
+                            action={
+                                <IconButton aria-label="settings">
+                                    <MoreVertIcon />
+                                </IconButton>
+                            }
+                            title={value.name}
+                            subheader={value.createdAt}
+                        />
+                        <CardMedia
+                            component="img"
+                            height="194"
+                            width="80%"
+                            image={value.image}
+                            alt={value.name}
+                        />
+                        <CardContent>
+                            <Typography variant="body2" color="text.secondary">
+                                {value.title}
+                            </Typography>
+                        </CardContent>
+                        <CardActions disableSpacing sx={{ position: "absolute", bottom: 0, right: 0 }}>
+                            <NavLink to="/pagepost" onClick={() => handleDetail(menus[index])}>
+                                <FaPlayCircle />
+                            </NavLink>
+
+                        </CardActions>
+                    </Card>
+
+
+                </Grid >
+
+            </>
+
 
         )
     })
@@ -157,14 +184,9 @@ const Main = (props) => {
 
                 <div className="col-9">
                     <ADDREC />
-                    <div className="card-deck">
-
+                    <Grid container recipe={currentRecipe}>
                         {renderListCook}
-                    </div>
-
-
-
-
+                    </Grid>
 
                 </div>
             </div>
@@ -172,51 +194,7 @@ const Main = (props) => {
             <div className="footer">
                 <p>Resize the browser window to see how the content respond to the resizing.</p>
             </div>
-            <Modal
-                visible={visible}
-                width="80%"
-                height="90%"
-                effect="fadeInUp"
-                onClickAway={closeModal}
 
-            >
-                <div key={currentRecipe}>
-                    <div className="close-detail">
-                        <button className="close" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></button>
-                    </div>
-
-                    <div className="detail">
-                        <div className="row">
-                            <div className="col-6 ">
-                                <div className="img-del">
-                                    <img className="imgdetail" src={currentRecipe.image} alt={currentRecipe.name} />
-                                </div>
-
-                            </div>
-                            <div className="col-6">
-                                <div className="title">
-                                    <button className="detailrating" onClick={() => showComp("detail")}>
-                                        Detail
-                                    </button>
-                                    <button className="detailrating" onClick={() => showComp()}>
-                                        Rating
-                                    </button>
-                                </div>
-
-
-                                {showDetail && <RecipesDetail recipe={currentRecipe} />}
-
-                                {showRatingShow && <RatingShow recipe={currentRecipe} />}
-
-
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </Modal>
         </div>
     );
 
