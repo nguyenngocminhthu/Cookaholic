@@ -11,6 +11,8 @@ import {
     DELETE_POST_SUCCESS,
     FIND_RECIPE_BY_ID_FAIL,
     FIND_RECIPE_BY_ID_SUCCESS,
+    FIND_RECIPE_BY_USER_FAIL,
+    FIND_RECIPE_BY_USER_SUCCESS,
 } from "./type";
 import RecipeAPI from "../../../apis/Recipe.Api";
 import { changeLoading } from "../System/systemActions";
@@ -229,6 +231,41 @@ export function findRecipeByIdAction(id) {
         } catch {
             dispatch(loading());
             dispatch(findRecipeByIdFail());
+            return false;
+        }
+    };
+}
+
+export function findRecipeByUserFail() {
+    return {
+        type: FIND_RECIPE_BY_USER_FAIL,
+        payload: {},
+    };
+}
+
+export function findRecipeByUserSuccess(data) {
+    return {
+        type: FIND_RECIPE_BY_USER_SUCCESS,
+        payload: data,
+    };
+}
+
+export function findRecipeByUserAction(id, status) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await RecipeAPI.findByUser(id, status);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(findRecipeByUserSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(findRecipeByUserFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(findRecipeByUserFail());
             return false;
         }
     };

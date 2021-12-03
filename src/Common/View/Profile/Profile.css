@@ -3,12 +3,13 @@
 }
 
 .profile {
-  margin-top: 10px;
+  margin-top: 5%;
   display: flex;
 }
 
 .profileRight {
   flex: 10;
+  margin: 0% 2% 0% 2%;
 }
 
 .profileCover {

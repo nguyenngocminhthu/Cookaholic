@@ -34,6 +34,21 @@ const getAll = async () => {
   }
 };
 
+const findById = async (id) => {
+  try {
+    const res = await axiosClient.get(`${url}/${id}`);
+
+    return res && res.data
+      ? { data: res.data || {}, success: true }
+      : { success: false };
+  } catch (error) {
+
+    return {
+      success: false,
+    };
+  }
+};
+
 const update = async (body) => {
   try {
     const res = await axiosClient.post(`${url}/user/update`, body);
@@ -81,6 +96,6 @@ const filter = async (queryParams) => {
   }
 };
 
-const User = { insert, filter, getAll, update, updateProfile };
+const User = { insert, filter, getAll, update, updateProfile, findById };
 
 export default User;

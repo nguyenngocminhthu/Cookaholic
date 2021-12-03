@@ -10,3 +10,5 @@ export const DELETE_POST_FAIL = "delete post fail";
 export const DELETE_POST_SUCCESS = "delete post success";
 export const FIND_RECIPE_BY_ID_FAIL = "find recipe by id fail";
 export const FIND_RECIPE_BY_ID_SUCCESS = "find recipe by id success";
+export const FIND_RECIPE_BY_USER_FAIL = "find recipe by user fail";
+export const FIND_RECIPE_BY_USER_SUCCESS = "find recipe by user success";

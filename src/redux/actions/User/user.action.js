@@ -2,6 +2,8 @@ import {
 
     GET_ALL_USER_FAIL,
     GET_ALL_USER_SUCCESS,
+    FIND_USER_BY_ID_FAIL,
+    FIND_USER_BY_ID_SUCCESS,
 
 } from "./type";
 import UserAPI from "../../../apis/User.Api";
@@ -44,6 +46,41 @@ export function getAllUserAction() {
         } catch {
             dispatch(loading());
             dispatch(getAllUserFail());
+            return false;
+        }
+    };
+}
+
+export function findUserByIdFail() {
+    return {
+        type: FIND_USER_BY_ID_FAIL,
+        payload: {},
+    };
+}
+
+export function findUserByIdSuccess(data) {
+    return {
+        type: FIND_USER_BY_ID_SUCCESS,
+        payload: data,
+    };
+}
+
+export function findUserByIdAction(id) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await UserAPI.findById(id);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(findUserByIdSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(findUserByIdFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(findUserByIdFail());
             return false;
         }
     };

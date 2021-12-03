@@ -1,11 +1,14 @@
 import {
     GET_ALL_USER_FAIL,
     GET_ALL_USER_SUCCESS,
+    FIND_USER_BY_ID_FAIL,
+    FIND_USER_BY_ID_SUCCESS,
 } from "../../actions/User/type";
 
 const initState = {
     listUser: [],
     updateFlag: false,
+    profile: {},
 };
 
 export default function (state = initState, action) {
@@ -22,6 +25,16 @@ export default function (state = initState, action) {
             return {
                 ...state,
                 listUser: action.payload,
+            };
+        case FIND_USER_BY_ID_FAIL:
+            return {
+                ...state,
+                profile: {},
+            };
+        case FIND_USER_BY_ID_SUCCESS:
+            return {
+                ...state,
+                profile: action.payload,
             };
 
         default:

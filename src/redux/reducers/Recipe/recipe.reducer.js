@@ -12,6 +12,8 @@ import {
     DELETE_POST_SUCCESS,
     FIND_RECIPE_BY_ID_FAIL,
     FIND_RECIPE_BY_ID_SUCCESS,
+    FIND_RECIPE_BY_USER_FAIL,
+    FIND_RECIPE_BY_USER_SUCCESS,
 } from "../../actions/Recipe/type";
 
 const initState = {
@@ -67,6 +69,17 @@ export default function (state = initState, action) {
             return {
                 ...state,
                 recipeDetail: action.payload,
+            };
+        case FIND_RECIPE_BY_USER_FAIL:
+            return {
+                ...state,
+                listRecipe: [],
+
+            };
+        case FIND_RECIPE_BY_USER_SUCCESS:
+            return {
+                ...state,
+                listRecipe: action.payload,
             };
         default:
             return state;

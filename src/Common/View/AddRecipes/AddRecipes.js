@@ -169,8 +169,14 @@ const AddRecipes = (props) => {
         return <ButtonUnstyled {...props} component={CustomButtonRoot} ref={ref} />;
     });
 
+    const userId = useSelector((state) => state.auth.user._id) || []
+    console.log("log at ==> Header.js ==> user: ", userId)
+
     const addRecipe = async (e) => {
         e.preventDefault();
+
+
+
         const data = {
             name: e.target.recipename.value,
             title: e.target.title.value,
@@ -179,6 +185,7 @@ const AddRecipes = (props) => {
             serving: e.target.serving.value,
             ingre: [e.target.ingredients.value],
             directions: [e.target.direction.value],
+            user: e.target.user.value,
         }
         const url = await dispatch(uploadImagesToFirebase([images[0].file], "Recipe"));
         console.log("log at ==> add recipe ==> url: ", url);
@@ -353,7 +360,17 @@ const AddRecipes = (props) => {
                                                     name={"direction"}
                                                 />
                                             </Grid>
-
+                                            <Grid item xs={12} visibility={"hidden"}>
+                                                <TextField
+                                                    fullWidth
+                                                    height={"0px"}
+                                                    id={"user"}
+                                                    label={"Authors"}
+                                                    rows={4}
+                                                    name={"user"}
+                                                    value={userId}
+                                                />
+                                            </Grid>
                                         </Grid>
 
                                         <Button className="btn-grad"

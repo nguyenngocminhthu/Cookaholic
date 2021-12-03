@@ -29,11 +29,10 @@ const HomeRoute = () => {
                 <Route path="/pagepost/:idRecipe?" component={Auth(PagePost)} />
                 <Route path="/policy" component={Auth(Policy)} />
                 <Route path="/signin" component={Auth(Login)} />
-                <Route path="/profile" component={Auth(Profile)} />
+                <Route path="/profile/:idUser?" component={Auth(Profile)} />
                 <Route path="/admin" component={Auth(Admin, false, true)} />
                 <Route path="/addrecipes" component={Auth(AddRecipes)} />
                 <Route path="/404" component={NotFound} />
-
                 <Route path="/support" component={Support} />
             </Switch>
         </ComponentTransition>

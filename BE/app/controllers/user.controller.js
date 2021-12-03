@@ -42,25 +42,22 @@ exports.getAllUser = (req, res) => {
 
 }
 
-exports.getUser = (req, res) => {
+exports.getUser = async (req, res) => {
     const id = req.params.id
-
-    User.findById(id, (err, user) => {
-        if (err) {
-            console.log(err)
+    User.findById(id)
+        .then(data => {
+            if (!data) {
+                res.status(404).json({ message: "Not found ", success: false })
+                return
+            }
+            else
+                res.status(200).json({ data, success: true })
+        })
+        .catch(err => {
             res.status(500).json({ message: err, success: false })
             return
-        }
+        })
 
-        if (!user) {
-            res.status(400).json({ message: "User does not exist", success: false })
-            return
-        }
-
-        // const dob = format(user.dob, 'dd/MM/yyyy');
-        // console.log(dob)
-        res.status(200).json({ user, success: true })
-    })
 }
 
 exports.update = (req, res) => {

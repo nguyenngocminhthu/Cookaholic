@@ -83,6 +83,23 @@ const findById = async (id) => {
     }
 };
 
+const findByUser = async (id, queryParams) => {
+    try {
+        const query = queryString.stringify(queryParams);
+        const res = await axiosClient.get(`${url}/user/${id}?${query}`);
+        // toastNotify(res ? res.message.VN : "Lấy thương hiệu thất bại");
+
+        return res && res.data
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        // toastNotify("Lấy thương hiệu thất bại");
+        return {
+            success: false,
+        };
+    }
+};
+
 const filter = async (queryParams) => {
     try {
         const query = queryString.stringify(queryParams);
@@ -104,6 +121,6 @@ const filter = async (queryParams) => {
     }
 };
 
-const Recipe = { getAll, filter, create, acceptPost, deletePost, findById };
+const Recipe = { getAll, filter, create, acceptPost, deletePost, findById, findByUser };
 
 export default Recipe;
