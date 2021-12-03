@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-import * as React from 'react';
-import { connect } from "react-redux";
-import { styled } from '@mui/material/styles';
-import {Box, Paper, Grid,Tabs, Tab, Card, CardActionArea, CardMedia, Typography, Rating, Divider  } from '@mui/material';
-=======
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { Box, Paper, Grid, Tabs, Tab, Card, CardActionArea, CardMedia, Typography, Rating, Divider } from '@mui/material';
->>>>>>> c5a05310f5345f51995fb4d45296990a3b32fc6f
 import PropTypes from 'prop-types';
 import Comments from './Comments'
 import './PagePost.css'
-import Food from '../../img/food-post.jpg'
 import Clock from '../../img/clock.gif'
 import {
   findRecipeByIdAction,
@@ -210,11 +202,6 @@ const PagePost = (props) => {
               <Divider orientation="vertical" sx={{ paddingLeft: '10px', marginRight: '10px' }} flexItem />
               <span>1 Review</span>
             </Box>
-<<<<<<< HEAD
-              <Comments/>
-            
-      </div> 
-=======
           </Grid>
           <Grid item xs={6} md={8}>
             <p className='Decitext'>{recipe.title}</p>
@@ -334,9 +321,8 @@ const PagePost = (props) => {
           </Grid>
         </Grid>
       </Box>
-      <CommentComponent />
+      <Comments />
     </div>
->>>>>>> c5a05310f5345f51995fb4d45296990a3b32fc6f
   );
 }
 
