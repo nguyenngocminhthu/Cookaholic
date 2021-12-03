@@ -66,7 +66,7 @@ exports.getUser = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id
     const data=req.body
-    User.updateOne({ _id: id }, { $set: {avt:data.avt} }, (err) => {
+    User.updateOne({ _id: id }, { $set: data }, (err) => {
         if (err) {
             console.log(err)
             res.status(500).json({ message: err, success: false })
