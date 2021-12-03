@@ -27,7 +27,11 @@ const { authJwt } = require("../middlewares")
 module.exports = (app) => {
     app.get("/api/user", [authJwt.verifyToken], controller.getAllUser)
     app.get("/api/user/:id", controller.getUser)
+<<<<<<< HEAD
     app.put("/api/user/:id", [authJwt.verifyToken], controller.update)
+=======
+    app.put("/api/user/:id",[authJwt.verifyToken], controller.update)
+>>>>>>> 7c46de2f9855dd5f8354edfddbb25cd51cfd9357
     app.delete("/api/user/:id", [authJwt.verifyToken], controller.delete)
     app.put("/api/user/changePassword/:id", [authJwt.verifyToken], controller.changePassword)
     app.post("/api/admin", controller.createAdmin)

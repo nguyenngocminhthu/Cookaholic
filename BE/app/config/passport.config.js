@@ -60,7 +60,8 @@ module.exports = function (passport) {
     passport.use(new FacebookStrategy({
         clientID: '876160799940732',
         clientSecret: '6bfe896ef5d542067a81c17a903f43ea',
-        callbackURL: "https://5c66-2405-4803-c78a-35a0-913e-a7c6-c6b0-e037.ngrok.io/auth/facebook/callback"
+        // profileFields: ['id', 'displayName', 'photos', 'email', 'gender', 'name'],
+        callbackURL: "https://74f0-112-197-160-92.ngrok.io/auth/facebook/callback"
     },
         function (accessToken, refreshToken, profile, done) {
 
@@ -76,7 +77,7 @@ module.exports = function (passport) {
                     else {
                         var newUser = new User({
                             username: profile.displayName,
-                            email: profile.emails[0].value,
+                            // email: profile.emails[0].value,
                             facebookId: profile.id
                         })
                         newUser.save((err, user) => {
