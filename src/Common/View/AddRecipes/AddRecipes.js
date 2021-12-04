@@ -382,7 +382,7 @@ const AddRecipes = (props) => {
                                             type="submit"
                                             fullWidth
                                             variant="contained"
-                                            sx={{ mt: 1, mb: 4 }}
+                                            sx={{ mt: 1, mb: 4, color: 'black' }}
                                         >
                                             Upload
                                         </Button>{" "}

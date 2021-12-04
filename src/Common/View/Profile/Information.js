@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import ImageUploading from 'react-images-uploading';
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import './Profile.css';
 const gender = [
   {
     value: 'Male',
@@ -122,7 +123,7 @@ export const Information = (props) => {
                     sx={{
                       alignItems: 'center',
                       display: 'flex',
-                      flexDirection: 'column'
+                      flexDirection: 'column',
                     }}
                   >
                     <Avatar
@@ -186,6 +187,28 @@ export const Information = (props) => {
                     >
                       {values.description}
                     </Typography>
+                    <Typography
+                      color="textPrimary"
+                      gutterBottom
+                      variant="p"
+                    >
+                      <span className="infor-left">Email:  </span>{values.email}
+                    </Typography>
+                    <Typography
+                      color="textPrimary"
+                      gutterBottom
+                      variant="p"
+                    >
+                      <span className="infor-left">Phone number:  </span>{values.phone}
+                    </Typography>
+                    <Typography
+                      color="textPrimary"
+                      gutterBottom
+                      variant="p"
+                    >
+                      <span className="infor-left">Gender:  </span>{values.gender}
+                    </Typography>
+                    
 
                   </Box>
                 </CardContent>
@@ -204,7 +227,7 @@ export const Information = (props) => {
                 <CardHeader
                   subheader="The information can be edited"
                   title="Profile"
-                  sx={{ backgroundColor: '#e6e8ea' }}
+                  sx={{ backgroundColor: '#FFF8F1' }}
                 />
                 <Divider />
                 <CardContent>
@@ -324,13 +347,7 @@ export const Information = (props) => {
 
           </Grid>
           <div style={{ marginTop: "20px" }}>
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-            >
-              Save
-            </Button>{" "}
+            <button style = {{float: 'right'}} className="button-74" role="button" type="submit">Save</button>
           </div>
         </form>
       </Container>

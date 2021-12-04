@@ -24,7 +24,7 @@ import { useHistory } from "react-router";
 import { loginAction } from "../../../redux/actions/Auth/authActions";
 import myImage from "../../img/egg.png";
 import "./LoRe.css";
-import { validateLogin } from "./validate";
+import { validateLogin } from "./Validate";
 
 const theme = createTheme();
 
@@ -253,7 +253,7 @@ const Login = () => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 1, mb: 4 }}
+                    sx={{ mt: 1, mb: 4, color: 'black' }}
                   >
                     Sign In
                   </Button>

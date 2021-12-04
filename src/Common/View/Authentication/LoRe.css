@@ -20,8 +20,8 @@
 .btn-grad {
   background-image: linear-gradient(
     to right,
-    #ff6e7f 0%,
-    #bfe9ff 51%,
+    #fbeee0 0%,
+    #fff8f1 51%,
     #ff6e7f 100%
   );
 }
@@ -40,7 +40,7 @@
 
 .btn-grad:hover {
   background-position: right center; /* change the direction of the change here */
-  color: #fff;
+  color: white;
   text-decoration: none;
 }
 
@@ -63,11 +63,12 @@
   box-shadow: 0 0 20px #eee;
   border-radius: 10px;
   display: block;
+  font-weight: bold;
 }
 
 .btn-grud:hover {
   background-position: right center; /* change the direction of the change here */
-  color: #fff;
+  color: white;
   text-decoration: none;
 }
 

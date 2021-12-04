@@ -24,7 +24,7 @@ export const Security = (props) => {
                 <CardHeader
                 subheader="Update password"
                 title="Password"
-                sx={{backgroundColor: '#e6e8ea'}}
+                sx={{backgroundColor: '#FFF8F1'}}
                 />
                 <Divider />
                 <CardContent>
@@ -76,12 +76,7 @@ export const Security = (props) => {
                     p: 2
                 }}
                 >
-                <Button
-                    color="primary"
-                    variant="contained"
-                >
-                    Change My Password
-                </Button>
+                <button className="button-74" role="button" type="submit">Change My Password</button>
                 </Box>
             </Card>
             </form>

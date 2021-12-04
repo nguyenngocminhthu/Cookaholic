@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import myImage from "../../img/egg.png";
 
 import './LoRe.css';
-import { validateRegister } from "./validate";
+import { validateRegister } from "./Validate";
 import { registerAction } from "../../../redux/actions/Auth/authActions";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
@@ -143,7 +143,7 @@ export function Register() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{ mt: 3, mb: 2, color: 'black' }}
                 >
                   Sign Up
                 </Button>
