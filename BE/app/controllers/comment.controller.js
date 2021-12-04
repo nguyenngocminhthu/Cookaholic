@@ -80,6 +80,13 @@ exports.getByRecipe = async (req, res) => {
 
             console.log(data[0].replies[0].user)
 
-            res.status(200).json({ data, success: true });
+            let count = 0
+            for (let i = 0; i < data.length; i++) {
+                count += data[i].replies.length + 1;
+            }
+
+            console.log(count)
+
+            res.status(200).json({ data, count: count, success: true });
         })
 }
