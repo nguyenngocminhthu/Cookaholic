@@ -11,6 +11,11 @@ const bcrypt = require("bcrypt");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 
+const { OAuth2Client } = require('google-auth-library');
+const { response } = require("express");
+const client = new OAuth2Client("741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com")
+
+
 // Kiem tra, them roles va luu user vao db
 exports.signup = (req, res) => {
 
@@ -142,6 +147,67 @@ exports.signin = (req, res) => {
         });
 };
 
+exports.googlelogin = (req, res) => {
+    const { tokenId } = req.body
+
+    client.verifyIdToken({ idToken: tokenId, audience: "741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com" })
+        .then(response => {
+            const { email_verified, name, email, picture } = response.payload
+            console.log(response.payload)
+            if (email_verified) {
+                User.findOne({ email }).exec((err, user) => {
+                    if (err) {
+                        return res.status(400).json({ message: err, success: false })
+                    } else {
+                        if (user) {
+                            var token = jwt.sign({ id: user.id }, config.secret, {
+                                // expiresIn: 86400
+                                expiresIn: config.jwtExpiration
+                            });
+
+                            res.json({ token, user, success: true })
+                        } else {
+                            let password = email + config.secret
+                            const user = new User({
+                                username: name,
+                                email: email,
+                                password: bcrypt.hashSync(password, 8),
+                            })
+
+                            Role.findOne({ name: "user" }, (err, role) => {
+                                if (err) {
+                                    res.status(500).json({ message: err, success: false })
+                                    return
+                                }
+                                console.log(user)
+                                user.roles = [role._id]
+                                user.save((err, data) => {
+                                    if (err) {
+                                        res.status(400).json({ message: err, success: false })
+                                        return
+                                    }
+                                    var token = jwt.sign({ id: data.id }, config.secret, {
+                                        // expiresIn: 86400
+                                        expiresIn: config.jwtExpiration
+                                    });
+
+                                    let authorities = []
+                                    console.log(data)
+                                    for (let i = 0; i < data.roles.length; i++) {
+                                        authorities.push("ROLE_" + data.roles[i].name.toUpperCase())
+                                    }
+
+                                    res.json({ token, data, success: true })
+                                })
+                            })
+
+                        }
+                    }
+                })
+            }
+        })
+}
+
 exports.refreshToken = async (req, res) => {
     const { refreshToken: requestToken } = req.body;
 
@@ -212,7 +278,7 @@ exports.sendLink = async (req, res) => {
 
 const getAuth = async (userId) => {
     try {
-        const user = await User.findOne({_id: userId }).populate("roles");
+        const user = await User.findOne({ _id: userId }).populate("roles");
 
         let authorities = []
 
@@ -246,7 +312,7 @@ const getAuth = async (userId) => {
 };
 
 exports.handleGetAuth = async (req, res) => {
-    try{
+    try {
         const token = req.body.token;
         // console.log(token)
         const result = await getAuth(token.id);
@@ -257,11 +323,11 @@ exports.handleGetAuth = async (req, res) => {
             return
         }
         res.json({ message: result.message, success: false })
-    } catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({message: err, success: false})
+        res.status(500).json({ message: err, success: false })
     }
-    
+
 }
 
 exports.resetPassword = async (req, res) => {
