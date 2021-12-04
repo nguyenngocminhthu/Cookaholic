@@ -23,9 +23,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
 import BG from "../../img/Bgprofile.png"
 import AVT from "../../img/Avt.jpg"
+import Information from "./Information"
+import Security from "./Security";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -137,7 +138,7 @@ const Profile = (props) => {
             <div className="pro">
                 <div className="profile">
                     <Box
-                        sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 340 }}
+                        sx={{ flexGrow: 1, bgcolor: 'background.paper',display: 'flex', height: 400 }}
                     >
                         <Tabs
                             orientation="vertical"
@@ -145,8 +146,8 @@ const Profile = (props) => {
                             value={value}
                             onChange={handleChange}
                             aria-label="Vertical tabs example"
-                            sx={{ borderRight: 1, borderColor: 'divider' }}
-                        >
+                            sx={{ borderRight: 1, borderColor: 'divider'}}
+                        >   
                             <Tab label="PROFILE" {...a11yProps(0)} />
                             <Tab label="INFORMATION" {...a11yProps(1)} />
                             <Tab label="EDIT" {...a11yProps(2)} />
@@ -238,7 +239,7 @@ const Profile = (props) => {
                             </div>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            Item Two
+                            <Information/>
                         </TabPanel>
                         <TabPanel value={value} index={2}>
                             Item Three
@@ -253,7 +254,7 @@ const Profile = (props) => {
                             Item Six
                         </TabPanel>
                         <TabPanel value={value} index={6}>
-                            Item Seven
+                            <Security/>
                         </TabPanel>
 
                     </Box>
