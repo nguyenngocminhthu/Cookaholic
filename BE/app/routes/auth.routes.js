@@ -41,6 +41,8 @@ module.exports = function (app) {
 
     app.post("/api/auth/:userId/:token", controller.resetPassword)
 
+    app.post("/api/auth/googlelogin", controller.googlelogin)
+
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
     app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), oauth.google)
