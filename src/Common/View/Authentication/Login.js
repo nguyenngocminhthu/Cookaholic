@@ -21,10 +21,14 @@ import React from 'react';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { loginAction } from "../../../redux/actions/Auth/authActions";
+import { loginAction, googleloginAction } from "../../../redux/actions/Auth/authActions";
 import myImage from "../../img/egg.png";
 import "./LoRe.css";
 import { validateLogin } from "./Validate";
+<<<<<<< HEAD
+=======
+import GoogleLogin from 'react-google-login';
+>>>>>>> bccddba099f6357783d6f63a48dc168b6dcf656a
 
 const theme = createTheme();
 
@@ -173,6 +177,16 @@ const Login = () => {
     }
   };
 
+  const responseSuccessGoogle = async (response) => {
+    console.log(response)
+    const res = await dispatch(googleloginAction({ tokenId: response.tokenId }));
+    console.log("res: ", res);
+  }
+
+  const responseErrorGoogle = (res) => {
+
+  }
+
   return (
     <>
       <Grid container height="100%">
@@ -263,6 +277,13 @@ const Login = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <SvgButton><GoogleIcon />Google</SvgButton>
+                      <GoogleLogin
+                        clientId="741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com"
+                        buttonText="Login with google "
+                        onSuccess={responseSuccessGoogle}
+                        onFailure={responseErrorGoogle}
+                        cookiePolicy={'single_host_origin'}
+                      />
                     </Grid>
                   </Grid>
                 </Box>

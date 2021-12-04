@@ -34,6 +34,26 @@ const login = async (body) => {
         };
     }
 };
+
+const googlelogin = async (body) => {
+    try {
+        const res = await axiosClient.post(`/api/auth/googlelogin`, body);
+        console.log("log at ==> Auth.Api.js ==> line 23 ==>  res: ", res)
+        if (res.success) {
+            Cookie.set("accessToken", res.token);
+            toastNotify(res.message);
+            return { data: res, success: true };
+        }
+        toastNotify(res.message);
+        return { data: {}, success: false };
+    } catch (error) {
+        toastNotify("Đăng nhập thất bại");
+        return {
+            success: false,
+        };
+    }
+};
+
 const register = async (body) => {
     try {
         const res = await axiosClient.post(`${url}/signup`, body);
@@ -50,6 +70,6 @@ const register = async (body) => {
     }
 };
 
-const Auth = { getAuth, login, register };
+const Auth = { getAuth, login, register, googlelogin };
 
 export default Auth;
