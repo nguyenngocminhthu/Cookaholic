@@ -51,29 +51,35 @@ exports.create = async (req, res) => {
 
 }
 
-exports.getByRecipe = async (req, res) => {
-    const recipe=req.params.recipe
-    Comment.findOne({recipe:recipe})
-    .populate("user")
-    .exec(async(err, comment)=>{
+exports.reply = (req, res) => {
+    Comment.updateOne({ _id: req.body.id }, { $push: { replies: { user: req.body.user, content: req.body.content } } }, (err) => {
         if (err) {
-            res.status(500).json({ message: err, success: false });
+            res.status(500).json({ message: err, success: false })
             return
         }
 
-        if (!comment) {
-            // return res.status(404).send({ message: "User not found." })
-            return res.status(404).json({ message: "Not found comment.", success: false });
-        }
-
-        res.status(200).json({
-            id: comment._id,
-            user: comment.user,
-            recipe: comment.recipe,
-            rate: comment.rate,
-            content: comment.content,
-            image: comment.image,
-            success: true,
-        });
+        res.status(200).json({ message: "Reply success!", success: true })
     })
+}
+
+exports.getByRecipe = async (req, res) => {
+    const recipe = req.params.recipe
+    Comment.find({ recipe: recipe })
+        .populate("user")
+        .populate("replies.user")
+        .exec(async (err, data) => {
+            if (err) {
+                res.status(500).json({ message: err, success: false });
+                return
+            }
+
+            if (!data) {
+                // return res.status(404).send({ message: "User not found." })
+                return res.status(404).json({ message: "Not found comment.", success: false });
+            }
+
+            console.log(data[0].replies[0].user)
+
+            res.status(200).json({ data, success: true });
+        })
 }
