@@ -23,4 +23,8 @@ const upload = async (image, folder) => {
     return await fileRef.getDownloadURL();
 };
 
+
+
+
+
 export { uploadImagesToFirebase };

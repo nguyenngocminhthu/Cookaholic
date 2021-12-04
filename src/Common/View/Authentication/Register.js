@@ -1,23 +1,23 @@
+import { React, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
 import myImage from "../../img/egg.png";
 
 import './LoRe.css';
-import { validateRegister } from "./Validate";
+import { validateRegister } from "./validate";
 import { registerAction } from "../../../redux/actions/Auth/authActions";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
@@ -25,27 +25,30 @@ import { useHistory } from "react-router";
 const theme = createTheme();
 
 export function Register() {
-  const [value, setValue] = React.useState(null);
+
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const [value, setValue] = useState('Female');
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
   const register = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value
     const firstName = e.target.firstName.value
     const lastName = e.target.lastName.value
+    const gender = e.target.gender.value
     const isValid = validateRegister({ email, password, firstName, lastName })
     if (!isValid) return;
-    const res = await dispatch(registerAction({ username: firstName + " " + lastName, password, email }));
+    const res = await dispatch(registerAction({ username: firstName + lastName, firstName, lastName, password, email, gender }));
     if (res) {
       //history.push("/main")
       return;
     }
-  };
-  const [sex, setSex] = React.useState('');
-
-  const handleChange = (event) => {
-    setSex(event.target.value);
   };
 
   return (
@@ -92,19 +95,21 @@ export function Register() {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Box sx={{ minWidth: 120 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Sex</InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={sex}
-                          label="Sex"
+                    <Box sx={{ minWidth: 120 }} className="gender">
+                      <FormControl component="fieldset">
+                        <FormLabel component="legend">Gender</FormLabel>
+                        <RadioGroup
+                          row
+                          aria-label="gender"
+                          name="gender"
+                          id="gender"
+                          value={value}
                           onChange={handleChange}
                         >
-                          <MenuItem value={1}>Male</MenuItem>
-                          <MenuItem value={2}>Female</MenuItem>
-                        </Select>
+                          <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                          <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                          <FormControlLabel value="Other" control={<Radio />} label="Other" />
+                        </RadioGroup>
                       </FormControl>
                     </Box>
                   </Grid>

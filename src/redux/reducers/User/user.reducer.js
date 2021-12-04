@@ -3,6 +3,8 @@ import {
     GET_ALL_USER_SUCCESS,
     FIND_USER_BY_ID_FAIL,
     FIND_USER_BY_ID_SUCCESS,
+    UPDATE_USER_FAIL,
+    UPDATE_USER_SUCCESS,
 } from "../../actions/User/type";
 
 const initState = {
@@ -36,6 +38,10 @@ export default function (state = initState, action) {
                 ...state,
                 profile: action.payload,
             };
+        case UPDATE_USER_FAIL:
+            return { ...state };
+        case UPDATE_USER_SUCCESS:
+            return { ...state };
 
         default:
             return state;

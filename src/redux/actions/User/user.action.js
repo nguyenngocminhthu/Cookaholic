@@ -4,6 +4,8 @@ import {
     GET_ALL_USER_SUCCESS,
     FIND_USER_BY_ID_FAIL,
     FIND_USER_BY_ID_SUCCESS,
+    UPDATE_USER_FAIL,
+    UPDATE_USER_SUCCESS,
 
 } from "./type";
 import UserAPI from "../../../apis/User.Api";
@@ -81,6 +83,41 @@ export function findUserByIdAction(id) {
         } catch {
             dispatch(loading());
             dispatch(findUserByIdFail());
+            return false;
+        }
+    };
+}
+
+export function updateUserFail() {
+    return {
+        type: UPDATE_USER_FAIL,
+        payload: {},
+    };
+}
+
+export function updateUserSuccess(data) {
+    return {
+        type: UPDATE_USER_SUCCESS,
+        payload: data,
+    };
+}
+
+export function updateUserAction(id, dataSubmit) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await UserAPI.update(id, dataSubmit);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(updateUserSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(updateUserFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(updateUserFail());
             return false;
         }
     };

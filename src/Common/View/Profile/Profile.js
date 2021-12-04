@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-
+import { NavLink } from 'react-router-dom';
 import "./Profile.css"
 import NotFound from '../../components/404'
 import {
@@ -86,6 +86,8 @@ const Profile = (props) => {
         fetchPost();
     }, [deleteSuccess]);
 
+
+
     const deletePost = async (value) => {
 
         await dispatch(deletePostAction(value))
@@ -138,7 +140,7 @@ const Profile = (props) => {
             <div className="pro">
                 <div className="profile">
                     <Box
-                        sx={{ flexGrow: 1, bgcolor: 'background.paper',display: 'flex', height: 400 }}
+                        sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 400 }}
                     >
                         <Tabs
                             orientation="vertical"
@@ -146,8 +148,8 @@ const Profile = (props) => {
                             value={value}
                             onChange={handleChange}
                             aria-label="Vertical tabs example"
-                            sx={{ borderRight: 1, borderColor: 'divider'}}
-                        >   
+                            sx={{ borderRight: 1, borderColor: 'divider' }}
+                        >
                             <Tab label="PROFILE" {...a11yProps(0)} />
                             <Tab label="INFORMATION" {...a11yProps(1)} />
                             <Tab label="EDIT" {...a11yProps(2)} />
@@ -168,8 +170,8 @@ const Profile = (props) => {
                                         />
                                         <img
                                             className="profileUserImg"
-                                            src={AVT}
-                                            alt=""
+                                            src={value.avt}
+                                            alt={value.username}
                                         />
                                         <div className="Name"> {user.username} </div>
                                     </div>
@@ -221,16 +223,21 @@ const Profile = (props) => {
                                             },
                                         }}
                                     >
-                                        <MenuItem onClick={() => detail(popupItem._id)} disableRipple>
-                                            <VisibilityIcon />
-                                            Detail
+                                        <MenuItem disableRipple>
+                                            <VisibilityIcon style={{ marginRight: "10px" }} />
+                                            <NavLink
+                                                className="popDetail"
+                                                to={`/pagepost/${popupItem._id}`}>
+                                                Detail
+                                            </NavLink>
+
                                         </MenuItem>
                                         <MenuItem onClick={handleClose} disableRipple>
-                                            <EditIcon />
+                                            <EditIcon style={{ marginRight: "10px" }} />
                                             Edit
                                         </MenuItem>
                                         <MenuItem onClick={() => handleDelete(popupItem._id)} disableRipple>
-                                            <DeleteIcon />
+                                            <DeleteIcon style={{ marginRight: "10px" }} />
                                             Delete
                                         </MenuItem>
 
@@ -239,7 +246,7 @@ const Profile = (props) => {
                             </div>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            <Information/>
+                            <Information user={user} />
                         </TabPanel>
                         <TabPanel value={value} index={2}>
                             Item Three
@@ -254,7 +261,7 @@ const Profile = (props) => {
                             Item Six
                         </TabPanel>
                         <TabPanel value={value} index={6}>
-                            <Security/>
+                            <Security />
                         </TabPanel>
 
                     </Box>

@@ -17,9 +17,12 @@ exports.signup = (req, res) => {
     // Tao user tu request gui len
     const user = new User({
         username: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        description: req.body.description,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        sex: req.body.sex
+        gender: req.body.gender
     })
 
     user.save((err, user) => {
@@ -133,6 +136,10 @@ exports.signin = (req, res) => {
             res.status(200).json({
                 id: user._id,
                 username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                gender: user.gender,
+                description: user.description,
                 email: user.email,
                 roles: authorities,
                 accessToken: token,
@@ -212,7 +219,7 @@ exports.sendLink = async (req, res) => {
 
 const getAuth = async (userId) => {
     try {
-        const user = await User.findOne({_id: userId }).populate("roles");
+        const user = await User.findOne({ _id: userId }).populate("roles");
         console.log(user)
         let authorities = []
 
@@ -246,7 +253,7 @@ const getAuth = async (userId) => {
 };
 
 exports.handleGetAuth = async (req, res) => {
-    try{
+    try {
         const token = req.body.token;
         console.log(1)
         // console.log(token)
@@ -258,11 +265,11 @@ exports.handleGetAuth = async (req, res) => {
             return
         }
         res.json({ message: result.message, success: false })
-    } catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({message: err, success: false})
+        res.status(500).json({ message: err, success: false })
     }
-    
+
 }
 
 exports.resetPassword = async (req, res) => {

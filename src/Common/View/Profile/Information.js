@@ -1,261 +1,341 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Container, Grid, Typography, Divider, CardContent, CardActions, Card, Button, Avatar, TextField, CardHeader } from '@mui/material';
-import AVT from '../../img/Avt.jpg';
-const states = [
-    {
-      value: 'HCM',
-      label: 'Hồ Chí Minh'
-    },
-    {
-      value: 'HN',
-      label: 'Hà Nội'
-    },
-    {
-      value: 'BT-VT',
-      label: 'Bà Rịa - Vũng Tàu'
-    }
-  ];
-const user = {
-    avatar: AVT,
-    city: 'Hồ Chí Minh',
-    country: 'Việt Nam',
-    jobTitle: 'Senior Developer',
-    name: 'Thieu hoang',
-    timezone: 'GTM-7'
-  };
+import { updateUserAction } from "../../../redux/actions/User/user.action"
+import { uploadImagesToFirebase } from "../../utils/imgFirebase"
+import { useDispatch } from "react-redux";
+import ImageUploading from 'react-images-uploading';
+import EditIcon from '@mui/icons-material/Edit';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+const gender = [
+  {
+    value: 'Male',
+    label: 'Male'
+  },
+  {
+    value: 'Female',
+    label: 'Female'
+  },
+  {
+    value: 'Other',
+    label: 'Other'
+  }
+];
+
 export const Information = (props) => {
-    const [values, setValues] = useState({
-        firstName: 'hoang',
-        lastName: 'Thieu',
-        email: 'thieuhoang@gmail.com',
-        phone: '0967355370',
-        state: 'Hồ Chí Minh',
-        country: 'Việt Nam'
-      });
-    
-      const handleChange = (event) => {
-        setValues({
-          ...values,
-          [event.target.name]: event.target.value
-        });
-      };
-    return (
-        <Box
-        component="main"
-        sx={{
-            flexGrow: 1,
-        }}
-        >
-      <Container maxWidth="lg">
-        <Grid
-          container
-          spacing={3}
-        >
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xs={12}
-          >
-            <Card>
-                <CardContent>
-                <Box
-                    sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    flexDirection: 'column'
-                    }}
-                >
-                    <Avatar
-                    src={user.avatar}
-                    sx={{
-                        height: 64,
-                        mb: 2,
-                        width: 64
-                    }}
-                    />
-                    <Typography
-                    color="textPrimary"
-                    gutterBottom
-                    variant="h5"
-                    >
-                    {user.name}
-                    </Typography>
-                    <Typography
-                    color="textSecondary"
-                    variant="body2"
-                    >
-                    {`${user.city} ${user.country}`}
-                    </Typography>
-                    <Typography
-                    color="textSecondary"
-                    variant="body2"
-                    >
-                    {user.timezone}
-                    </Typography>
-                </Box>
-                </CardContent>
-                <Divider />
-                <CardActions>
-                <Button
-                    color="primary"
-                    fullWidth
-                    variant="text"
-                >
-                    Upload picture
-                </Button>
-                </CardActions>
-            </Card>
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            md={6}
-            xs={12}
-          >
-            <form
-      autoComplete="off"
-      noValidate
-      {...props}
+
+  const { user } = props;
+  useEffect(() => {
+    console.log("log at => Information ==> user: ", user)
+  }, [user])
+  useEffect(() => {
+    console.log("log at => Information ==> user: ", user)
+  }, [])
+
+  const dispatch = useDispatch();
+  const [images, setImages] = useState([]);
+
+  const [values, setValues] = useState({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    phone: user.phone,
+    description: user.description,
+    gender: user.gender,
+    avt: user.avt,
+  });
+
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const onChangeImg = (imageList, addUpdateIndex) => {
+    // data for submit
+    console.log(imageList, addUpdateIndex);
+    setImages(imageList);
+  };
+
+  const updateProfile = async (e) => {
+    e.preventDefault();
+
+    if (images.length > 0) {
+      if (images[0].preview !== user.avt) {
+        const url = await dispatch(uploadImagesToFirebase([images[0].file], "Avatar"));
+        console.log("log at ==> Information ==> url: ", url);
+        if (url) {
+          await dispatch(
+            updateUserAction(user._id, { username: values.firstName + values.lastName, firstName: values.firstName, lastName: values.lastName, avt: url, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
+
+          );
+        }
+
+      } else {
+        await dispatch(
+          updateUserAction(user._id, { username: values.firstName + values.lastName, firstName: values.firstName, lastName: values.lastName, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
+        );
+
+      }
+    }
+    else {
+      await dispatch(
+        updateUserAction(user._id, { username: values.firstName + values.lastName, firstName: values.firstName, lastName: values.lastName, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
+      );
+
+    }
+
+
+  };
+
+  return (
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+      }}
     >
-      <Card>
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-          sx={{backgroundColor: '#e6e8ea'}}
-        />
-        <Divider />
-        <CardContent>
+      <Container maxWidth="lg">
+        <form
+          onSubmit={updateProfile}
+          autoComplete="off"
+          noValidate
+          {...props}
+        >
           <Grid
             container
             spacing={3}
           >
+
             <Grid
+              height="100%"
               item
+              lg={4}
               md={6}
               xs={12}
             >
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="firstName"
-                onChange={handleChange}
-                required
-                value={values.firstName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Last name"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Email Address"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Phone Number"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
+
+              <Card>
+                <CardContent className="cardInfo">
+                  <Box
+
+                    sx={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
                   >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+                    <Avatar
+                      className="avt"
+                      src={user.avt}
+                      sx={{
+                        height: 100,
+                        mb: 3,
+                        width: 100
+                      }}
+                    />
+                    <ImageUploading
+                      images={images}
+                      multiple={false}
+                      value={images}
+                      onChange={onChangeImg}
+                      dataURLKey="data_url"
+                      maxNumber="1"
+                    >
+                      {
+                        ({
+                          imageList,
+                          onImageUpload,
+                          onImageRemove,
+                        }) => (
+                          // write your building UI
+                          <div className="upload_image-wrapper">
+                            <button
+                              type="button"
+                              onClick={onImageUpload}
+                              className="editAvt"
+                            >
+                              <EditIcon />
+                            </button >
+
+                            {
+                              imageList.map((image, index) => (
+                                <div key={index} className="image-item">
+                                  <img src={image['data_url']} alt="" width="100" />
+                                  <div className="image-item__btn-wrapper">
+                                    <button className="removeImg" type="button" onClick={() => onImageRemove(index)}><RemoveCircleOutlineIcon /></button>
+                                  </div>
+                                </div>
+                              ))
+                            }
+
+
+                          </div >
+                        )}
+                    </ImageUploading >
+                    <Typography
+                      color="textPrimary"
+                      gutterBottom
+                      variant="h5"
+                    >
+                      {`${user.firstName} ${user.lastName}`}
+                    </Typography>
+                    <Typography
+                      color="textSecondary"
+                      variant="body2"
+                    >
+                      {values.description}
+                    </Typography>
+
+                  </Box>
+                </CardContent>
+
+
+              </Card>
             </Grid>
+            <Grid
+              item
+              lg={8}
+              md={6}
+              xs={12}
+            >
+
+              <Card>
+                <CardHeader
+                  subheader="The information can be edited"
+                  title="Profile"
+                  sx={{ backgroundColor: '#e6e8ea' }}
+                />
+                <Divider />
+                <CardContent>
+                  <Grid
+                    container
+                    spacing={3}
+                  >
+                    <Grid
+                      item
+                      md={6}
+                      xs={12}
+                    >
+                      <TextField
+                        fullWidth
+                        helperText="Please specify the first name"
+                        label="First name"
+                        name="firstName"
+                        onChange={handleChange}
+                        required
+                        value={values.firstName}
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      md={6}
+                      xs={12}
+                    >
+                      <TextField
+                        fullWidth
+                        label="Last name"
+                        name="lastName"
+                        onChange={handleChange}
+                        required
+                        value={values.lastName}
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      md={6}
+                      xs={12}
+                    >
+                      <TextField
+                        fullWidth
+                        label="Email Address"
+                        name="email"
+                        onChange={handleChange}
+                        required
+                        value={values.email}
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      md={6}
+                      xs={12}
+                    >
+                      <TextField
+                        fullWidth
+                        label="Phone Number"
+                        name="phone"
+                        onChange={handleChange}
+                        type="number"
+                        value={values.phone}
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      md={6}
+                      xs={12}
+                    >
+                      <TextField
+                        fullWidth
+                        label="Description"
+                        name="description"
+                        onChange={handleChange}
+                        required
+                        value={values.description}
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      md={6}
+                      xs={12}
+                    >
+                      <TextField
+                        fullWidth
+                        label="Select Gender"
+                        name="gender"
+                        onChange={handleChange}
+                        required
+                        select
+                        SelectProps={{ native: true }}
+                        value={values.gender}
+                        variant="outlined"
+                      >
+                        {gender.map((option) => (
+                          <option
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+
+
+              </Card>
+
+            </Grid>
+
           </Grid>
-        </CardContent>
-        <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            p: 2
-          }}
-        >
-          <Button
-            color="primary"
-            variant="contained"
-          >
-            Save
-          </Button>
-        </Box>
-      </Card>
-    </form>
-          </Grid>
-        </Grid>
+          <div style={{ marginTop: "20px" }}>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+            >
+              Save
+            </Button>{" "}
+          </div>
+        </form>
       </Container>
-    </Box>
-    )
+    </Box >
+  )
 }
 
 
