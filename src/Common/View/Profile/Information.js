@@ -36,7 +36,6 @@ export const Information = (props) => {
   const [images, setImages] = useState([]);
 
   const [values, setValues] = useState({
-    username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
@@ -68,14 +67,14 @@ export const Information = (props) => {
         console.log("log at ==> Information ==> url: ", url);
         if (url) {
           await dispatch(
-            updateUserAction(user._id, { username: values.username, firstName: values.firstName, lastName: values.lastName, avt: url, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
+            updateUserAction(user._id, { username: values.firstName + values.lastName, firstName: values.firstName, lastName: values.lastName, avt: url, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
 
           );
         }
 
       } else {
         await dispatch(
-          updateUserAction(user._id, { username: values.username, firstName: values.firstName, lastName: values.lastName, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
+          updateUserAction(user._id, { username: values.firstName + values.lastName, firstName: values.firstName, lastName: values.lastName, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
         );
 
       }
