@@ -16,46 +16,6 @@ module.exports = function (passport) {
         });
     });
 
-    passport.use(new GoogleStrategy({
-        clientID: '741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com',
-        clientSecret: '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',
-        callbackURL: "http://localhost:8888/auth/google/callback"
-    },
-        function (accessToken, refreshToken, profile, done) {
-            User.findOne({ googleId: profile.id },
-                (err, user) => {
-                    if (err)
-                        return done(err);
-
-                    if (user) {
-                        return done(null, user);
-                    }
-                    else {
-                        var newUser = new User({
-                            username: profile.displayName,
-                            email: profile.emails[0].value,
-                            googleId: profile.id
-                        })
-                        newUser.save((err, user) => {
-                            if (err)
-                                throw err;
-
-                            // Tim 1 document trong collection roles co name : "user"
-                            Role.findOne({ name: "user" }, (err, role) => {
-                                if (err)
-                                    throw err;
-
-                                user.roles = [role._id]
-                                user.save()
-
-                                return done(null, user);
-                            })
-
-                        })
-                    }
-                })
-        }
-    ))
 
     passport.use(new FacebookStrategy({
         clientID: '876160799940732',

@@ -172,6 +172,7 @@ exports.googlelogin = (req, res) => {
                                 username: name,
                                 email: email,
                                 password: bcrypt.hashSync(password, 8),
+                                avt:picture
                             })
 
                             Role.findOne({ name: "user" }, (err, role) => {

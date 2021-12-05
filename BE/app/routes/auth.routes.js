@@ -43,11 +43,6 @@ module.exports = function (app) {
 
     app.post("/api/auth/googlelogin", controller.googlelogin)
 
-    app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-    app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), oauth.google)
-
-
     app.get('/auth/facebook',
         passport.authenticate('facebook', { scope: ['email'] }));
 
