@@ -5,6 +5,8 @@ import {
     FIND_USER_BY_ID_SUCCESS,
     UPDATE_USER_FAIL,
     UPDATE_USER_SUCCESS,
+    CHANGE_PASS_FAIL,
+    CHANGE_PASS_SUCCESS,
 } from "../../actions/User/type";
 
 const initState = {
@@ -41,6 +43,10 @@ export default function (state = initState, action) {
         case UPDATE_USER_FAIL:
             return { ...state };
         case UPDATE_USER_SUCCESS:
+            return { ...state };
+        case CHANGE_PASS_FAIL:
+            return { ...state };
+        case CHANGE_PASS_SUCCESS:
             return { ...state };
 
         default:

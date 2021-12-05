@@ -261,7 +261,7 @@ const Profile = (props) => {
                             Item Six
                         </TabPanel>
                         <TabPanel value={value} index={6}>
-                            <Security />
+                            <Security user={user} />
                         </TabPanel>
 
                     </Box>

@@ -65,20 +65,22 @@ const update = async (id, body) => {
   }
 };
 
-const updateProfile = async (body) => {
+const changePass = async (id, body) => {
   try {
-    const res = await axiosClient.post(`/user/update`, body);
-    toastNotify(res ? res.message.VN : "Cập nhật user thất bại");
+    const res = await axiosClient.put(`${url}/changePassword/${id}`, body);
+    toastNotify(res ? res.message : "Change Password fail");
+
     return res && res.data
       ? { data: res.data || {}, success: true }
       : { success: false };
   } catch (error) {
-    toastNotify("Cập nhật user thất bại");
+    toastNotify("Change Password fail");
     return {
       success: false,
     };
   }
 };
+
 
 const filter = async (queryParams) => {
   try {
@@ -97,6 +99,6 @@ const filter = async (queryParams) => {
   }
 };
 
-const User = { insert, filter, getAll, update, updateProfile, findById };
+const User = { insert, filter, getAll, update, findById, changePass };
 
 export default User;

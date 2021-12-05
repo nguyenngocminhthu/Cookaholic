@@ -24,7 +24,7 @@ import { useHistory } from "react-router";
 import { loginAction, googleloginAction } from "../../../redux/actions/Auth/authActions";
 import myImage from "../../img/egg.png";
 import "./LoRe.css";
-import { validateLogin } from "./Validate";
+import { validateLogin } from "./validate";
 import GoogleLogin from 'react-google-login';
 
 const theme = createTheme();
@@ -285,13 +285,13 @@ const Login = () => {
                       <SvgButton><FacebookIcon />Facebook</SvgButton>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <GoogleLogin
-                          clientId="741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com"
-                          buttonText="Login with google "
-                          onSuccess={responseSuccessGoogle}
-                          onFailure={responseErrorGoogle}
-                          cookiePolicy={'single_host_origin'}
-                        />
+                      <GoogleLogin
+                        clientId="741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com"
+                        buttonText="Login with google "
+                        onSuccess={responseSuccessGoogle}
+                        onFailure={responseErrorGoogle}
+                        cookiePolicy={'single_host_origin'}
+                      />
                     </Grid>
                   </Grid>
                 </Box>

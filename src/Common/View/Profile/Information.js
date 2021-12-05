@@ -208,7 +208,7 @@ export const Information = (props) => {
                     >
                       <span className="infor-left">Gender:  </span>{values.gender}
                     </Typography>
-                    
+
 
                   </Box>
                 </CardContent>
@@ -347,7 +347,7 @@ export const Information = (props) => {
 
           </Grid>
           <div style={{ marginTop: "20px" }}>
-            <button style = {{float: 'right'}} className="button-74" role="button" type="submit">Save</button>
+            <button style={{ float: 'right' }} className="button-74" role="button" type="submit">Save</button>
           </div>
         </form>
       </Container>

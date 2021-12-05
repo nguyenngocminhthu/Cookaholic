@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import myImage from "../../img/egg.png";
 
 import './LoRe.css';
-import { validateRegister } from "./Validate";
+import { validateRegister } from "./validate";
 import { registerAction } from "../../../redux/actions/Auth/authActions";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";

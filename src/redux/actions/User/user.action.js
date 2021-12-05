@@ -6,6 +6,8 @@ import {
     FIND_USER_BY_ID_SUCCESS,
     UPDATE_USER_FAIL,
     UPDATE_USER_SUCCESS,
+    CHANGE_PASS_FAIL,
+    CHANGE_PASS_SUCCESS,
 
 } from "./type";
 import UserAPI from "../../../apis/User.Api";
@@ -118,6 +120,41 @@ export function updateUserAction(id, dataSubmit) {
         } catch {
             dispatch(loading());
             dispatch(updateUserFail());
+            return false;
+        }
+    };
+}
+
+export function changePassFail() {
+    return {
+        type: CHANGE_PASS_FAIL,
+        payload: {},
+    };
+}
+
+export function changePassSuccess(data) {
+    return {
+        type: CHANGE_PASS_SUCCESS,
+        payload: data,
+    };
+}
+
+export function changePassAction(id, dataSubmit) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await UserAPI.changePass(id, dataSubmit);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(changePassSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(changePassFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(changePassFail());
             return false;
         }
     };

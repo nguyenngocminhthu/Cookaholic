@@ -6,7 +6,7 @@ import {
     Typography,
     Grid
 } from '@mui/material';
-import { getAllRecipeAction, acceptPostAction } from "../../../redux/actions/Recipe/recipe.action";
+import { getAllRecipeAction } from "../../../redux/actions/Recipe/recipe.action";
 import { useSelector, useDispatch } from "react-redux";
 const Post = (props) => {
 
