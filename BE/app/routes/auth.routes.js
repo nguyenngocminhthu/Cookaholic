@@ -25,6 +25,8 @@ module.exports = function (app) {
         controller.signup
     )
 
+    app.post("/api/auth/confirm/:userId/:confirmationCode", controller.verifyAccount)
+
     app.post("/api/auth/signin",
         // [
         //     signinValidator

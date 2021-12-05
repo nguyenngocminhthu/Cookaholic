@@ -1,20 +1,18 @@
 const config = require("../config/auth.config")
 const db = require("../models")
-// const User = db.user
-// const Role = db.role
 const { user: User, role: Role, refreshToken: RefreshToken, token: Token } = db;
 
-// var jwt = require("jsonwebtoken")
-// var bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt");
-const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 
 const { OAuth2Client } = require('google-auth-library');
 const { response } = require("express");
 const client = new OAuth2Client("741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com")
 const fetch = require('node-fetch')
+
+const { sendResetPassword, sendVerifyAccount } = require("../middlewares/sendEmail")
+
 // Kiem tra, them roles va luu user vao db
 exports.signup = (req, res) => {
 
@@ -23,7 +21,8 @@ exports.signup = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        sex: req.body.sex
+        sex: req.body.sex,
+        confirmationCode: crypto.randomBytes(32).toString("hex"),
     })
 
     user.save((err, user) => {
@@ -46,13 +45,17 @@ exports.signup = (req, res) => {
                     }
 
                     user.roles = roles.map(role => role._id)
-                    user.save(err => {
+                    user.save(async (err, user) => {
                         if (err) {
                             res.status(500).json({ message: err, success: false })
                             return
                         }
 
-                        res.json({ message: "User was registered successfully!", success: true })
+                        res.json({ message: "User was registered successfully! Please check email!", success: true })
+                        const link = `http://localhost:8888/api/auth/confirm/${user._id}/${user.confirmationCode}`
+
+                        await sendVerifyAccount(user.email, link)
+
                     })
 
                 }
@@ -66,17 +69,50 @@ exports.signup = (req, res) => {
                     return
                 }
                 user.roles = [role._id]
-                user.save(err => {
+                user.save(async (err, user) => {
                     if (err) {
                         res.status(500).json({ message: err, success: false })
                         return
                     }
 
-                    res.json({ message: "User was registered successfully!", success: true })
+                    res.json({ message: "User was registered successfully! Please check email!", success: true })
+                    const link = `http://localhost:8888/api/auth/confirm/${user._id}/${user.confirmationCode}`
+
+                    await sendVerifyAccount(user.email, link)
+
                 })
             })
         }
     })
+}
+
+exports.verifyAccount = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            res.status(400).json({ message: "invalid link or expired", success: false })
+            return
+        }
+
+        const confirmationCode = await User.findOne({
+            userId: user._id,
+            confirmationCode: req.params.confirmationCode,
+        });
+        if (!confirmationCode) {
+            res.status(400).json({ message: "invalid link or expired", success: false })
+            return
+        }
+
+        user.isVerified = true
+        // user.password=req.body.password
+        user.confirmationCode = ""
+        await user.save();
+
+        res.status(200).json({ message: "Your account is verified.", success: true });
+    } catch (error) {
+        res.status(500).json({ message: "An error occured", success: false });
+        console.log(error);
+    }
 }
 
 // Kiem tra dang nhap neu thanh cong tra ve user va accestoken
@@ -185,7 +221,8 @@ exports.googlelogin = (req, res) => {
                                     username: name,
                                     email: email,
                                     password: bcrypt.hashSync(password, 8),
-                                    avt: picture
+                                    avt: picture,
+                                    isVerified: true
                                 })
 
                                 Role.findOne({ name: "user" }, (err, role) => {
@@ -265,7 +302,8 @@ exports.facebooklogin = (req, res) => {
                                 username: name,
                                 email: email,
                                 password: bcrypt.hashSync(password, 8),
-                                avt: image
+                                avt: image,
+                                isVerified: true
                             })
 
                             Role.findOne({ name: "user" }, (err, role) => {
@@ -360,7 +398,7 @@ exports.sendLink = async (req, res) => {
         }
 
         const link = `http://localhost:8888/api/auth/${user._id}/${token.token}`
-        await sendEmail(user.email, "Password reset", link)
+        await sendResetPassword(user.email, link)
 
         res.json({ message: "password reset link sent to your email account", success: true })
 
