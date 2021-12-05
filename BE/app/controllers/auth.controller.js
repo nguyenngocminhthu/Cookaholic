@@ -22,9 +22,12 @@ exports.signup = (req, res) => {
     // Tao user tu request gui len
     const user = new User({
         username: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        description: req.body.description,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        sex: req.body.sex
+        gender: req.body.gender
     })
 
     user.save((err, user) => {
@@ -138,6 +141,10 @@ exports.signin = (req, res) => {
             res.status(200).json({
                 id: user._id,
                 username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                gender: user.gender,
+                description: user.description,
                 email: user.email,
                 roles: authorities,
                 accessToken: token,
@@ -280,7 +287,6 @@ exports.sendLink = async (req, res) => {
 const getAuth = async (userId) => {
     try {
         const user = await User.findOne({ _id: userId }).populate("roles");
-
         let authorities = []
 
         for (let i = 0; i < user.roles.length; i++) {
@@ -315,6 +321,7 @@ const getAuth = async (userId) => {
 exports.handleGetAuth = async (req, res) => {
     try {
         const token = req.body.token;
+        console.log(1)
         // console.log(token)
         const result = await getAuth(token.id);
         console.log(result)

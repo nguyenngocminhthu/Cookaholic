@@ -264,7 +264,7 @@ const Login = () => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 1, mb: 4 }}
+                    sx={{ mt: 1, mb: 4, color: 'black' }}
                   >
                     Sign In
                   </Button>
@@ -273,14 +273,13 @@ const Login = () => {
                       <SvgButton><FacebookIcon />Facebook</SvgButton>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <SvgButton><GoogleIcon />Google</SvgButton>
-                      <GoogleLogin
-                        clientId="741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com"
-                        buttonText="Login with google "
-                        onSuccess={responseSuccessGoogle}
-                        onFailure={responseErrorGoogle}
-                        cookiePolicy={'single_host_origin'}
-                      />
+                        <GoogleLogin
+                          clientId="741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com"
+                          buttonText="Login with google "
+                          onSuccess={responseSuccessGoogle}
+                          onFailure={responseErrorGoogle}
+                          cookiePolicy={'single_host_origin'}
+                        />
                     </Grid>
                   </Grid>
                 </Box>

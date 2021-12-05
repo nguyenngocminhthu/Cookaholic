@@ -1,0 +1,20 @@
+.Center {
+  margin: 0% 15% 0% 15%;
+}
+.Decitext {
+  text-align: left;
+  margin-right: 5rem;
+}
+.TextDetails {
+  font-weight: bold;
+}
+.Clock {
+  text-align: right;
+  width: 20%;
+}
+.ingredients {
+  text-align: left;
+}
+.btnBack {
+  text-align: left;
+}

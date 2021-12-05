@@ -2,7 +2,7 @@ import toastNotify from "../Common/Toastify/toastNotify";
 import axiosClient from "./axiosClient";
 import queryString from "query-string";
 
-const url = "/admin";
+const url = "/api/user";
 const insert = async (body) => {
   try {
     console.log("log at ==> User.Api.js ==> body: ", body);
@@ -19,11 +19,9 @@ const insert = async (body) => {
   }
 };
 
-const getAll = async (queryParams) => {
+const getAll = async () => {
   try {
-    const query = queryString.stringify(queryParams);
-
-    const res = await axiosClient.get(`${url}/user/get-all?${query}`);
+    const res = await axiosClient.get(`${url}`);
     // toastNotify(res ? res.message.VN : "Lấy user thất bại");
     return res && res.data
       ? { data: res.data || {}, success: true }
@@ -36,15 +34,31 @@ const getAll = async (queryParams) => {
   }
 };
 
-const update = async (body) => {
+const findById = async (id) => {
   try {
-    const res = await axiosClient.post(`${url}/user/update`, body);
-    toastNotify(res ? res.message.VN : "Cập nhật user thất bại");
+    const res = await axiosClient.get(`${url}/${id}`);
+
     return res && res.data
       ? { data: res.data || {}, success: true }
       : { success: false };
   } catch (error) {
-    toastNotify("Cập nhật user thất bại");
+
+    return {
+      success: false,
+    };
+  }
+};
+
+const update = async (id, body) => {
+  try {
+    const res = await axiosClient.put(`${url}/${id}`, body);
+    toastNotify(res ? res.message : "Update Profile fail");
+
+    return res && res.data
+      ? { data: res.data || {}, success: true }
+      : { success: false };
+  } catch (error) {
+    toastNotify("Update Profile fail");
     return {
       success: false,
     };
@@ -83,6 +97,6 @@ const filter = async (queryParams) => {
   }
 };
 
-const User = { insert, filter, getAll, update, updateProfile };
+const User = { insert, filter, getAll, update, updateProfile, findById };
 
 export default User;

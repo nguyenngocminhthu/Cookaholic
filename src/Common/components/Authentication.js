@@ -7,7 +7,7 @@ import Login from "../View/Authentication/Login";
 
 const Authentication = (SpecificComponent, option, adminRoute = null) => {
     function AuthenticationCheck(props) {
-        const user = useSelector((state) => state.auth.role);
+        const user = useSelector((state) => state.auth.user);
         const dispatch = useDispatch();
         const history = useHistory();
 

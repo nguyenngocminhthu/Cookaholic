@@ -1,0 +1,33 @@
+.h1title{
+    font-size: 26px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.65px;
+    font-family: 'Roboto', sans-serif;
+    border-bottom: 2px solid brown;
+    font-weight: 500;
+    
+}
+.h2title{
+    font-family: "Roboto", sans-serif, Arial;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 20px 0 20px;
+}
+.LeftText{
+    text-align: left;
+}
+.h3title{
+    font-size: 28px;
+    color: #535353;
+    font-family: 'Crimson Text',serif;
+}
+.titleRight{
+    font-size: 28px;
+    color: #535353;
+    font-weight: 500;
+    font-family: 'Crimson Text',serif;
+}
+.IconSpace{
+    padding: 10px;
+}

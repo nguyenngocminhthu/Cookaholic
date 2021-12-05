@@ -104,7 +104,7 @@ exports.findByTopic = async (req, res) => {
 // Get recipe with user and status
 exports.findByUser = async (req, res) => {
     const id = req.params.id
-    const status = req.params.status
+    const status = req.query.status
     Recipe.find({ user: id, status: status })
         .then(data => {
             if (!data) {

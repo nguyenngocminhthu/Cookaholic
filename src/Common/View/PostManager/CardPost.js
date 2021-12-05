@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink } from "react-router-dom";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -14,13 +15,11 @@ import { red } from '@mui/material/colors';
 import { BsCheckCircle } from 'react-icons/bs'
 import { ImCancelCircle } from 'react-icons/im'
 
-import { CgMoreO } from 'react-icons/cg'
+import { FaPlayCircle } from 'react-icons/fa'
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import RatingShow from '../Detail/Rating';
-import RecipesDetail from '../Detail/RecipesDetail';
-import Modal from 'react-awesome-modal';
+
 import './CardPost.css';
 import { acceptPostAction, deletePostAction } from "../../../redux/actions/Recipe/recipe.action";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,33 +30,6 @@ export default function CardPost(props) {
 
   const { list } = props;
   const [currentPost, setCurrentPost] = useState({});
-  const [visible, setVisible] = useState();
-  const openModal = (index) => {
-    setCurrentPost(list[index]);
-    setVisible(!visible);
-    setShowDetail(true);
-    setShowRatingShow(false);
-
-  };
-
-
-  const closeModal = () => setVisible(false);
-
-  const [showDetail, setShowDetail] = useState(true);
-  const [showRatingShow, setShowRatingShow] = useState(false);
-  const showComp = (element) => {
-    if (element === "detail") {
-      setShowDetail(true);
-      setShowRatingShow(false);
-    } else {
-      setShowDetail(false);
-      setShowRatingShow(true);
-    }
-
-  }
-
-
-
 
   const accept = async (value) => {
 
@@ -91,10 +63,11 @@ export default function CardPost(props) {
     console.log("log at => CardPost => value.id:  ", value._id);
     return (
       <>
-        <Grid key={index} item xs={4} sm={6} md={3} mr={3}>
+        <Grid key={index} item xs={3} sm={6} md={3} mb={3}>
 
-          <Card sx={{ maxWidth: 345, minHeight: 500, position: "relative" }}>
+          <Card className="cardRec" sx={{ maxWidth: 240, minHeight: 400, position: "relative" }}>
             <CardHeader
+              className="customHeader"
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                   R
@@ -126,59 +99,18 @@ export default function CardPost(props) {
               <IconButton aria-label="deny" onClick={() => handleDelete(value._id)}>
                 <ImCancelCircle />
               </IconButton>
-              <IconButton aria-label="more" onClick={() => openModal(index)}>
-                <CgMoreO />
+              <IconButton aria-label="more">
+                <NavLink
+                  to={`/pagepost/${value._id}`}>
+                  <FaPlayCircle />
+                </NavLink>
               </IconButton>
             </CardActions>
           </Card>
 
 
         </Grid >
-        <Modal
-          visible={visible}
-          width="80%"
-          height="90%"
-          effect="fadeInUp"
-          onClickAway={closeModal}
 
-        >
-          <div key={currentPost}>
-            <div className="close-detail">
-              <button className="close" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></button>
-            </div>
-
-            <div className="detail">
-              <div className="row">
-                <div className="col-6 ">
-                  <div className="img-del">
-                    <img className="imgdetail" src={currentPost.image} alt={currentPost.name} />
-                  </div>
-
-                </div>
-                <div className="col-6">
-                  <div className="title">
-                    <button className="detailrating" onClick={() => showComp("detail")}>
-                      Detail
-                    </button>
-                    <button className="detailrating" onClick={() => showComp()}>
-                      Rating
-                    </button>
-                  </div>
-
-
-                  {showDetail && <RecipesDetail recipe={currentPost} />}
-
-                  {showRatingShow && <RatingShow recipe={currentPost} />}
-
-
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-        </Modal>
       </>
     );
   })

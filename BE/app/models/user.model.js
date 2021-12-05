@@ -4,7 +4,11 @@ const User = mongoose.model(
     "User",
     new mongoose.Schema({
         username: String,
+        firstName: String,
+        lastName: String,
         email: String,
+        phone: Number,
+        description: String,
         password: String,
         googleId: String,
         facebookId: String,

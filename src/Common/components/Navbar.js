@@ -51,13 +51,16 @@ const Navbar = () => {
         }
     }, [isRegister])
 
+    const userId = useSelector((state) => state.auth.user._id) || []
+    console.log("log at ==> Navbar.js ==> user: ", userId)
+
     const USER = () => {
         console.log("log at ==>  navbar ==> islogin:", isLogin)
         if (isLogin)
             return (
                 <ul className="signin-up">
                     <li className="pro5" onClick={closeMobileMenu}>
-                        <NavLink to="/profile" className="aStyle" value="Profile">
+                        <NavLink to={`/profile/${userId}`} className="aStyle" value="Profile">
                             <i className="fa fa-user" aria-hidden="true"></i>
                         </NavLink>
                     </li>
@@ -107,8 +110,8 @@ const Navbar = () => {
                                 </NavLink>
                             </li>
                             <li className="option" onClick={closeMobileMenu}>
-                                <NavLink className="aStyle" to="/menu">
-                                    MENU
+                                <NavLink className="aStyle" to="/policy">
+                                    POLICY
                                 </NavLink>
                             </li>
                             <li className="option" onClick={closeMobileMenu}>
@@ -117,8 +120,8 @@ const Navbar = () => {
                                 </NavLink>
                             </li>
                             <li className="option" onClick={closeMobileMenu}>
-                                <NavLink className="aStyle" to="/about">
-                                    CONTACT
+                                <NavLink className="aStyle" to="/support">
+                                    SUPPORT
                                 </NavLink>
                             </li>
 

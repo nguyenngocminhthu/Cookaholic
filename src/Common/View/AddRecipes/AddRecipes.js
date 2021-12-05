@@ -2,6 +2,7 @@ import React, { useState, useEffect, forwardRef } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import ImageUploading from 'react-images-uploading';
 import imgUpload from '../../img/imgUpload.png'
+import { useHistory } from "react-router";
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -12,20 +13,23 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import Grid from '@mui/material/Grid';
 
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 
 import { getAllTopicAction } from "../../../redux/actions/Topic/topic.action"
 import './AddRecipes.css';
 import NotFound from '../../components/404';
 
 import { uploadImagesToFirebase } from "../../utils/imgFirebase";
+
 import {
     addRecipeAction,
 } from "../../../redux/actions/Recipe/recipe.action";
+import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/core/ButtonUnstyled';
 
 
 const AddRecipes = (props) => {
@@ -42,6 +46,12 @@ const AddRecipes = (props) => {
     useEffect(() => {
         console.log("log at ==> AddRecipes.js => topics: ", topics);
     }, [topics])
+
+    const history = useHistory();
+    const handleGoBack = () => {
+        history.goBack();
+        return;
+    };
 
 
     const [topic, setTopic] = useState('Asian');
@@ -76,21 +86,117 @@ const AddRecipes = (props) => {
     ButtonRoot.propTypes = {
         children: PropTypes.node,
     };
+    const CustomButtonRoot = styled(ButtonRoot)(
+        ({ theme }) => `
+  overflow: visible;
+  cursor: pointer;
+  --main-color: ${theme.palette.mode === 'light' ? 'rgb(25,118,210)' : 'rgb(144,202,249)'
+            };
+  --hover-color: ${theme.palette.mode === 'light'
+                ? 'rgba(25,118,210,0.04)'
+                : 'rgba(144,202,249,0.08)'
+            };
+  --active-color: ${theme.palette.mode === 'light'
+                ? 'rgba(25,118,210,0.12)'
+                : 'rgba(144,202,249,0.24)'
+            };
+
+  & polygon {
+    fill: transparent;
+    transition: all 800ms ease;
+    pointer-events: none;
+  }
+  
+  & .bg {
+    stroke: var(--main-color);
+    stroke-width: 0.5;
+    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.1));
+    fill: transparent;
+  }
+
+  & .borderEffect {
+    stroke: var(--main-color);
+    stroke-width: 2;
+    stroke-dasharray: 150 600;
+    stroke-dashoffset: 150;
+    fill: transparent;
+  }
+
+  &:hover,
+  &.${buttonUnstyledClasses.focusVisible} {
+    .borderEffect {
+      stroke-dashoffset: -600;
+    }
+
+    .bg {
+      fill: var(--hover-color);
+    }
+  }
+
+  &:focus,
+  &.${buttonUnstyledClasses.focusVisible} {
+    outline: none;
+  }
+
+  &.${buttonUnstyledClasses.active} { 
+    & .bg {
+      fill: var(--active-color);
+      transition: fill 300ms ease-out;
+    }
+  }
+
+  & foreignObject {
+    pointer-events: none;
+
+    & .content {
+      font-family: Helvetica, Inter, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 200;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--main-color);
+      text-transform: uppercase;
+    }
+
+    & svg {
+      margin: 0 5px;
+    }
+  }`,
+    );
+
+    const SvgButton = React.forwardRef(function SvgButton(props, ref) {
+        return <ButtonUnstyled {...props} component={CustomButtonRoot} ref={ref} />;
+    });
+
+    const userId = useSelector((state) => state.auth.user._id) || []
+    console.log("log at ==> Header.js ==> user: ", userId)
 
     const addRecipe = async (e) => {
         e.preventDefault();
+
+
+
         const data = {
             name: e.target.recipename.value,
             title: e.target.title.value,
             topic: e.target.topic.value,
+            time: e.target.time.value,
+            serving: e.target.serving.value,
             ingre: [e.target.ingredients.value],
             directions: [e.target.direction.value],
+            user: e.target.user.value,
         }
         const url = await dispatch(uploadImagesToFirebase([images[0].file], "Recipe"));
         console.log("log at ==> add recipe ==> url: ", url);
         if (url) {
             await dispatch(addRecipeAction({ ...data, image: url }))
         }
+
+
+
+
     };
     const roles = useSelector((state) => state.auth.user.roles) || []
     console.log("log at ==> Header.js ==> roles: ", roles)
@@ -100,6 +206,9 @@ const AddRecipes = (props) => {
         (
             <NotFound />
         ) : (<>
+            <div className="btnGoBack">
+                <SvgButton onClick={() => { handleGoBack() }}>Go Back</SvgButton>
+            </div>
             <div className="addRec">
 
                 <Grid component="form" onSubmit={addRecipe} container height="100%">
@@ -221,6 +330,24 @@ const AddRecipes = (props) => {
                                             <Grid item xs={12}>
                                                 <TextField
                                                     fullWidth
+                                                    id={"time"}
+                                                    label={"Time"}
+                                                    name={"time"}
+
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    fullWidth
+                                                    id={"serving"}
+                                                    label={"Serving"}
+                                                    name={"serving"}
+
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    fullWidth
                                                     id={"ingredients"}
                                                     label={"Ingredients"}
                                                     multiline
@@ -238,14 +365,24 @@ const AddRecipes = (props) => {
                                                     name={"direction"}
                                                 />
                                             </Grid>
-
+                                            <Grid item xs={12} visibility={"hidden"}>
+                                                <TextField
+                                                    fullWidth
+                                                    height={"0px"}
+                                                    id={"user"}
+                                                    label={"Authors"}
+                                                    rows={4}
+                                                    name={"user"}
+                                                    value={userId}
+                                                />
+                                            </Grid>
                                         </Grid>
 
                                         <Button className="btn-grad"
                                             type="submit"
                                             fullWidth
                                             variant="contained"
-                                            sx={{ mt: 1, mb: 4 }}
+                                            sx={{ mt: 1, mb: 4, color: 'black' }}
                                         >
                                             Upload
                                         </Button>{" "}

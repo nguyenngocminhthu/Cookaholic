@@ -3,12 +3,13 @@
 }
 
 .profile {
-  margin-top: 10px;
+  margin-top: 5%;
   display: flex;
 }
 
 .profileRight {
   flex: 10;
+  margin: 0% 2% 0% 2%;
 }
 
 .profileCover {
@@ -64,4 +65,90 @@
   text-align: center;
   text-shadow: 0 1px 1px #808080;
   margin-bottom: 1rem;
+}
+.Security {
+  margin: 0% 5% 0% 5%;
+  width: 100%;
+}
+
+.popDetail {
+  text-decoration: none;
+  color: #121212;
+}
+
+.editAvt {
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  top: 34%;
+  margin-left: 20px;
+}
+
+.editAvt:hover {
+  cursor: pointer;
+  color: rgb(248, 39, 74);
+}
+.avt {
+  border: 2px dashed rgba(0, 0, 0, 0.801);
+  background-color: white;
+}
+
+.cardInfo {
+  background-color: #FFF8F1;
+  border-style: solid;
+  border-color: black;
+}
+.css-46bh2p-MuiCardContent-root {
+  padding: 16px;
+}
+
+.removeImg {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  top: 40%;
+  margin-left: 20px;
+}
+.removeImg:hover {
+  cursor: pointer;
+  color: rgb(248, 39, 74);
+}
+.infor-left{
+  color: #F90B6D; font-family: 'Open Sans', sans-serif; font-weight: 300; line-height: 40px; margin: 0 0 16px; 
+}
+
+/* CSS */
+.button-74 {
+  background-color: #fbeee0;
+  border: 2px solid #422800;
+  border-radius: 30px;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #422800;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-74:hover {
+  background-color: #fff;
+}
+
+.button-74:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+  .button-74 {
+    min-width: 120px;
+    padding: 0 25px;
+  }
 }
