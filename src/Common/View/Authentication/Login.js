@@ -178,6 +178,18 @@ const Login = () => {
     console.log(response)
     const res = await dispatch(googleloginAction({ tokenId: response.tokenId }));
     console.log("res: ", res);
+    if (res) {
+      if (res.roles.includes("ROLE_ADMIN")) {
+        history.push("/admin");
+        return;
+      }
+      if (history.location.pathname === "/") {
+        history.push("/main");
+        return;
+      }
+      history.goBack()
+      return;
+    }
   }
 
   const responseErrorGoogle = (res) => {

@@ -22,12 +22,9 @@ exports.signup = (req, res) => {
     // Tao user tu request gui len
     const user = new User({
         username: req.body.username,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        description: req.body.description,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        gender: req.body.gender
+        sex: req.body.sex
     })
 
     user.save((err, user) => {
@@ -141,10 +138,6 @@ exports.signin = (req, res) => {
             res.status(200).json({
                 id: user._id,
                 username: user.username,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                gender: user.gender,
-                description: user.description,
                 email: user.email,
                 roles: authorities,
                 accessToken: token,
@@ -160,58 +153,84 @@ exports.googlelogin = (req, res) => {
     client.verifyIdToken({ idToken: tokenId, audience: "741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com" })
         .then(response => {
             const { email_verified, name, email, picture } = response.payload
-            console.log(response.payload)
+            // console.log(response.payload)
             if (email_verified) {
-                User.findOne({ email }).exec((err, user) => {
-                    if (err) {
-                        return res.status(400).json({ message: err, success: false })
-                    } else {
-                        if (user) {
-                            var token = jwt.sign({ id: user.id }, config.secret, {
-                                // expiresIn: 86400
-                                expiresIn: config.jwtExpiration
-                            });
-
-                            res.json({ token, user, success: true })
+                User.findOne({ email })
+                    .populate("roles", "-__v")
+                    .exec((err, user) => {
+                        if (err) {
+                            return res.status(400).json({ message: err, success: false })
                         } else {
-                            let password = email + config.secret
-                            const user = new User({
-                                username: name,
-                                email: email,
-                                password: bcrypt.hashSync(password, 8),
-                                avt:picture
-                            })
-
-                            Role.findOne({ name: "user" }, (err, role) => {
-                                if (err) {
-                                    res.status(500).json({ message: err, success: false })
-                                    return
-                                }
+                            if (user) {
+                                var token = jwt.sign({ id: user.id }, config.secret, {
+                                    // expiresIn: 86400
+                                    expiresIn: config.jwtExpiration
+                                });
                                 console.log(user)
-                                user.roles = [role._id]
-                                user.save((err, data) => {
+                                let authorities = []
+                                for (let i = 0; i < user.roles.length; i++) {
+                                    authorities.push("ROLE_" + user.roles[i].name.toUpperCase())
+                                }
+
+                                res.status(200).json({
+                                    username: user.username,
+                                    email: user.email,
+                                    roles: authorities,
+                                    accessToken: token,
+                                    avt: user.avt,
+                                    success: true,
+                                });
+                            } else {
+                                let password = email + config.secret
+                                const user = new User({
+                                    username: name,
+                                    email: email,
+                                    password: bcrypt.hashSync(password, 8),
+                                    avt: picture
+                                })
+
+                                Role.findOne({ name: "user" }, (err, role) => {
                                     if (err) {
-                                        res.status(400).json({ message: err, success: false })
+                                        res.status(500).json({ message: err, success: false })
                                         return
                                     }
-                                    var token = jwt.sign({ id: data.id }, config.secret, {
-                                        // expiresIn: 86400
-                                        expiresIn: config.jwtExpiration
-                                    });
+                                    user.roles = [role._id]
+                                    user.save()
+                                    User.findOne({
+                                        // username: req.body.username
+                                        email: user.email
+                                    })
+                                        .populate("roles", "-__v")
+                                        .exec((err, data) => {
+                                            if (err) {
+                                                res.status(400).json({ message: err, success: false })
+                                                return
+                                            }
+                                            var token = jwt.sign({ id: data._id }, config.secret, {
+                                                // expiresIn: 86400
+                                                expiresIn: config.jwtExpiration
+                                            });
 
-                                    let authorities = []
-                                    console.log(data)
-                                    for (let i = 0; i < data.roles.length; i++) {
-                                        authorities.push("ROLE_" + data.roles[i].name.toUpperCase())
-                                    }
+                                            let authorities = []
+                                            console.log(data)
+                                            for (let i = 0; i < data.roles.length; i++) {
+                                                authorities.push("ROLE_" + data.roles[i].name.toUpperCase())
+                                            }
 
-                                    res.json({ token, data, success: true })
+                                            res.status(200).json({
+                                                username: data.username,
+                                                email: data.email,
+                                                roles: authorities,
+                                                accessToken: token,
+                                                avt: data.avt,
+                                                success: true,
+                                            });
+                                        })
                                 })
-                            })
 
+                            }
                         }
-                    }
-                })
+                    })
             }
         })
 }
@@ -287,6 +306,7 @@ exports.sendLink = async (req, res) => {
 const getAuth = async (userId) => {
     try {
         const user = await User.findOne({ _id: userId }).populate("roles");
+
         let authorities = []
 
         for (let i = 0; i < user.roles.length; i++) {
@@ -321,7 +341,6 @@ const getAuth = async (userId) => {
 exports.handleGetAuth = async (req, res) => {
     try {
         const token = req.body.token;
-        console.log(1)
         // console.log(token)
         const result = await getAuth(token.id);
         console.log(result)

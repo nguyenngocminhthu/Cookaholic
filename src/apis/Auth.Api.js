@@ -40,7 +40,7 @@ const googlelogin = async (body) => {
         const res = await axiosClient.post(`/api/auth/googlelogin`, body);
         console.log("log at ==> Auth.Api.js ==> line 23 ==>  res: ", res)
         if (res.success) {
-            Cookie.set("accessToken", res.token);
+            Cookie.set("accessToken", res.accessToken);
             toastNotify(res.message);
             return { data: res, success: true };
         }
