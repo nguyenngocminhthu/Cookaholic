@@ -21,11 +21,12 @@ import React from 'react';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { loginAction, googleloginAction } from "../../../redux/actions/Auth/authActions";
+import { loginAction, googleloginAction, facebookloginAction } from "../../../redux/actions/Auth/authActions";
 import myImage from "../../img/egg.png";
 import "./LoRe.css";
 import { validateLogin } from "./Validate";
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login'
 
 const theme = createTheme();
 
@@ -175,6 +176,7 @@ const Login = () => {
   };
 
   const responseSuccessGoogle = async (response) => {
+    console.log(1)
     console.log(response)
     const res = await dispatch(googleloginAction({ tokenId: response.tokenId }));
     console.log("res: ", res);
@@ -192,8 +194,26 @@ const Login = () => {
     }
   }
 
-  const responseErrorGoogle = (res) => {
+  const responseErrorGoogle = (res) => { 
 
+  }
+
+  const responseFacebook = async (response) => {
+    console.log(response)
+    const res = await dispatch(facebookloginAction({ accessToken: response.accessToken, userID: response.userID }));
+    console.log("res: ", res);
+    // if (res) {
+    //   if (res.roles.includes("ROLE_ADMIN")) {
+    //     history.push("/admin");
+    //     return;
+    //   }
+    //   if (history.location.pathname === "/") {
+    //     history.push("/main");
+    //     return;
+    //   }
+    //   history.goBack()
+    //   return;
+    // }
   }
 
   return (
@@ -282,16 +302,20 @@ const Login = () => {
                   </Button>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                      <SvgButton><FacebookIcon />Facebook</SvgButton>
+                      <GoogleLogin
+                        clientId="741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com"
+                        buttonText="Login with google "
+                        onSuccess={responseSuccessGoogle}
+                        onFailure={responseErrorGoogle}
+                        cookiePolicy={'single_host_origin'}
+                      />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <GoogleLogin
-                          clientId="741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com"
-                          buttonText="Login with google "
-                          onSuccess={responseSuccessGoogle}
-                          onFailure={responseErrorGoogle}
-                          cookiePolicy={'single_host_origin'}
-                        />
+                      <FacebookLogin
+                        appId="876160799940732"
+                        autoLoad={false}
+                        callback={responseFacebook}
+                      />
                     </Grid>
                   </Grid>
                 </Box>

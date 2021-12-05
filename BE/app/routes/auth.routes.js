@@ -43,10 +43,6 @@ module.exports = function (app) {
 
     app.post("/api/auth/googlelogin", controller.googlelogin)
 
-    app.get('/auth/facebook',
-        passport.authenticate('facebook', { scope: ['email'] }));
+    app.post("/api/auth/facebooklogin", controller.facebooklogin)
 
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', { failureRedirect: '/login' }),
-        oauth.facebook)
 }
