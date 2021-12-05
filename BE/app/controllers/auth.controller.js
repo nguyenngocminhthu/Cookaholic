@@ -199,7 +199,7 @@ exports.googlelogin = (req, res) => {
                                         // expiresIn: 86400
                                         expiresIn: config.jwtExpiration
                                     });
-    
+
                                     let authorities = []
                                     authorities.push('ROLE_USER')
                                     res.status(200).json({
@@ -274,7 +274,7 @@ exports.facebooklogin = (req, res) => {
                                     return
                                 }
                                 user.roles = [role._id]
-                                user.save() 
+                                user.save()
                                 console.log(2222)
                                 console.log(user)
                                 console.log(email)
@@ -293,7 +293,7 @@ exports.facebooklogin = (req, res) => {
                                     avt: user.avt,
                                     success: true,
                                 });
-                               
+
                             })
 
                         }
@@ -301,91 +301,7 @@ exports.facebooklogin = (req, res) => {
                 })
         })
 
-    // client.verifyIdToken({ idToken: tokenId, audience: "741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com" })
-    //     .then(response => {
-    //         const { email_verified, name, email, picture } = response.payload
-    //         // console.log(response.payload)
-    //         if (email_verified) {
-    //             User.findOne({ email })
-    //                 .populate("roles", "-__v")
-    //                 .exec((err, user) => {
-    //                     if (err) {
-    //                         return res.status(400).json({ message: err, success: false })
-    //                     } else {
-    //                         if (user) {
-    //                             var token = jwt.sign({ id: user.id }, config.secret, {
-    //                                 // expiresIn: 86400
-    //                                 expiresIn: config.jwtExpiration
-    //                             });
-    //                             console.log(user)
-    //                             let authorities = []
-    //                             for (let i = 0; i < user.roles.length; i++) {
-    //                                 authorities.push("ROLE_" + user.roles[i].name.toUpperCase())
-    //                             }
-
-    //                             res.status(200).json({
-    //                                 username: user.username,
-    //                                 email: user.email,
-    //                                 roles: authorities,
-    //                                 accessToken: token,
-    //                                 avt: user.avt,
-    //                                 success: true,
-    //                             });
-    //                         } else {
-    //                             let password = email + config.secret
-    //                             const user = new User({
-    //                                 username: name,
-    //                                 email: email,
-    //                                 password: bcrypt.hashSync(password, 8),
-    //                                 avt: picture
-    //                             })
-
-    //                             Role.findOne({ name: "user" }, (err, role) => {
-    //                                 if (err) {
-    //                                     res.status(500).json({ message: err, success: false })
-    //                                     return
-    //                                 }
-    //                                 user.roles = [role._id]
-    //                                 user.save()
-    //                                 User.findOne({
-    //                                     // username: req.body.username
-    //                                     email: user.email
-    //                                 })
-    //                                     .populate("roles", "-__v")
-    //                                     .exec((err, data) => {
-    //                                         if (err) {
-    //                                             res.status(400).json({ message: err, success: false })
-    //                                             return
-    //                                         }
-    //                                         var token = jwt.sign({ id: data._id }, config.secret, {
-    //                                             // expiresIn: 86400
-    //                                             expiresIn: config.jwtExpiration
-    //                                         });
-
-    //                                         let authorities = []
-    //                                         console.log(data)
-    //                                         for (let i = 0; i < data.roles.length; i++) {
-    //                                             authorities.push("ROLE_" + data.roles[i].name.toUpperCase())
-    //                                         }
-
-    //                                         res.status(200).json({
-    //                                             username: data.username,
-    //                                             email: data.email,
-    //                                             roles: authorities,
-    //                                             accessToken: token,
-    //                                             avt: data.avt,
-    //                                             success: true,
-    //                                         });
-    //                                     })
-    //                             })
-
-    //                         }
-    //                     }
-    //                 })
-    //         }
-    //     })
 }
-
 exports.refreshToken = async (req, res) => {
     const { refreshToken: requestToken } = req.body;
 

@@ -2,8 +2,6 @@ const { verifySignUp } = require("../middlewares")
 const { authJwt } = require("../middlewares")
 
 const controller = require("../controllers/auth.controller")
-const oauth = require("../controllers/oauth.controller")
-const passport = require("passport")
 
 module.exports = function (app) {
     // const { signupValidator } = require("./../validations/authValidator")
