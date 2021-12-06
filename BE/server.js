@@ -3,19 +3,8 @@ const bodyParser = require('body-parser')
 const cors = require("cors");
 const dotenv = require("dotenv")
 const logger = require("morgan")
-const passport = require("passport")
-const session = require("express-session")
 
 const app = express();
-
-require('./app/config/passport.config')(passport)
-
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}), cors())
 
 dotenv.config()
 
@@ -46,10 +35,6 @@ db.mongoose
         console.error("Connection error", err)
         process.exit()
     })
-
-
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.get("/", (req, res) => {
     res.json({ message: "hello " })

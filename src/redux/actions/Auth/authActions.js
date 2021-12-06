@@ -75,6 +75,28 @@ export function googleloginAction(dataSubmit) {
     };
 }
 
+export function facebookloginAction(dataSubmit) {
+    return async (dispatch) => {
+        try {
+            // dispatch(loading(true)); 
+            const res = await authAPI.facebooklogin(dataSubmit);
+            console.log("log at ==> authAction ==> res: ", res)
+            if (res.success) {
+                // dispatch(loading());
+                dispatch(loginSuccess(res.data));
+                return res.data;
+            }
+            // dispatch(loading());
+            dispatch(loginFail());
+            return false;
+        } catch {
+            // dispatch(loading());
+            dispatch(loginFail());
+            return false;
+        }
+    };
+}
+
 export const getAuthSuccess = (data) => {
     return {
         type: GET_AUTH_SUCCESS,

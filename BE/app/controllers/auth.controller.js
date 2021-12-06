@@ -1,20 +1,17 @@
 const config = require("../config/auth.config")
 const db = require("../models")
-// const User = db.user
-// const Role = db.role
 const { user: User, role: Role, refreshToken: RefreshToken, token: Token } = db;
 
-// var jwt = require("jsonwebtoken")
-// var bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt");
-const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 
 const { OAuth2Client } = require('google-auth-library');
 const { response } = require("express");
 const client = new OAuth2Client("741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com")
+const fetch = require('node-fetch')
 
+const { sendResetPassword, sendVerifyAccount } = require("../middlewares/sendEmail")
 
 // Kiem tra, them roles va luu user vao db
 exports.signup = (req, res) => {
@@ -24,7 +21,8 @@ exports.signup = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        sex: req.body.sex
+        sex: req.body.sex,
+        confirmationCode: crypto.randomBytes(32).toString("hex"),
     })
 
     user.save((err, user) => {
@@ -47,13 +45,17 @@ exports.signup = (req, res) => {
                     }
 
                     user.roles = roles.map(role => role._id)
-                    user.save(err => {
+                    user.save(async (err, user) => {
                         if (err) {
                             res.status(500).json({ message: err, success: false })
                             return
                         }
 
-                        res.json({ message: "User was registered successfully!", success: true })
+                        res.json({ message: "User was registered successfully! Please check email!", success: true })
+                        const link = `http://localhost:8888/api/auth/confirm/${user._id}/${user.confirmationCode}`
+
+                        await sendVerifyAccount(user.email, link)
+
                     })
 
                 }
@@ -67,17 +69,50 @@ exports.signup = (req, res) => {
                     return
                 }
                 user.roles = [role._id]
-                user.save(err => {
+                user.save(async (err, user) => {
                     if (err) {
                         res.status(500).json({ message: err, success: false })
                         return
                     }
 
-                    res.json({ message: "User was registered successfully!", success: true })
+                    res.json({ message: "User was registered successfully! Please check email!", success: true })
+                    const link = `http://localhost:8888/api/auth/confirm/${user._id}/${user.confirmationCode}`
+
+                    await sendVerifyAccount(user.email, link)
+
                 })
             })
         }
     })
+}
+
+exports.verifyAccount = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            res.status(400).json({ message: "invalid link or expired", success: false })
+            return
+        }
+
+        const confirmationCode = await User.findOne({
+            userId: user._id,
+            confirmationCode: req.params.confirmationCode,
+        });
+        if (!confirmationCode) {
+            res.status(400).json({ message: "invalid link or expired", success: false })
+            return
+        }
+
+        user.isVerified = true
+        // user.password=req.body.password
+        user.confirmationCode = ""
+        await user.save();
+
+        res.status(200).json({ message: "Your account is verified.", success: true });
+    } catch (error) {
+        res.status(500).json({ message: "An error occured", success: false });
+        console.log(error);
+    }
 }
 
 // Kiem tra dang nhap neu thanh cong tra ve user va accestoken
@@ -116,6 +151,14 @@ exports.signin = (req, res) => {
                 return res.status(401).json({
                     accessToken: null,
                     message: "Invalid Password",
+                    success: false
+                })
+            }
+
+            if(!user.isVerified){
+                return res.status(401).json({
+                    accessToken: null,
+                    message: "Account isn't verified. Please check email!",
                     success: false
                 })
             }
@@ -162,6 +205,11 @@ exports.googlelogin = (req, res) => {
                             return res.status(400).json({ message: err, success: false })
                         } else {
                             if (user) {
+                                if(!user.isVerified){
+                                    user.isVerified=true
+                                    user.save()
+                                }
+                                    
                                 var token = jwt.sign({ id: user.id }, config.secret, {
                                     // expiresIn: 86400
                                     expiresIn: config.jwtExpiration
@@ -186,7 +234,8 @@ exports.googlelogin = (req, res) => {
                                     username: name,
                                     email: email,
                                     password: bcrypt.hashSync(password, 8),
-                                    avt: picture
+                                    avt: picture,
+                                    isVerified: true
                                 })
 
                                 Role.findOne({ name: "user" }, (err, role) => {
@@ -196,36 +245,21 @@ exports.googlelogin = (req, res) => {
                                     }
                                     user.roles = [role._id]
                                     user.save()
-                                    User.findOne({
-                                        // username: req.body.username
-                                        email: user.email
-                                    })
-                                        .populate("roles", "-__v")
-                                        .exec((err, data) => {
-                                            if (err) {
-                                                res.status(400).json({ message: err, success: false })
-                                                return
-                                            }
-                                            var token = jwt.sign({ id: data._id }, config.secret, {
-                                                // expiresIn: 86400
-                                                expiresIn: config.jwtExpiration
-                                            });
+                                    var token = jwt.sign({ id: user.id }, config.secret, {
+                                        // expiresIn: 86400
+                                        expiresIn: config.jwtExpiration
+                                    });
 
-                                            let authorities = []
-                                            console.log(data)
-                                            for (let i = 0; i < data.roles.length; i++) {
-                                                authorities.push("ROLE_" + data.roles[i].name.toUpperCase())
-                                            }
-
-                                            res.status(200).json({
-                                                username: data.username,
-                                                email: data.email,
-                                                roles: authorities,
-                                                accessToken: token,
-                                                avt: data.avt,
-                                                success: true,
-                                            });
-                                        })
+                                    let authorities = []
+                                    authorities.push('ROLE_USER')
+                                    res.status(200).json({
+                                        username: user.username,
+                                        email: user.email,
+                                        roles: authorities,
+                                        accessToken: token,
+                                        avt: user.avt,
+                                        success: true,
+                                    });
                                 })
 
                             }
@@ -235,6 +269,94 @@ exports.googlelogin = (req, res) => {
         })
 }
 
+exports.facebooklogin = (req, res) => {
+    const { userID, accessToken } = req.body
+
+    let urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email,picture&access_token=${accessToken}`
+    fetch(urlGraphFacebook, {
+        method: 'GET'
+    })
+        .then(response => response.json())
+        .then(response => {
+            const { email, name, picture } = response;
+            var image = picture.data.url
+            console.log(image)
+            User.findOne({ email })
+                .populate("roles", "-__v")
+                .exec((err, user) => {
+                    console.log(5555555)
+                    console.log(user)
+                    if (err) {
+                        return res.status(400).json({ message: err, success: false })
+                    } else {
+                        if (user) {
+                            if(!user.isVerified){
+                                user.isVerified=true
+                                user.save()
+                            }
+                            var token = jwt.sign({ id: user.id }, config.secret, {
+                                // expiresIn: 86400
+                                expiresIn: config.jwtExpiration
+                            });
+                            console.log(111111111111111)
+                            console.log(user)
+                            let authorities = []
+                            for (let i = 0; i < user.roles.length; i++) {
+                                authorities.push("ROLE_" + user.roles[i].name.toUpperCase())
+                            }
+
+                            res.status(200).json({
+                                username: user.username,
+                                email: user.email,
+                                roles: authorities,
+                                accessToken: token,
+                                avt: user.avt,
+                                success: true,
+                            });
+                        } else {
+                            let password = email + config.secret
+                            const user = new User({
+                                username: name,
+                                email: email,
+                                password: bcrypt.hashSync(password, 8),
+                                avt: image,
+                                isVerified: true
+                            })
+
+                            Role.findOne({ name: "user" }, (err, role) => {
+                                if (err) {
+                                    res.status(500).json({ message: err, success: false })
+                                    return
+                                }
+                                user.roles = [role._id]
+                                user.save()
+                                console.log(2222)
+                                console.log(user)
+                                console.log(email)
+                                var token = jwt.sign({ id: user.id }, config.secret, {
+                                    // expiresIn: 86400
+                                    expiresIn: config.jwtExpiration
+                                });
+
+                                let authorities = []
+                                authorities.push('ROLE_USER')
+                                res.status(200).json({
+                                    username: user.username,
+                                    email: user.email,
+                                    roles: authorities,
+                                    accessToken: token,
+                                    avt: user.avt,
+                                    success: true,
+                                });
+
+                            })
+
+                        }
+                    }
+                })
+        })
+
+}
 exports.refreshToken = async (req, res) => {
     const { refreshToken: requestToken } = req.body;
 
@@ -293,7 +415,7 @@ exports.sendLink = async (req, res) => {
         }
 
         const link = `http://localhost:8888/api/auth/${user._id}/${token.token}`
-        await sendEmail(user.email, "Password reset", link)
+        await sendResetPassword(user.email, link)
 
         res.json({ message: "password reset link sent to your email account", success: true })
 
@@ -386,3 +508,4 @@ exports.resetPassword = async (req, res) => {
         console.log(error);
     }
 }
+

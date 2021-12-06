@@ -75,3 +75,17 @@
 .gender {
   text-align: left;
 }
+
+.forgot {
+  margin: 0px;
+  padding: 0px;
+  color: #1976d2;
+}
+.forgot:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.commit {
+  text-align: center;
+}

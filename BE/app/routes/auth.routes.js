@@ -2,8 +2,6 @@ const { verifySignUp } = require("../middlewares")
 const { authJwt } = require("../middlewares")
 
 const controller = require("../controllers/auth.controller")
-const oauth = require("../controllers/oauth.controller")
-const passport = require("passport")
 
 module.exports = function (app) {
     // const { signupValidator } = require("./../validations/authValidator")
@@ -27,6 +25,8 @@ module.exports = function (app) {
         controller.signup
     )
 
+    app.post("/api/auth/confirm/:userId/:confirmationCode", controller.verifyAccount)
+
     app.post("/api/auth/signin",
         // [
         //     signinValidator
@@ -43,10 +43,6 @@ module.exports = function (app) {
 
     app.post("/api/auth/googlelogin", controller.googlelogin)
 
-    app.get('/auth/facebook',
-        passport.authenticate('facebook', { scope: ['email'] }));
+    app.post("/api/auth/facebooklogin", controller.facebooklogin)
 
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', { failureRedirect: '/login' }),
-        oauth.facebook)
 }

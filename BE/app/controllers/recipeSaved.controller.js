@@ -5,7 +5,7 @@ exports.save = (req, res) => {
     const recipe = req.params.recipe
     const user = req.params.user
 
-    if (req.params.status == 1) {
+    if (req.query.status == 1) {
         RecipeSaved.deleteOne({ user: user, recipe: recipe }, (err) => {
             if (err) {
                 res.status(500).json({ message: err, success: false })

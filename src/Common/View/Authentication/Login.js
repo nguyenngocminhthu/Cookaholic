@@ -15,17 +15,20 @@ import Paper from '@mui/material/Paper';
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Modal from 'react-awesome-modal';
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { loginAction, googleloginAction } from "../../../redux/actions/Auth/authActions";
+import { loginAction, googleloginAction, facebookloginAction } from "../../../redux/actions/Auth/authActions";
 import myImage from "../../img/egg.png";
 import "./LoRe.css";
 import { validateLogin } from "./validate";
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login'
+import { width } from '@mui/system';
 
 const theme = createTheme();
 
@@ -175,6 +178,7 @@ const Login = () => {
   };
 
   const responseSuccessGoogle = async (response) => {
+    console.log(1)
     console.log(response)
     const res = await dispatch(googleloginAction({ tokenId: response.tokenId }));
     console.log("res: ", res);
@@ -194,6 +198,37 @@ const Login = () => {
 
   const responseErrorGoogle = (res) => {
 
+  }
+
+  const responseFacebook = async (response) => {
+    console.log(response)
+    const res = await dispatch(facebookloginAction({ accessToken: response.accessToken, userID: response.userID }));
+    console.log("res: ", res);
+    // if (res) {
+    //   if (res.roles.includes("ROLE_ADMIN")) {
+    //     history.push("/admin");
+    //     return;
+    //   }
+    //   if (history.location.pathname === "/") {
+    //     history.push("/main");
+    //     return;
+    //   }
+    //   history.goBack()
+    //   return;
+    // }
+  }
+
+  const [forgot, setForgot] = useState(false);
+  const openForgot = () => setForgot(!forgot);
+  const closeForgot = () => setForgot(false);
+
+  const [reset, setReset] = useState(false);
+  const openReset = () => setReset(!reset);
+  const closeReset = () => setReset(false);
+
+  const handleReset = () => {
+    closeForgot();
+    openReset();
   }
 
   return (
@@ -262,11 +297,9 @@ const Login = () => {
                             ml: 2,
                           },
                         }}
-                      // onClick={preventDefault}
+                        onClick={openForgot}
                       >
-                        <Link to="/" underline="hover">
-                          {'Forgot password?'}
-                        </Link>
+                        <p className="forgot">Forgot Password?</p>
                       </Box>
                     </Grid>
                   </Grid>
@@ -282,15 +315,19 @@ const Login = () => {
                   </Button>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                      <SvgButton><FacebookIcon />Facebook</SvgButton>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
                       <GoogleLogin
                         clientId="741877373176-savm5ic6j7s14804jet71sqhbmc8a4il.apps.googleusercontent.com"
                         buttonText="Login with google "
                         onSuccess={responseSuccessGoogle}
                         onFailure={responseErrorGoogle}
                         cookiePolicy={'single_host_origin'}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FacebookLogin
+                        appId="876160799940732"
+                        autoLoad={false}
+                        callback={responseFacebook}
                       />
                     </Grid>
                   </Grid>
@@ -300,6 +337,55 @@ const Login = () => {
           </ThemeProvider>
         </Grid>
       </Grid>
+      <Modal
+        visible={forgot}
+        width="40%"
+        height="50%"
+        effect="fadeInUp"
+        onClickAway={closeForgot}
+      >
+        <Box
+          component="form"
+          noValidate
+          autoComplete="off"
+          mt={5}
+        >
+          <p className="commit">Please commit your Email</p>
+          <TextField
+            sx={{ width: '80%', flexWrap: 'wrap', mb: 2 }}
+            id="email"
+            label="Email"
+            variant="outlined" />
+          <Button variant="contained" onClick={handleReset}>Submit</Button>
+        </Box>
+      </Modal>
+      <Modal
+        visible={reset}
+        width="40%"
+        height="50%"
+        effect="fadeInUp"
+        onClickAway={closeReset}
+      >
+        <Box
+          component="form"
+          noValidate
+          autoComplete="off"
+          mt={5}
+        >
+          <p className="commit">Reset your Password</p>
+          <TextField
+            sx={{ width: '80%', flexWrap: 'wrap', mb: 2 }}
+            id="newPass"
+            label="New Password"
+            variant="outlined" />
+          <TextField
+            sx={{ width: '80%', flexWrap: 'wrap', mb: 2 }}
+            id="confirm"
+            label="Confirm"
+            variant="outlined" />
+          <Button variant="contained">Submit</Button>
+        </Box>
+      </Modal>
     </>
   );
 }
