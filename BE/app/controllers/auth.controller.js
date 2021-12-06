@@ -155,6 +155,14 @@ exports.signin = (req, res) => {
                 })
             }
 
+            if(!user.isVerified){
+                return res.status(401).json({
+                    accessToken: null,
+                    message: "Account isn't verified. Please check email!",
+                    success: false
+                })
+            }
+
             // Tao ma token
             var token = jwt.sign({ id: user.id }, config.secret, {
                 // expiresIn: 86400
@@ -197,6 +205,11 @@ exports.googlelogin = (req, res) => {
                             return res.status(400).json({ message: err, success: false })
                         } else {
                             if (user) {
+                                if(!user.isVerified){
+                                    user.isVerified=true
+                                    user.save()
+                                }
+                                    
                                 var token = jwt.sign({ id: user.id }, config.secret, {
                                     // expiresIn: 86400
                                     expiresIn: config.jwtExpiration
@@ -277,6 +290,10 @@ exports.facebooklogin = (req, res) => {
                         return res.status(400).json({ message: err, success: false })
                     } else {
                         if (user) {
+                            if(!user.isVerified){
+                                user.isVerified=true
+                                user.save()
+                            }
                             var token = jwt.sign({ id: user.id }, config.secret, {
                                 // expiresIn: 86400
                                 expiresIn: config.jwtExpiration
