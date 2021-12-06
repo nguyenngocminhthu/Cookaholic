@@ -33,11 +33,14 @@ exports.save = (req, res) => {
 }
 
 exports.show = (req, res) => {
-    const recipe = req.params.recipe
+
     const user = req.params.user
+    const recipe = req.params.recipe
+    console.log("user recipe: ", user, recipe);
 
     RecipeSaved.findOne({ user: user, recipe: recipe })
         .then(data => {
+            console.log("data: ", data);
             if (!data) {
                 res.json({ message: 0, success: true })
                 return
@@ -68,29 +71,29 @@ exports.show = (req, res) => {
 // }
 
 
-exports.getByUser = (req, res)=>{
+exports.getByUser = (req, res) => {
     const user = req.params.user
 
     RecipeSaved.findOne({ user: user })
-    .populate("recipe")
-    .exec(async(err, data)=>{
-        if (err) {
-            res.status(500).json({ message: err, success: false });
-            return
-        }
+        .populate("recipe")
+        .exec(async (err, data) => {
+            if (err) {
+                res.status(500).json({ message: err, success: false });
+                return
+            }
 
-        if (!data) {
-            // return res.status(404).send({ message: "User not found." })
-            return res.status(400).json({ message: "Not found.", success: false });
-        }
+            if (!data) {
+                // return res.status(404).send({ message: "User not found." })
+                return res.status(400).json({ message: "Not found.", success: false });
+            }
 
-        res.status(200).json({
-            id: data._id,
-            user: data.user,
-            recipe: data.recipe,
-            success: true,
-        });
-    })
+            res.status(200).json({
+                id: data._id,
+                user: data.user,
+                recipe: data.recipe,
+                success: true,
+            });
+        })
 
 }
 
@@ -100,10 +103,10 @@ exports.delete = (req, res) => {
     RecipeSaved.deleteOne({ _id: id })
         .exec((err, data) => {
             if (err) {
-                res.status(500).json({ message: err, success: false})
+                res.status(500).json({ message: err, success: false })
                 return
             }
 
-            res.status(200).json({message: "Delete success!", success: true})
+            res.status(200).json({ message: "Delete success!", success: true })
         })
 }

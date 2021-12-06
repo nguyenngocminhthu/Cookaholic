@@ -1,5 +1,4 @@
 const controller = require('../controllers/comment.controller')
-const { cloudinary } = require("../middlewares")
 
 module.exports = (app) => {
     app.post("/api/comment", controller.create)

@@ -7,7 +7,7 @@ const url = "/api/recipe";
 const create = async (body) => {
     try {
         const res = await axiosClient.post(`${url}`, body);
-        toastNotify(res ? res.message.VN : "Add Recipe Fail");
+        toastNotify(res ? res.message : "Add Recipe Fail");
         return res && res.data
             ? { data: res.data || {}, success: true }
             : { success: false };

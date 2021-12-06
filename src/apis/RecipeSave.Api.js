@@ -2,12 +2,11 @@ import toastNotify from "../Common/Toastify/toastNotify";
 import axiosClient from "./axiosClient";
 import queryString from "query-string";
 
-const url = "/api/recipe";
-
-const create = async (recipe, user, status, body) => {
+const save = async (recipe, user, queryParams) => {
     try {
-        const res = await axiosClient.post(`/api/saved/${recipe}/${user}/${status}`, body);
-        toastNotify(res ? res.message.VN : "Save Recipe Fail");
+        const query = queryString.stringify(queryParams);
+        const res = await axiosClient.post(`/api/saved/${recipe}/${user}?${query}`);
+        toastNotify(res ? res.message : "Save Recipe Fail");
         return res && res.data
             ? { data: res.data || {}, success: true }
             : { success: false };
@@ -18,3 +17,23 @@ const create = async (recipe, user, status, body) => {
         };
     }
 };
+
+const getStatus = async (recipe, user) => {
+    try {
+        const res = await axiosClient.get(`/api/saved/${recipe}/${user}`);
+        console.log("log at => RecipeSave.Api => getStatus => res: ", res);
+        // toastNotify(res ? res.message.VN : "Tìm kiếm điện thoại thất bại");
+        return res
+
+
+    } catch (error) {
+        // toastNotify("Tìm kiếm điện thoại thất bại");
+        return {
+            success: false,
+        };
+    }
+};
+
+const RecipeSave = { save, getStatus };
+
+export default RecipeSave;

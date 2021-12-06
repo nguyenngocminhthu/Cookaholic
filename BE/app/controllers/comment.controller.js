@@ -5,9 +5,6 @@ const Recipe = db.recipe
 
 // Create cmt
 exports.create = async (req, res) => {
-    let path = null
-    if (req.file)
-        path = req.file.path
 
     const data = req.body
 
@@ -16,7 +13,6 @@ exports.create = async (req, res) => {
         recipe: data.recipe,
         rate: data.rate,
         content: data.content,
-        image: path,
     })
 
     Recipe.findById(data.recipe)

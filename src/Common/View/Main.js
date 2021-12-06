@@ -10,7 +10,8 @@ import Checkbox from '@mui/material/Checkbox';
 import Header from '../components/Header';
 import { NavLink } from "react-router-dom";
 import { FaPlusCircle, FaPlayCircle } from "react-icons/fa";
-
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -26,6 +27,9 @@ import { red } from '@mui/material/colors';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import '../css/main.css';
+import { getStatusAction, addFavoriteAction } from "../../redux/actions/RecipeSave/recipeSaveAction"
+import toastNotify from "../Toastify/toastNotify";
+import { set } from 'js-cookie';
 
 
 const Main = (props) => {
@@ -72,16 +76,16 @@ const Main = (props) => {
     };
 
     const menus = useSelector((state) => state.recipe.listRecipe) || []
-    const [status, setStatus] = useState(0);
+    const [status, setStatus] = useState();
 
     useEffect(() => {
         dispatch(getAllRecipeAction({ status: 0 }))
         console.log("log at ==> Main.js => status: ", status);
-    }, [])
+    }, [status])
     useEffect(() => {
 
         console.log("log at ==> Main.js => menus: ", menus);
-    }, [])
+    }, [menus])
 
 
 
@@ -94,6 +98,30 @@ const Main = (props) => {
         console.log("log at ==> Main.js => topics: ", topics);
     }, [topics])
 
+    const userID = useSelector((state) => state.auth.user._id) || []
+    console.log("userID: ", userID);
+
+    const recipeID = (value) => {
+        console.log("recipeID: ", value)
+        return value;
+    }
+    let stt;
+    const handleSaveRecipe = async (value) => {
+        if (!userID.length) {
+            toastNotify("Please Sign In before");
+            return;
+        }
+        stt = await dispatch(getStatusAction(recipeID(value), userID))
+        console.log("log at ==> Main ==> get status: ", stt)
+        if (stt === 0 || stt === 1) await saveRecipe(value, stt);
+        console.log("log at => Main => getStatus => value: ", recipeID(value), userID);
+    }
+
+    const saveRecipe = async (value, stt) => {
+        const res = await dispatch(addFavoriteAction(recipeID(value), userID, { status: stt }))
+        if (res) await dispatch(getAllRecipeAction());
+
+    };
 
 
     return (
@@ -165,6 +193,11 @@ const Main = (props) => {
                                                 </Typography>
                                             </CardContent>
                                             <CardActions disableSpacing sx={{ position: "absolute", bottom: 0, right: 0 }}>
+
+                                                <IconButton onClick={() => handleSaveRecipe(recipeID(value._id))}>
+                                                    <FavoriteBorderIcon />
+
+                                                </IconButton>
                                                 <IconButton>
                                                     <NavLink
                                                         to={`/pagepost/${value._id}`}>

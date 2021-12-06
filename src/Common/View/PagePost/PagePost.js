@@ -197,7 +197,7 @@ const PagePost = (props) => {
 
           <Grid item xs={6} md={8}>
             <Box sx={{ display: 'flex' }} spacing={1}>
-              <Rating sx={{ color: '#d54215', marginRight: '10px' }} name="half-rating" defaultValue={2.5} precision={0.5} readOnly />
+              <Rating sx={{ color: '#d54215', marginRight: '10px' }} name="half-rating" value={recipe.rate} precision={0.5} readOnly />
               <span>{recipe.rating}</span>
               <Divider orientation="vertical" sx={{ paddingLeft: '10px', marginRight: '10px' }} flexItem />
               <span>1 Review</span>
@@ -321,7 +321,7 @@ const PagePost = (props) => {
           </Grid>
         </Grid>
       </Box>
-      <Comments />
+      <Comments recipe={recipe} />
     </div>
   );
 }
