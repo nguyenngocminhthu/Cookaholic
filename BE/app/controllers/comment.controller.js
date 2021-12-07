@@ -8,7 +8,7 @@ exports.create = async (req, res) => {
 
     const data = req.body
 
-    const comment = new Comment({
+    const comment = await Comment.create({
         user: data.user,
         recipe: data.recipe,
         rate: data.rate,
@@ -31,26 +31,27 @@ exports.create = async (req, res) => {
                     return
                 }
 
-                Recipe.updateOne({ _id: data.recipe }, { $set: { rate: x } }, (err) => {
+                Recipe.findOneAndUpdate({ _id: data.recipe }, { $set: { rate: x } }, { new: true }, (err, doc) => {
                     if (err) {
                         res.status(500).json({ message: err, success: false })
                         return
                     }
-
+                    console.log(doc)
                     res.status(200).json({ message: "Comment success!", success: true })
                 })
+
             })
         })
         .catch(err => {
             res.status(500).json({ message: "Error ", success: false });
+            console.log("err: ", err)
         })
-
 }
 
 exports.reply = (req, res) => {
     Comment.updateOne({ _id: req.body.id }, { $push: { replies: { user: req.body.user, content: req.body.content } } }, (err) => {
         if (err) {
-            res.status(500).json({ message: err, success: false })
+            res.status(404).json({ message: err, success: false })
             return
         }
 

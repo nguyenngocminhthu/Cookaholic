@@ -7,12 +7,28 @@ const url = "/api/comment";
 const create = async (body) => {
     try {
         const res = await axiosClient.post(`${url}`, body);
+        console.log("log at ==> comment Api ==> res", res)
         toastNotify(res ? res.message : "Add Comment Fail");
-        return res && res.data
+        return res.success
             ? { data: res.data || {}, success: true }
             : { success: false };
     } catch (error) {
         toastNotify("Add Comment Success");
+        return {
+            success: false,
+        };
+    }
+};
+
+const reply = async (body) => {
+    try {
+        const res = await axiosClient.post(`${url}/reply`, body);
+        toastNotify(res ? res.message : "Reply Comment Fail");
+        return res.success
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Reply Comment Success");
         return {
             success: false,
         };
@@ -36,6 +52,6 @@ const getByRecipe = async (recipe) => {
     }
 };
 
-const Comment = { getByRecipe, create };
+const Comment = { getByRecipe, create, reply };
 
 export default Comment;

@@ -60,24 +60,20 @@ export const Information = (props) => {
 
   const updateProfile = async (e) => {
     e.preventDefault();
-
+    console.log("images.length: ", images.length)
     if (images.length > 0) {
-      if (images[0].preview !== user.avt) {
-        const url = await dispatch(uploadImagesToFirebase([images[0].file], "Avatar"));
-        console.log("log at ==> Information ==> url: ", url);
-        if (url) {
-          await dispatch(
-            updateUserAction(user._id, { username: values.firstName + values.lastName, firstName: values.firstName, lastName: values.lastName, avt: url, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
 
-          );
-        }
-
-      } else {
+      const url = await dispatch(uploadImagesToFirebase([images[0].file], "Avatar"));
+      console.log("url: ", url)
+      console.log("log at ==> Information ==> url: ", url);
+      if (url) {
         await dispatch(
-          updateUserAction(user._id, { username: values.firstName + values.lastName, firstName: values.firstName, lastName: values.lastName, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
-        );
+          updateUserAction(user._id, { username: values.firstName + values.lastName, firstName: values.firstName, lastName: values.lastName, avt: url, description: values.description, email: values.email, phone: values.phone, gender: values.gender })
 
+        );
       }
+
+
     }
     else {
       await dispatch(

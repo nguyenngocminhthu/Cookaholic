@@ -107,10 +107,10 @@ const Profile = (props) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    const [currentRecipe, setCurrentRecipe] = useState({});
+
     const handleClick = (event, index) => {
         setPopupItem(myPost[index])
-        setCurrentRecipe(myPost[index]);
+
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {

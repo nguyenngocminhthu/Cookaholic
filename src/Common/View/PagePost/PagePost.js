@@ -168,6 +168,7 @@ const PagePost = (props) => {
   const recipe = useSelector((state) => state.recipe.recipeDetail);
   console.log("log at => pagepost => recipe: ", recipe)
 
+
   useEffect(() => {
     const fetchRecipe = async () => {
       await dispatch(findRecipeByIdAction(props.match.params.idRecipe));

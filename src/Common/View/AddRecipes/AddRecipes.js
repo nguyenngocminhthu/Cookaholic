@@ -175,9 +175,6 @@ const AddRecipes = (props) => {
 
     const addRecipe = async (e) => {
         e.preventDefault();
-
-
-
         const data = {
             name: e.target.recipename.value,
             title: e.target.title.value,
@@ -193,10 +190,6 @@ const AddRecipes = (props) => {
         if (url) {
             await dispatch(addRecipeAction({ ...data, image: url }))
         }
-
-
-
-
     };
     const roles = useSelector((state) => state.auth.user.roles) || []
     console.log("log at ==> Header.js ==> roles: ", roles)

@@ -29,7 +29,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import '../css/main.css';
 import { getStatusAction, addFavoriteAction } from "../../redux/actions/RecipeSave/recipeSaveAction"
 import toastNotify from "../Toastify/toastNotify";
-import { set } from 'js-cookie';
+
 
 
 const Main = (props) => {

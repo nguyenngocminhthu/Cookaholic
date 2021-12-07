@@ -10,7 +10,6 @@ import { getAllRecipeAction } from "../../../redux/actions/Recipe/recipe.action"
 import { useSelector, useDispatch } from "react-redux";
 const Post = (props) => {
 
-    // const { acceptSuccess } = props;
     const [acceptSuccess, setAcceptSuccess] = useState(false);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
 

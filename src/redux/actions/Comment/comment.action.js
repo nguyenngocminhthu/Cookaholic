@@ -1,6 +1,8 @@
 import {
     ADD_COMMENT_FAIL,
     ADD_COMMENT_SUCCESS,
+    REPLY_COMMENT_FAIL,
+    REPLY_COMMENT_SUCCESS,
     GET_COMMENT_FAIL,
     GET_COMMENT_SUCCESS,
 
@@ -49,6 +51,43 @@ export function addCommentAction(dataSubmit) {
         }
     };
 }
+
+export function replyCommentFail() {
+    return {
+        type: REPLY_COMMENT_FAIL,
+        payload: {},
+    };
+}
+
+export function replyCommentSuccess(data) {
+    return {
+        type: REPLY_COMMENT_SUCCESS,
+        payload: data,
+    };
+}
+
+export function replyCommentAction(dataSubmit) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await CommentAPI.reply(dataSubmit);
+            console.log('log at ==> Comment action ==> res: ', res);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(replyCommentSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(replyCommentFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(replyCommentFail());
+            return false;
+        }
+    };
+}
+
 
 
 export function getCommentFail() {

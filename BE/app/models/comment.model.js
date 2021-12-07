@@ -13,7 +13,7 @@ const Comment = mongoose.model(
         },
         rate: Number,
         content: String,
-        image: String,
+        avt: String,
         replies: [{
             user: {
                 type: mongoose.Schema.Types.ObjectId,
