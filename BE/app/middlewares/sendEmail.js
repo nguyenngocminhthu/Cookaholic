@@ -19,9 +19,9 @@ const sendVerifyAccount = async (email, text) => {
     }
   }; //done
 
-sendResetPassword = async (email, text) => {
+sendResetPassword = async (email, password) => {
     try {
-        const body = `Đây là link xác nhận tạo mật khẩu mới:${text}`;
+        const body = `Hãy đổi password mới khi đăng nhập thành công. Đây là mật khẩu mới của bạn: ${password}`;
         await sendMail(email, "Quên mật khẩu", body);
 
         console.log("Email sent")

@@ -20,14 +20,12 @@ const User = mongoose.model(
         ],
         gender: String,
         avt: String,
-        isVerified:{
+        isVerified: {
             type: Boolean,
             default: false
         },
-        confirmationCode: { 
-            type: String, 
-            unique: true 
-        }
+        
+        
     })
 )
 

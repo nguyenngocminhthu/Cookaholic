@@ -1,6 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
 import {
-    GET_AUTH,
     GET_AUTH_FAIL,
     GET_AUTH_SUCCESS,
     LOGIN_FAIL,

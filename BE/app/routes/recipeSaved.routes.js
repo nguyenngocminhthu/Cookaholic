@@ -2,7 +2,7 @@ const controller = require('../controllers/recipeSaved.controller')
 
 module.exports=(app)=>{
     // Get status cua recipe theo user
-    app.get('/api/saved/:recipe/:user', controller.show)
+    // app.get('/api/saved/:recipe/:user', controller.show)
     // Status == 1 ==> Luu Recipe 
     //Status == 0 ==> Xoa Recipe
     // Danh cho giao dien chi tiet Recipe
