@@ -8,9 +8,9 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions, DialogContent } from '@mui/material';
-import FLeft from '../img/About1.jpg'
+import FLeft from '../img/TaiwanFood.jpg'
 import FCenter from '../img/About2.jpg'
-import FRight from '../img/About3.jpg'
+import FRight from '../img/ParisFood.jpg'
 import DC from '../img/About4.png'
 import DC1 from '../img/About5.jpg'
 import DC2 from '../img/FlowerDraw.png'
@@ -48,12 +48,12 @@ const About = () => {
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="div">
-                                                Bún bò HUẾ
+                                                Taiwan Food
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
-                                                Tại Huế, món này được gọi đơn giản là “bún bò”. Các địa phương khác gọi là “bún bò Huế” để chỉ xuất xứ của món ăn này.
-                                                Món ăn có nguyên liệu chính là bún, thịt bắp bò, giò heo, cùng nước dùng có màu đỏ đặc trưng.
-                                                Đôi khi tô bún còn được thêm vào thịt bò tái, chả bò và các loại nguyên liệu khác tùy theo sở thích của người nấu.
+                                            Thực phẩm Đài Loan là sự pha trộn giữa hương vị và sự đổi mới. 
+                                            Do lịch sử của Đài Loan với một vài ảnh hưởng nước ngoài khác nhau chiếm hòn đảo và luôn thực thi có truyền thống trên đảo.
+                                            Người Đài Loan yêu thích thức ăn của họ, lời chào phổ biến ở Đài Loan không phải là "Bạn khỏe không?" thay vào đó, "Bạn đã no chưa?" (呷飽未?)
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
@@ -89,18 +89,15 @@ const About = () => {
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-                                            height="265px"
                                             image={FRight}
                                             alt="green iguana"
                                         />
                                         <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                Cơm gia đình
+                                            <Typography gutterBottom variant="h5" component="div" sx={{marginTop: '8px'}}>
+                                                France Food!!!
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
-                                                Trong cuộc đời mỗi con người, ai ai cũng được sinh ra và lớn lên trong một gia đình chan chứa yêu thương.
-                                                Ở nơi ấy, sự che chở, nuôi dưỡng của cha mẹ, sự đùm bọc của tình thân đã chắp cánh cho mỗi người lớn lên và vững bước trên những nẻo đường của cuộc đời.
-                                                Gia đình, điểm tựa thiêng liêng trong cuộc đời mỗi người, nơi mà tuổi thơ ta lớn lên...!!!
+                                                
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>

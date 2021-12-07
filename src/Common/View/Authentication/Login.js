@@ -25,7 +25,7 @@ import { useHistory } from "react-router";
 import { loginAction, googleloginAction, facebookloginAction } from "../../../redux/actions/Auth/authActions";
 import myImage from "../../img/egg.png";
 import "./LoRe.css";
-import { validateLogin } from "./validate";
+import { validateLogin } from "./Validate";
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login'
 import { width } from '@mui/system';

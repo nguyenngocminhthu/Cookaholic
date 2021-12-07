@@ -8,7 +8,7 @@ import Profile from "../Common/View/Profile/Profile";
 import AddRecipes from "../Common/View/AddRecipes/AddRecipes";
 import PagePost from "../Common/View/PagePost/PagePost"
 import NotFound from "../Common/components/404"
-import Support from "../Common/View/Support"
+import ContactUs from "../Common/View/ContactUs"
 import React from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { ComponentTransition, AnimationTypes } from "react-component-transition";
@@ -33,7 +33,7 @@ const HomeRoute = () => {
                 <Route path="/admin" component={Auth(Admin, false, true)} />
                 <Route path="/addrecipes" component={Auth(AddRecipes)} />
                 <Route path="/404" component={NotFound} />
-                <Route path="/support" component={Support} />
+                <Route path="/contactus" component={ContactUs} />
             </Switch>
         </ComponentTransition>
 
