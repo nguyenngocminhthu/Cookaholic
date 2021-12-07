@@ -178,6 +178,8 @@ export const registerAction = (body) => async (dispatch) => {
 export const verifyAction = (body) => async (dispatch) => {
     try {
         dispatch(loading(true));
+        console.log(1)
+        console.log(body)
         const res = await authAPI.verify(body);
         if (!res.success) {
             dispatch(loading());
@@ -194,3 +196,27 @@ export const verifyAction = (body) => async (dispatch) => {
         return false;
     }
 };
+
+export const resetPasswordAction = (body) => async (dispatch) => {
+    try {
+        dispatch(loading(true));
+        console.log("body "+body)
+        const res = await authAPI.resetPassword(body);
+        console.log("log at ==> authAction.js ==> line 114 ==>  res: ", res)
+
+        if (!res.success) {
+            dispatch(loading());
+            dispatch(registerFail());
+        } else {
+            dispatch(loading());
+            dispatch(registerSuccess(res.data));
+        }
+        return res.success;
+    } catch (err) {
+        console.log(err);
+        dispatch(loading());
+        dispatch(registerFail());
+        return false;
+    }
+};
+

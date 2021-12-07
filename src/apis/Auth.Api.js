@@ -20,6 +20,13 @@ const login = async (body) => {
     try {
         const res = await axiosClient.post(`${url}/signin`, body);
         console.log("log at ==> Auth.Api.js ==> line 23 ==>  res: ", res)
+        if(res.message=="Account isn't verified. Please check email!"){
+            const response = await axiosClient.post(`${url}/sendlink`, body)
+            toastNotify("Your account isn't verified. Please check your email to verified!");
+            return response
+            ? { data: response || {}, success: false }
+            : { success: false };
+        }
         if (res.success) {
             Cookie.set("accessToken", res.accessToken);
             toastNotify(res.message);
@@ -78,6 +85,13 @@ const register = async (body) => {
         const res = await axiosClient.post(`${url}/signup`, body);
         toastNotify(res ? res.message : "Đăng ký thất bại");
 
+        if(res.success){
+            const response = await axiosClient.post(`${url}/sendlink`, body)
+            console.log(response)
+            return response
+            ? { data: response || {}, success: true }
+            : { success: false };
+        }
         return res
             ? { data: res || {}, success: true }
             : { success: false };
@@ -89,6 +103,39 @@ const register = async (body) => {
     }
 };
 
-const Auth = { getAuth, login, register, googlelogin, facebooklogin };
+const verify = async (body) => {
+    try {
+        
+        const res = await axiosClient.post(`${url}/confirm/${body.user}/${body.token}`);
+        toastNotify(res ? res.message : "Đăng ký thất bại");
+
+        return res
+            ? { data: res || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Đăng ký thất bại");
+        return {
+            success: false,
+        };
+    }
+};
+
+const resetPassword = async (body) => {
+    try {
+        const res = await axiosClient.post(`${url}/resetpassword`, body);
+        toastNotify(res ? res.message : "Đăng ký thất bại");
+
+        return res
+            ? { data: res || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Đăng ký thất bại");
+        return {
+            success: false,
+        };
+    }
+};
+
+const Auth = { getAuth, login, register, googlelogin, facebooklogin, resetPassword, verify };
 
 export default Auth;

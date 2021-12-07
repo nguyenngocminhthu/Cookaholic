@@ -43,4 +43,16 @@ const validateRegister = (data) => {
     return data
 };
 
-export { validateLogin, validateRegister }
+const validateSendLink = (email) => {
+    const isEmail = validator.isEmail(email);
+    if (!isEmail) {
+        toastNotify("Email không hợp lệ");
+        return false;
+    }
+   
+    return {
+        email,
+    };
+};
+
+export { validateLogin, validateRegister, validateSendLink }
