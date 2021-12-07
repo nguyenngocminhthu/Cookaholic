@@ -4,6 +4,7 @@ import About from '../Common/View/About';
 import Policy from '../Common/View/Policy';
 import Admin from '../Common/View/Admin/Admin';
 import Login from "../Common/View/Authentication/Login";
+import VerifyAccount from "../Common/View/Authentication/VerifyAccount";
 import Profile from "../Common/View/Profile/Profile";
 import AddRecipes from "../Common/View/AddRecipes/AddRecipes";
 import PagePost from "../Common/View/PagePost/PagePost"
@@ -28,10 +29,11 @@ const HomeRoute = () => {
                 <Route path="/about" component={Auth(About)} />
                 <Route path="/pagepost/:idRecipe?" component={Auth(PagePost)} />
                 <Route path="/policy" component={Auth(Policy)} />
-                <Route path="/signin" component={Auth(Login)} />
+                <Route path="/signin" component={Auth(Login)} /> 
                 <Route path="/profile/:idUser?" component={Auth(Profile)} />
                 <Route path="/admin" component={Auth(Admin, false, true)} />
                 <Route path="/addrecipes" component={Auth(AddRecipes)} />
+                <Route path="/verify" component={VerifyAccount} />
                 <Route path="/404" component={NotFound} />
                 <Route path="/contactus" component={ContactUs} />
             </Switch>

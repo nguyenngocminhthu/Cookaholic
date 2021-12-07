@@ -1,6 +1,6 @@
 const controller = require('../controllers/recipeSaved.controller')
 
-module.exports = (app) => {
+module.exports=(app)=>{
     // Get status cua recipe theo user
     app.get('/api/saved/:recipe/:user', controller.show)
     // Status == 1 ==> Luu Recipe 

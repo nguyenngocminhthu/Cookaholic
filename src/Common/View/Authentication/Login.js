@@ -22,13 +22,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { loginAction, googleloginAction, facebookloginAction } from "../../../redux/actions/Auth/authActions";
+import { loginAction, googleloginAction, facebookloginAction, sendLinkAction } from "../../../redux/actions/Auth/authActions";
 import myImage from "../../img/egg.png";
 import "./LoRe.css";
 import { validateLogin } from "./Validate";
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login'
 import { width } from '@mui/system';
+import SendLink from "./ResetPassword"
 
 const theme = createTheme();
 
@@ -158,10 +159,13 @@ const Login = () => {
   const login = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
+    console.log(3)
     const password = e.target.password.value;
+    console.log(password)
+
     const isValidData = validateLogin(email, password);
     if (!isValidData) return;
-    const res = await dispatch(loginAction({ username: email, password }));
+    const res = await dispatch(loginAction({ email, password }));
     console.log("res: ", res);
     if (res) {
       if (res.roles.includes("ROLE_ADMIN")) {
@@ -204,19 +208,21 @@ const Login = () => {
     console.log(response)
     const res = await dispatch(facebookloginAction({ accessToken: response.accessToken, userID: response.userID }));
     console.log("res: ", res);
-    // if (res) {
-    //   if (res.roles.includes("ROLE_ADMIN")) {
-    //     history.push("/admin");
-    //     return;
-    //   }
-    //   if (history.location.pathname === "/") {
-    //     history.push("/main");
-    //     return;
-    //   }
-    //   history.goBack()
-    //   return;
-    // }
+    if (res) {
+      if (res.roles.includes("ROLE_ADMIN")) {
+        history.push("/admin");
+        return;
+      }
+      if (history.location.pathname === "/") {
+        history.push("/main");
+        return;
+      }
+      history.goBack()
+      return;
+    }
   }
+
+
 
   const [forgot, setForgot] = useState(false);
   const openForgot = () => setForgot(!forgot);
@@ -339,25 +345,20 @@ const Login = () => {
       </Grid>
       <Modal
         visible={forgot}
-        width="40%"
-        height="50%"
+        width="80%"
+        height="60%"
         effect="fadeInUp"
-        onClickAway={closeForgot}
-      >
-        <Box
-          component="form"
-          noValidate
-          autoComplete="off"
-          mt={5}
-        >
+        onClickAway={closeForgot}>
+        <SendLink />
+        {/* <Box component="form" noValidate submit="" autoComplete="off" mt={5}>
           <p className="commit">Please commit your Email</p>
           <TextField
             sx={{ width: '80%', flexWrap: 'wrap', mb: 2 }}
             id="email"
             label="Email"
             variant="outlined" />
-          <Button variant="contained" onClick={handleReset}>Submit</Button>
-        </Box>
+          <Button variant="contained" >Submit</Button>
+        </Box> */}
       </Modal>
       <Modal
         visible={reset}
@@ -366,12 +367,7 @@ const Login = () => {
         effect="fadeInUp"
         onClickAway={closeReset}
       >
-        <Box
-          component="form"
-          noValidate
-          autoComplete="off"
-          mt={5}
-        >
+        <Box component="form" noValidate autoComplete="off" mt={5}>
           <p className="commit">Reset your Password</p>
           <TextField
             sx={{ width: '80%', flexWrap: 'wrap', mb: 2 }}

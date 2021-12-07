@@ -1,6 +1,6 @@
 const config = require("../config/auth.config")
 const db = require("../models")
-const { user: User, role: Role, refreshToken: RefreshToken, token: Token } = db;
+const { user: User, role: Role, refreshToken: RefreshToken, token: Token, verifyToken: VerifyToken } = db;
 
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt");
@@ -52,9 +52,7 @@ exports.signup = (req, res) => {
                         }
 
                         res.json({ message: "User was registered successfully! Please check email!", success: true })
-                        const link = `http://localhost:8888/api/auth/confirm/${user._id}/${user.confirmationCode}`
-
-                        await sendVerifyAccount(user.email, link)
+                        
 
                     })
 
@@ -76,9 +74,7 @@ exports.signup = (req, res) => {
                     }
 
                     res.json({ message: "User was registered successfully! Please check email!", success: true })
-                    const link = `http://localhost:8888/api/auth/confirm/${user._id}/${user.confirmationCode}`
 
-                    await sendVerifyAccount(user.email, link)
 
                 })
             })
@@ -86,26 +82,55 @@ exports.signup = (req, res) => {
     })
 }
 
-exports.verifyAccount = async (req, res) => {
+exports.sendLink = async (req, res) => {
     try {
-        const user = await User.findById(req.params.userId);
+        const user = await User.findOne({ email: req.body.email })
+
         if (!user) {
-            res.status(400).json({ message: "invalid link or expired", success: false })
+            res.status(400).json({ message: "User with given email doesn't exist", success: false })
             return
         }
 
-        const confirmationCode = await User.findOne({
+        let token = await VerifyToken.findOne({ userId: user._id })
+
+        token = await new VerifyToken({
             userId: user._id,
-            confirmationCode: req.params.confirmationCode,
+            token: crypto.randomBytes(32).toString("hex"),
+        }).save()
+
+    
+
+        const link = `http://localhost:3000/verify?user=${user._id}&token=${token.token}`
+        await sendVerifyAccount(user.email, link)
+
+        res.status(200).json({ message: "Verify link sent to your email", success: true })
+
+    } catch (err) {
+        res.status(err.status).json({ message: "An error occured", success: false })
+        console.log(err)
+    }
+}
+
+exports.verifyAccount = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.user);
+        if (!user) {
+            res.status(400).json({ message: "Invalid link or expired. Please login to verify account!", success: false })
+            return
+        }
+
+        const token = await VerifyToken.findOne({
+            userId: user._id,
+            token: req.params.token,
         });
-        if (!confirmationCode) {
-            res.status(400).json({ message: "invalid link or expired", success: false })
+        if (!token) {
+            res.status(400).json({ message: "Invalid link or expired. Please login to verify account!", success: false })
             return
         }
 
         user.isVerified = true
         // user.password=req.body.password
-        user.confirmationCode = ""
+        token.delete()
         await user.save();
 
         res.status(200).json({ message: "Your account is verified.", success: true });
@@ -120,7 +145,7 @@ exports.signin = (req, res) => {
     // Tim user co username giong username vua nhap 
     User.findOne({
         // username: req.body.username
-        email: req.body.username
+        email: req.body.email
     })
         // Ket voi du lieu ben collection roles
         .populate("roles", "-__v")
@@ -141,6 +166,23 @@ exports.signin = (req, res) => {
             //     req.body.password,
             //     user.password
             // )
+
+
+
+            const haveToken = await Token.findOne({
+                userId: user._id,
+                // token: user.password
+            });
+            console.log(user.password)
+            if (haveToken) {
+
+                if(haveToken.token !== user.password){
+                    res.status(400).json({ message: "Reset password expired", success: false })
+                    return
+                }
+
+            }
+
             const passwordIsValid = await bcrypt.compare(
                 req.body.password,
                 user.password
@@ -155,7 +197,7 @@ exports.signin = (req, res) => {
                 })
             }
 
-            if(!user.isVerified){
+            if (!user.isVerified) {
                 return res.status(401).json({
                     accessToken: null,
                     message: "Account isn't verified. Please check email!",
@@ -177,7 +219,7 @@ exports.signin = (req, res) => {
             for (let i = 0; i < user.roles.length; i++) {
                 authorities.push("ROLE_" + user.roles[i].name.toUpperCase())
             }
-
+            console.log(authorities)
             res.status(200).json({
                 id: user._id,
                 username: user.username,
@@ -205,11 +247,11 @@ exports.googlelogin = (req, res) => {
                             return res.status(400).json({ message: err, success: false })
                         } else {
                             if (user) {
-                                if(!user.isVerified){
-                                    user.isVerified=true
+                                if (!user.isVerified) {
+                                    user.isVerified = true
                                     user.save()
                                 }
-                                    
+
                                 var token = jwt.sign({ id: user.id }, config.secret, {
                                     // expiresIn: 86400
                                     expiresIn: config.jwtExpiration
@@ -290,8 +332,8 @@ exports.facebooklogin = (req, res) => {
                         return res.status(400).json({ message: err, success: false })
                     } else {
                         if (user) {
-                            if(!user.isVerified){
-                                user.isVerified=true
+                            if (!user.isVerified) {
+                                user.isVerified = true
                                 user.save()
                             }
                             var token = jwt.sign({ id: user.id }, config.secret, {
@@ -396,31 +438,41 @@ exports.refreshToken = async (req, res) => {
     }
 }
 
-exports.sendLink = async (req, res) => {
+exports.resetPassword = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email })
 
-        console.log(process.env.HOST)
-        if (!user || user.googleId != null) {
-            res.status(400).send("User with given email doesn't exist")
+        if (!user.isVerified) {
+            res.status(400).json({ message: "Account isn't verified. Please verified account!", success: false })
             return
         }
 
-        let token = await Token.findOne({ userId: user._id })
-        if (!token) {
-            token = await new Token({
-                userId: user._id,
-                token: crypto.randomBytes(32).toString("hex"),
-            }).save()
+        console.log(process.env.HOST)
+        if (!user) {
+            res.status(400).json({ message: "User with given email doesn't exist", success: false })
+            return
         }
 
-        const link = `http://localhost:8888/api/auth/${user._id}/${token.token}`
-        await sendResetPassword(user.email, link)
+        var password = Math.random().toString(36).slice(-8);
 
-        res.json({ message: "password reset link sent to your email account", success: true })
+        let token = await Token.findOne({ userId: user._id })
+        if (token) {
+            token.delete()
+        }
+        token = await new Token({
+            userId: user._id,
+            token: bcrypt.hashSync(password, 8),
+        }).save()
+        console.log(token)
+        user.password = token.token
+        user.save()
+
+        await sendResetPassword(user.email, password)
+
+        res.status(200).json({ message: "password reset link sent to your email account", success: true })
 
     } catch (err) {
-        res.send("An error occured")
+        res.status(err.status).json({ message: "An error occured", success: false })
         console.log(err)
     }
 }
@@ -479,33 +531,33 @@ exports.handleGetAuth = async (req, res) => {
 
 }
 
-exports.resetPassword = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.userId);
-        if (!user) {
-            res.status(400).json({ message: "invalid link or expired", success: false })
-            return
-        }
+// exports.resetPassword = async (req, res) => {
+//     try {
+//         const user = await User.findById(req.params.userId);
+//         if (!user) {
+//             res.status(400).json({ message: "invalid link or expired", success: false })
+//             return
+//         }
 
-        const token = await Token.findOne({
-            userId: user._id,
-            token: req.params.token,
-        });
-        if (!token) {
-            res.status(400).json({ message: "invalid link or expired", success: false })
-            return
-        }
+//         const token = await Token.findOne({
+//             userId: user._id,
+//             token: req.params.token,
+//         });
+//         if (!token) {
+//             res.status(400).json({ message: "invalid link or expired", success: false })
+//             return
+//         }
 
-        user.password = bcrypt.hashSync(req.body.password, 8)
-        // user.password=req.body.password
+//         user.password = bcrypt.hashSync(req.body.password, 8)
+//         // user.password=req.body.password
 
-        await user.save();
-        await token.delete();
+//         await user.save();
+//         await token.delete();
 
-        res.status(200).json({ message: "password reset sucessfully.", success: true });
-    } catch (error) {
-        res.status(500).json({ message: "An error occured", success: false });
-        console.log(error);
-    }
-}
+//         res.status(200).json({ message: "password reset sucessfully.", success: true });
+//     } catch (error) {
+//         res.status(500).json({ message: "An error occured", success: false });
+//         console.log(error);
+//     }
+// }
 
