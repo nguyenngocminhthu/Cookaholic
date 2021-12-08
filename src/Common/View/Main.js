@@ -13,7 +13,7 @@ import { FaPlusCircle, FaPlayCircle } from "react-icons/fa";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconChef from '../img/iconcheff.png'
-import { Card, Box, CardHeader, CardMedia, CardContent, CardActions, Grid, Divider  } from '@mui/material';
+import { Card, Box, CardHeader, CardMedia, CardContent, CardActions, Grid, Divider } from '@mui/material';
 
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
@@ -146,15 +146,15 @@ const Main = (props) => {
             <div className="row">
                 <Box sx={{ width: '100%' }}>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                        <Grid item xs={3} sx={{display: 'flex'}}>
+                        <Grid item xs={3} sx={{ display: 'flex' }}>
                             <h2 className='h2repices'>Repices</h2>
-                            <img style={{ width:'20%', height: '70%'}}src={IconChef}/>
+                            <img style={{ width: '20%', height: '70%' }} src={IconChef} />
                         </Grid>
                         <Grid item xs={6}>
-                        <form class="example" action="/action_page.php">
-                            <input type="text" placeholder="Search repeipes and more..." name="search"/>
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </form>
+                            <form class="example" action="/action_page.php">
+                                <input type="text" placeholder="Search repeipes and more..." name="search" />
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </form>
                         </Grid>
                         <Grid item xs={3}>
                             <ADDREC />
@@ -191,7 +191,7 @@ const Main = (props) => {
                 </div>
 
                 <div className="col-9">
-                    
+
                     <Grid container>
                         {menus.map((value, index) => {
                             return (

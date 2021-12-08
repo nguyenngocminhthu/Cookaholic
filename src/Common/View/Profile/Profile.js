@@ -28,7 +28,6 @@ import BG from "../../img/Bgprofile.png"
 import AVT from "../../img/Avt.jpg"
 import Information from "./Information"
 import Security from "./Security";
-import FavoritePost from "./FavoritePost";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -71,6 +70,7 @@ const Profile = (props) => {
 
     const [value, setValue] = useState(0);
     const [popupItem, setPopupItem] = useState({});
+    const [popupItemFa, setPopupItemFa] = useState({});
     const handleChange = (event, newValue) => {
         setValue(newValue);
 
@@ -129,6 +129,18 @@ const Profile = (props) => {
         setAnchorEl(null);
     };
 
+    const [popupFa, setPopupFa] = useState(null);
+    const openFa = Boolean(popupFa);
+
+    const handleClickFa = (event, index) => {
+        setPopupItemFa(faPost[index])
+
+        setPopupFa(event.currentTarget);
+    };
+    const handleCloseFa = () => {
+        setPopupFa(null);
+    };
+
     const user = useSelector((state) => state.user.profile);
     console.log("log at => Profile => user: ", user)
 
@@ -162,9 +174,8 @@ const Profile = (props) => {
                             <Tab label="INFORMATION" {...a11yProps(1)} />
 
                             <Tab label="FAVORITE LIST" {...a11yProps(2)} />
-                            <Tab label="WAITING LIST" {...a11yProps(3)} />
-                            <Tab label="POSTED LIST" {...a11yProps(4)} />
-                            <Tab label="SECURITY" {...a11yProps(5)} />
+
+                            <Tab label="SECURITY" {...a11yProps(3)} />
 
                         </Tabs>
                         <TabPanel className="profileRight" value={value} index={0}>
@@ -269,7 +280,7 @@ const Profile = (props) => {
                                         />
                                         <ImageListItemBar
                                             title={vl.recipe.name}
-                                            subtitle={vl.username}
+                                            subtitle={vl.recipe.username}
                                             actionIcon={
                                                 <div>
                                                     <IconButton
@@ -277,9 +288,9 @@ const Profile = (props) => {
                                                         aria-label={`info about ${vl.recipe.name}`}
                                                         id="long-button"
                                                         aria-controls="long-menu"
-                                                        aria-expanded={open ? 'true' : undefined}
+                                                        aria-expanded={openFa ? 'true' : undefined}
                                                         aria-haspopup="true"
-                                                        onClick={(e) => handleClick(e, idx, vl._id)}
+                                                        onClick={(e) => handleClickFa(e, idx, vl._id)}
                                                     >
                                                         <InfoIcon />
                                                     </IconButton>
@@ -293,9 +304,9 @@ const Profile = (props) => {
                                     MenuListProps={{
                                         'aria-labelledby': 'long-button',
                                     }}
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
+                                    anchorEl={popupFa}
+                                    open={openFa}
+                                    onClose={handleCloseFa}
                                     PaperProps={{
                                         style: {
                                             maxHeight: ITEM_HEIGHT * 4.5,
@@ -307,15 +318,12 @@ const Profile = (props) => {
                                         <VisibilityIcon style={{ marginRight: "10px" }} />
                                         <NavLink
                                             className="popDetail"
-                                            to={`/pagepost/${popupItem._id}`}>
+                                            to={`/pagepost/${popupItemFa._id}`}>
                                             Detail
                                         </NavLink>
 
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose} disableRipple>
-                                        <EditIcon style={{ marginRight: "10px" }} />
-                                        Edit
-                                    </MenuItem>
+
                                     <MenuItem disableRipple>
                                         <DeleteIcon style={{ marginRight: "10px" }} />
                                         Delete
@@ -324,13 +332,8 @@ const Profile = (props) => {
                                 </Menu>
                             </ImageList>
                         </TabPanel>
+
                         <TabPanel value={value} index={3}>
-                            Item Four
-                        </TabPanel>
-                        <TabPanel value={value} index={4}>
-                            Item Five
-                        </TabPanel>
-                        <TabPanel value={value} index={5}>
                             <Security user={user} />
                         </TabPanel>
 
