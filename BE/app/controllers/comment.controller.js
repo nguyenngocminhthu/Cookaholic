@@ -3,14 +3,16 @@ const db = require('../models')
 const { findOne } = require('../models/comment.model')
 const Comment = db.comment
 const Recipe = db.recipe
+const format = require('date-fns/format')
+const formatDistance = require('date-fns/formatDistance')
 
 // Create cmt
 exports.create = async (req, res) => {
 
     const data = req.body
-    const date = new Date()
+    let date = new Date()
     date.setHours(date.getHours() + 7)
-    console.log(date)
+    date = format(date, "hh:mm dd/MM/yy")
     const comment = await Comment.create({
         user: data.user,
         recipe: data.recipe,
@@ -25,7 +27,7 @@ exports.create = async (req, res) => {
         .then(result => {
             let rateOfRecipe = result.rate
             console.log(data.rate)
-            
+
             let x = (rateOfRecipe / 2) + (data.rate / 2)
 
             console.log(rateOfRecipe / 2)
@@ -55,8 +57,9 @@ exports.create = async (req, res) => {
 }
 
 exports.reply = (req, res) => {
-    const date = new Date()
+    let date = new Date()
     date.setHours(date.getHours() + 7)
+    date = format(date, "hh:mm dd/MM/yy")
     Comment.updateOne({ _id: req.body.id }, { $push: { replies: { user: req.body.user, content: req.body.content, createAt: date } } }, (err) => {
         if (err) {
             res.status(404).json({ message: err, success: false })
@@ -83,8 +86,12 @@ exports.getByRecipe = async (req, res) => {
                 return res.status(404).json({ message: "Not found comment.", success: false });
             }
 
-            // console.log(data[0].replies[0].user)
+            let date = new Date()
+            date.setHours(date.getHours() + 7)
+            date = format(date, "hh:mm dd/MM/yy")
+            console.log(date)
 
+            // console.log(formatDistance(date, new Date(), { addSuffix: true }))
 
             let count = 0
             for (let i = 0; i < data.length; i++) {

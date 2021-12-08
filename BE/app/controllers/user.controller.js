@@ -114,6 +114,7 @@ exports.createAdmin = (req, res) => {
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
         gender: req.body.gender,
+        isVerify: true
     })
 
     user.save((err, user) => {

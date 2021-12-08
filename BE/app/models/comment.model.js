@@ -22,10 +22,10 @@ const Comment = mongoose.model(
             content: String,
             createAt:{
                 type: Date,
-                default: Date.now
+                default: Date.now   
             }
         }],
-        createAt: Date
+        createAt: String
     })
 )
 
