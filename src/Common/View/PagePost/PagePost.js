@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { Box, Paper, Grid, Tabs, Tab, Card, CardActionArea, CardMedia, Typography, Rating, Divider } from '@mui/material';
+import { Box, Paper, Grid, Tabs, Tab, Card, CardActionArea, CardMedia, Typography, Rating, Divider, Stack  } from '@mui/material';
 import PropTypes from 'prop-types';
 import Comments from './Comments'
 import './PagePost.css'
@@ -11,7 +11,8 @@ import {
 } from "../../../redux/actions/Recipe/recipe.action";
 import { styled } from '@mui/material/styles';
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/core/ButtonUnstyled';
-
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 const ButtonRoot = React.forwardRef(function ButtonRoot(props, ref) {
   const { children, ...other } = props;
 
@@ -186,29 +187,11 @@ const PagePost = (props) => {
   return (
     <div className="Center">
       <Box sx={{ flexGrow: 1, marginTop: 5 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={8} className="btnBack">
+          <Box className="btnBack">
             <SvgButton onClick={() => { handleGoBack() }}>Go Back</SvgButton>
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <Typography sx={{ fontWeight: 'bold', textAlign: 'left' }} variant="h3" component="h2">
-              {recipe.name}
-            </Typography>
-          </Grid>
-
-          <Grid item xs={6} md={8}>
-            <Box sx={{ display: 'flex' }} spacing={1}>
-              <Rating sx={{ color: '#d54215', marginRight: '10px' }} name="half-rating" value={recipe.rate} precision={0.5} readOnly />
-              <span>{recipe.rating}</span>
-              <Divider orientation="vertical" sx={{ paddingLeft: '10px', marginRight: '10px' }} flexItem />
-              <span>1 Review</span>
-            </Box>
-          </Grid>
-          <Grid item xs={6} md={8}>
-            <p className='Decitext'>{recipe.title}</p>
-          </Grid>
-
-          <Grid item xs={6} md={9}>
+          </Box>
+        <Grid container spacing={2}>
+          <Grid item xs={6} md={5}>
             <Card sx={{ maxWidth: 1000 }}>
               <CardActionArea>
                 <CardMedia
@@ -219,53 +202,39 @@ const PagePost = (props) => {
               </CardActionArea>
             </Card>
           </Grid>
-          <Grid item xs={6} md={3}>
-            <Item xs={6} sx={{ textAlign: 'left', fontWeight: 'bold', fontSize: '17px' }}>
-              <img className='Clock' src={Clock} align="right" />
-              <p>Chuẩn bị: <span>15 phút</span> </p>
-              <p>Nấu: 15 phút </p>
-              <p>Bổ sung: 5 phút </p>
-              <p>Tổng: {recipe.time} </p>
-              <p>Khẩu phần: {recipe.serving} </p>
-              <p>Sản lượng: 5  </p>
-            </Item>
+          <Grid item xs={6} md={7}>
+          <img className='Clock' src={Clock} align="right" />  
+              <Typography sx={{ fontWeight: 'bold', textAlign: 'left' }} variant="h4" component="h3">
+                {recipe.name}
+              </Typography>  
+              <Box sx={{ display: 'flex' }} spacing={1}>
+                <Rating sx={{ color: '#d54215', marginRight: '10px' }} name="half-rating" value={recipe.rate} precision={0.5} readOnly />
+                <span>{recipe.rating}</span>
+                <Divider orientation="vertical" sx={{ paddingLeft: '10px', marginRight: '10px' }} flexItem />
+                <span>1 Review</span>
+              </Box>
+              <Stack sx={{ marginTop: ' 20px'}}direction="row" spacing={2}>
+                <div className="timeclock">
+                  <WatchLaterIcon sx={{position:'absolute', left: '50%', transform: 'translateX(-50%)', top: '12px'}}/>
+                </div>
+                <p style={{ marginTop: '10px', marginRight: '100px'}}>COOK: {recipe.time}</p>
+
+                <div className="timeclock">
+                  <RestaurantMenuIcon sx={{position:'absolute', left: '50%', transform: 'translateX(-50%)', top: '12px'}}/>
+                </div>
+                <p style={{ marginTop: '10px'}}>SERVER: {recipe.serving}</p>
+
+              </Stack>
+              <p className='Decitext'>{recipe.title}</p>
           </Grid>
         </Grid>
-        <Grid sx={{ marginTop: 1 }} container spacing={2}>
-          <Grid item xs={6} md={12}>
-            <Item>
-              <Box sx={{ width: '100%' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                  <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="About" {...a11yProps(0)} />
-                    <Tab label="Ingredients" {...a11yProps(1)} />
-                    <Tab label="Cook" {...a11yProps(2)} />
-                  </Tabs>
-                </Box>
-                <TabPanel value={value} index={0}>
-                  <Grid container rowSpacing={0.5} columnSpacing={{ xs: 0.5, md: 1 }}>
-                    <Grid item xs={12} sx={{ textAlign: 'left' }}>
-                      <h2>Details</h2>
-                      <ul>
-                        <li>Bơ và ẩm ướt, những bánh nướng xốp màu cam nam việt quất này nặng về hương vị và
-                          bùng nổ với quả nam việt quất trong mỗi vết cắn.</li>
-                      </ul>
-                      <h2>Note</h2>
-                      <ul>
-                        <li>Thực hiện các hướng dẫn trước và đóng băng: Bánh nướng xốp không có men vẫn tươi được bao phủ ở nhiệt độ phòng trong tối đa 5 ngày.
-                          Đậy nắp và bảo quản bánh nướng xốp bằng men ở nhiệt độ phòng trong tối đa 1 ngày hoặc trong tủ lạnh trong tối đa 1 tuần.
-                          Bánh nướng xốp tráng men hoặc không cháy đóng băng tốt trong tối đa 2 tháng.</li>
-                        <li>Sữa chua: Sử dụng sữa chua yêu thích của bạn; Tôi thích sữa chua Hy Lạp ít béo nhưng thường xuyên (không phải hy lạp) sẽ ổn.
-                          Hãy thử với hương vị cam, vani, mật ong, không béo hoặc đầy đủ chất béo. Kem chua cũng có tác dụng.</li>
-                        <li>Cranberries: Bạn có thể sử dụng 1 và 1/2 chén nam việt quất khô thay thế cho quả nam việt quất tươi / đông lạnh.</li>
-                        <li>Bánh nướng xốp mini: Đối với bánh nướng xốp mini, nướng ở 350 ° F (177 ° C)
-                          trong khoảng 11-13 phút hoặc cho đến khi nướng qua. Sử dụng tăm để kiểm tra sự hoàn thành.</li>
-                      </ul>
-                    </Grid>
-                  </Grid>
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                  <div className="ingredients">
+        <Grid container spacing={2} sx={{marginTop: '20px'}}>
+          <Grid item xs={6} md={5}>
+              <Typography sx={{ fontWeight: 'bold', textAlign: 'left' }} variant="h5" component="h4">
+                Ingredients
+              </Typography>  
+              <b className="hr anim"></b>
+              <div className="ingredients">
                     <h2>Nguyên liệu</h2>
                     <ul>
                       <li>1/2 chén (115g) bơ không muối,làm mềm đến nhiệt độ phòng</li>
@@ -291,9 +260,14 @@ const PagePost = (props) => {
                     </ul>
 
                   </div>
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                  <div className="ingredients">
+          </Grid>
+          <Grid item xs={6} md={7}>
+         
+              <Typography sx={{ fontWeight: 'bold', textAlign: 'left'}} variant="h5" component="h4">
+                Method   
+              </Typography>  
+              <b className="hr anim"></b>
+              <div style={{ textAlign: 'left'}}>
                     <h2>Vào bếp nào!!!</h2>
                     <ol>
                       <li>Làm nóng lò nướng đến 425 ° F (218 ° C). Phun một chảo muffin 12 đếm bằng bình xịt chống dính hoặc lót bằng lớp lót cupcake.
@@ -316,9 +290,6 @@ const PagePost = (props) => {
                         Rưới lên bánh nướng xốp ấm áp. Để nguội một thời gian ngắn trước khi phục vụ.</li>
                     </ol>
                   </div>
-                </TabPanel>
-              </Box>
-            </Item>
           </Grid>
         </Grid>
       </Box>
