@@ -74,7 +74,7 @@ exports.show = (req, res) => {
 exports.getByUser = (req, res) => {
     const user = req.params.user
 
-    RecipeSaved.findOne({ user: user })
+    RecipeSaved.find({ user: user })
         .populate("recipe")
         .exec(async (err, data) => {
             if (err) {
@@ -87,12 +87,14 @@ exports.getByUser = (req, res) => {
                 return res.status(400).json({ message: "Not found.", success: false });
             }
 
-            res.status(200).json({
-                id: data._id,
-                user: data.user,
-                recipe: data.recipe,
-                success: true,
-            });
+            // res.status(200).json({
+            //     id: data._id,
+            //     user: data.user,
+            //     recipe: data.recipe,
+            //     success: true,
+            // });
+
+            res.status(200).json({data, success: true})
         })
 
 }

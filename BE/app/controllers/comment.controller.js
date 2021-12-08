@@ -10,14 +10,19 @@ const formatDistance = require('date-fns/formatDistance')
 exports.create = async (req, res) => {
 
     const data = req.body
-    console.log(data.rate)
+    console.log(data)
+    
+    let rate=data.rate
+    if(rate=='')
+        rate=0
+
     let date = new Date()
     date.setHours(date.getHours() + 7)
     date = format(date, "hh:mm dd/MM/yy")
     const comment = await Comment.create({
         user: data.user,
         recipe: data.recipe,
-        rate: data.rate,
+        rate: rate,
         content: data.content,
         createAt: date
     })
