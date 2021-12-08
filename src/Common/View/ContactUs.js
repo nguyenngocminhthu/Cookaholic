@@ -14,7 +14,7 @@ const ContactUs = () => {
   };
   return (
     <div>
-      <div>
+      <div className="Center">
       <div className="Home-two">
         <div className="Home-three-one">
           <div className="Textinfor">
