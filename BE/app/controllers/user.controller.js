@@ -114,7 +114,7 @@ exports.createAdmin = (req, res) => {
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
         gender: req.body.gender,
-        isVerify: true
+        isVerified: true
     })
 
     user.save((err, user) => {
@@ -122,6 +122,7 @@ exports.createAdmin = (req, res) => {
             res.status(500).json({ message: err, success: false })
             return
         }
+        console.log(user)
         Role.findOne({ name: "admin" }, (err, role) => {
             if (err) {
                 res.status(500).json({ message: err, success: false })
