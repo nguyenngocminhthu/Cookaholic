@@ -20,10 +20,13 @@ const Comment = mongoose.model(
                 ref: "User"
             },
             content: String,
-        }]
-    },
-        { timestamps: true }
-    )
+            createAt:{
+                type: Date,
+                default: Date.now
+            }
+        }],
+        createAt: Date
+    })
 )
 
 module.exports = Comment

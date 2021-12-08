@@ -8,19 +8,24 @@ const Recipe = db.recipe
 exports.create = async (req, res) => {
 
     const data = req.body
-
+    const date = new Date()
+    date.setHours(date.getHours() + 7)
+    console.log(date)
     const comment = await Comment.create({
         user: data.user,
         recipe: data.recipe,
         rate: data.rate,
         content: data.content,
+        createAt: date
     })
+
+    console.log(comment)
 
     Recipe.findById(data.recipe)
         .then(result => {
             let rateOfRecipe = result.rate
-            if (rateOfRecipe == 0)
-                rateOfRecipe = 1
+            console.log(data.rate)
+            
             let x = (rateOfRecipe / 2) + (data.rate / 2)
 
             console.log(rateOfRecipe / 2)
@@ -50,7 +55,9 @@ exports.create = async (req, res) => {
 }
 
 exports.reply = (req, res) => {
-    Comment.updateOne({ _id: req.body.id }, { $push: { replies: { user: req.body.user, content: req.body.content } } }, (err) => {
+    const date = new Date()
+    date.setHours(date.getHours() + 7)
+    Comment.updateOne({ _id: req.body.id }, { $push: { replies: { user: req.body.user, content: req.body.content, createAt: date } } }, (err) => {
         if (err) {
             res.status(404).json({ message: err, success: false })
             return
@@ -76,7 +83,8 @@ exports.getByRecipe = async (req, res) => {
                 return res.status(404).json({ message: "Not found comment.", success: false });
             }
 
-            console.log(data[0].replies[0].user)
+            // console.log(data[0].replies[0].user)
+
 
             let count = 0
             for (let i = 0; i < data.length; i++) {
