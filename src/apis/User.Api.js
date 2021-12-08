@@ -5,14 +5,13 @@ import queryString from "query-string";
 const url = "/api/user";
 const insert = async (body) => {
   try {
-    console.log("log at ==> User.Api.js ==> body: ", body);
-    const res = await axiosClient.post(`${url}/user/create`, body);
-    toastNotify(res ? res.message.VN : "Thêm user thất bại");
+    const res = await axiosClient.post(`/api/admin`, body);
+    toastNotify(res ? res.message : "Add Admin fail");
     return res && res.data
       ? { data: res.data || {}, success: true }
       : { success: false };
   } catch (error) {
-    toastNotify("Thêm user thất bại");
+    toastNotify("Add Admin fail");
     return {
       success: false,
     };

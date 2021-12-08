@@ -3,6 +3,8 @@ import {
     ADD_FAVORITE_SUCCESS,
     GET_STATUS_FAIL,
     GET_STATUS_SUCCESS,
+    GET_FAVORITE_FAIL,
+    GET_FAVORITE_SUCCESS,
 } from "./types";
 import RecipeSaveAPI from "../../../apis/RecipeSave.Api";
 import { changeLoading } from "../System/systemActions";
@@ -80,6 +82,41 @@ export function getStatusAction(recipe, user) {
         } catch {
             dispatch(loading());
             dispatch(getStatusFail());
+            return false;
+        }
+    };
+}
+
+export function getFavoriteFail() {
+    return {
+        type: GET_FAVORITE_FAIL,
+        payload: {},
+    };
+}
+
+export function getFavoriteSuccess(data) {
+    return {
+        type: GET_FAVORITE_SUCCESS,
+        payload: data,
+    };
+}
+
+export function getFavoriteAction(user) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await RecipeSaveAPI.getAll(user);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(getFavoriteSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(getFavoriteFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(getFavoriteFail());
             return false;
         }
     };

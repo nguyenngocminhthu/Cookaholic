@@ -27,7 +27,7 @@ import { red } from '@mui/material/colors';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import '../css/main.css';
-import { getStatusAction, addFavoriteAction } from "../../redux/actions/RecipeSave/recipeSaveAction"
+import { getStatusAction, addFavoriteAction, getFavoriteAction } from "../../redux/actions/RecipeSave/recipeSaveAction"
 import toastNotify from "../Toastify/toastNotify";
 
 
@@ -87,7 +87,19 @@ const Main = (props) => {
         console.log("log at ==> Main.js => menus: ", menus);
     }, [menus])
 
-
+    const user = useSelector((state) => state.auth.user);
+    useEffect(() => {
+        console.log("log at => Main ==> faPost: ", user)
+        if (user._id) {
+            const fetchFaList = async () => {
+                await dispatch(getFavoriteAction(user._id))
+            }
+            fetchFaList();
+        }
+    }, [user])
+    useEffect(() => {
+        //find by id
+    }, [])
 
     const topics = useSelector((state) => state.topic.listTopic) || []
 
@@ -99,6 +111,15 @@ const Main = (props) => {
     }, [topics])
 
     const userID = useSelector((state) => state.auth.user._id) || []
+
+    const faPost = useSelector((state) => state.recipesave.listRecipeSave) || []
+
+    useEffect(() => {
+
+        console.log("log at ==> FavoritePost.js => faPost: ", faPost);
+    }, [])
+
+
     console.log("userID: ", userID);
 
     const recipeID = (value) => {
@@ -120,8 +141,10 @@ const Main = (props) => {
     const saveRecipe = async (value, stt) => {
         const res = await dispatch(addFavoriteAction(recipeID(value), userID, { status: stt }))
         if (res) await dispatch(getAllRecipeAction());
+        await dispatch(getFavoriteAction(userID))
 
     };
+
 
 
     return (

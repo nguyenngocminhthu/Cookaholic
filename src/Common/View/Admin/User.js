@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import plusFill from '@mui/icons-material/Add';
-import { getAllUserAction } from "../../../redux/actions/User/user.action"
+import Modal from 'react-awesome-modal';
+import { addAdminAction, getAllUserAction } from "../../../redux/actions/User/user.action"
 // material
 import {
+  Grid,
   Card,
   Box,
   Table,
@@ -19,12 +20,20 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  TextField,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+
 } from '@mui/material';
 // components
 import Label from '../../components/Labels'
 import SearchNotFound from '../../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../UserManager';
+import { validateAdmin } from "../Authentication/Validate";
 
 const TABLE_HEAD = [
   { id: 'username', label: 'Username', alignRight: false },
@@ -70,6 +79,35 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function User() {
+
+  const [value, setValue] = useState('Female');
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const addAdmin = async (e) => {
+    e.preventDefault();
+    const username = e.target.username.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value
+    const gender = e.target.gender.value
+    const isValid = validateAdmin({ email, password, username })
+    if (!isValid) return;
+    const res = await dispatch(addAdminAction({ username, password, email, gender }));
+    if (res) {
+      //history.push("/main")
+      return;
+    }
+  };
+
+  const [visible, setVisible] = useState();
+  const openModal = () => {
+    setVisible(!visible);
+
+  };
+  const closeModal = () => setVisible(false);
+
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -133,6 +171,8 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
+
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
@@ -149,6 +189,7 @@ export default function User() {
           <Button
             variant="contained"
             startIcon={<Box component={plusFill} sx={{ color: 'white' }} />}
+            onClick={() => openModal()}
           >
             New User
           </Button>
@@ -243,6 +284,101 @@ export default function User() {
           />
         </Card>
       </Container>
+      <Modal
+        visible={visible}
+        width="40%"
+        height="90%"
+        effect="fadeInUp"
+        onClickAway={closeModal}
+
+      >
+        <div>
+          <div className="close-detail">
+            <button className="close" onClick={closeModal}><i className="fa fa-times" aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <Typography component="h1" variant="h5">
+          ADD USER
+        </Typography>
+        <Box component="form" onSubmit={addAdmin} sx={{ mt: 3, display: 'flex', alignItems: 'center', flexDirection: 'column', }}>
+          <Grid container spacing={2}>
+            <Grid item xs={1}>
+
+            </Grid>
+            <Grid item xs={10}>
+              <TextField
+                fullWidth
+                id={"username"}
+                label={"Username"}
+                name={"username"}
+
+              />
+            </Grid>
+            <Grid item xs={1}>
+
+            </Grid>
+            <Grid item xs={1}>
+
+            </Grid>
+            <Grid item xs={10}>
+              <TextField
+                fullWidth
+                id={"email"}
+                label={"Email"}
+                name={"email"}
+
+              />
+            </Grid>
+            <Grid item xs={1}>
+
+            </Grid>
+            <Grid item xs={1}>
+
+            </Grid>
+            <Grid item xs={10} mt={2}>
+              <TextField
+                fullWidth
+                id={"password"}
+                label={"Password"}
+                name={"password"}
+                type="password"
+              />
+            </Grid>
+            <Grid item xs={1}>
+
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Gender</FormLabel>
+                <RadioGroup
+                  row
+                  aria-label="gender"
+                  name="gender"
+                  id="gender"
+                  value={value}
+                  onChange={handleChange}
+                >
+                  <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                  <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="Other" control={<Radio />} label="Other" />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+
+          </Grid>
+
+          <Button className="btn-grad"
+            type="submit"
+
+            variant="contained"
+            sx={{ mt: 1, mb: 4, color: 'black' }}
+          >
+            Create
+          </Button>{" "}
+
+        </Box>
+
+      </Modal>
     </div>
   );
 }

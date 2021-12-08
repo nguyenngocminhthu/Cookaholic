@@ -18,6 +18,21 @@ const save = async (recipe, user, queryParams) => {
     }
 };
 
+const getAll = async (user) => {
+    try {
+        const res = await axiosClient.get(`/api/saved/${user}`);
+        toastNotify(res ? res.message : "Get Recipe Fail");
+        return res && res.data
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Get Recipe Success");
+        return {
+            success: false,
+        };
+    }
+};
+
 const getStatus = async (recipe, user) => {
     try {
         const res = await axiosClient.get(`/api/saved/${recipe}/${user}`);
@@ -34,6 +49,6 @@ const getStatus = async (recipe, user) => {
     }
 };
 
-const RecipeSave = { save, getStatus };
+const RecipeSave = { save, getStatus, getAll };
 
 export default RecipeSave;
