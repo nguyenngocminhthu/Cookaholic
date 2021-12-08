@@ -233,10 +233,11 @@ h3 {
   padding: 0px 40px;
   height: 70px;
 }
-
+.btnadd{
+  margin-top: 25px;
+}
 .addrec {
-  padding: 20px;
-  margin-right: 10px;
+  padding: 15px;
   border: 1px solid rgb(252, 70, 100);
   background-color: rgb(252, 70, 100);
   border-radius: 10px;
@@ -245,8 +246,7 @@ h3 {
   font-weight: 700;
 }
 .addrec:hover {
-  padding: 20px;
-  margin-right: 10px;
+  padding: 15px;  
   border: 1px solid rgb(252, 70, 100);
   background-color: white;
   border-radius: 10px;
@@ -259,4 +259,38 @@ h3 {
   .card {
     width: 40%;
   }
+}
+.titleMain{
+  display: flex;
+}
+.h2repices{
+  margin-left: 20px;
+  margin-right: 10px;
+}
+.example{
+  margin-top: 15px;
+}
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f8f8f8;
+}
+
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #000000;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: grey;
 }

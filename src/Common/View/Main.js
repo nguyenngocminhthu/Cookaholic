@@ -12,13 +12,8 @@ import { NavLink } from "react-router-dom";
 import { FaPlusCircle, FaPlayCircle } from "react-icons/fa";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import { Grid } from '@mui/material';
+import IconChef from '../img/iconcheff.png'
+import { Card, Box, CardHeader, CardMedia, CardContent, CardActions, Grid, Divider  } from '@mui/material';
 
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
@@ -39,11 +34,9 @@ const Main = (props) => {
     const ADDREC = () => {
         if (isLogin)
             return (
-                <>
-                    <div style={{ textAlign: "right", marginBottom: "40px" }}>
-                        <NavLink className="addrec" to="/addrecipes" value="addrecipe"><FaPlusCircle /> ADD RECIPE</NavLink>
-                    </div>
-                </>
+                <div className='btnadd'>
+                    <NavLink className="addrec" to="/addrecipes" value="addrecipe"><FaPlusCircle /> ADD RECIPE</NavLink>
+                </div>
             );
         return (
             <></>
@@ -151,7 +144,26 @@ const Main = (props) => {
         <div className="main">
             <Header />
             <div className="row">
+                <Box sx={{ width: '100%' }}>
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                        <Grid item xs={3} sx={{display: 'flex'}}>
+                            <h2 className='h2repices'>Repices</h2>
+                            <img style={{ width:'20%', height: '70%'}}src={IconChef}/>
+                        </Grid>
+                        <Grid item xs={6}>
+                        <form class="example" action="/action_page.php">
+                            <input type="text" placeholder="Search repeipes and more..." name="search"/>
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <ADDREC />
+                        </Grid>
+                    </Grid>
+                </Box>
                 <div className="col-3">
+                    <strong >Filter by:                              </strong>
+                    <Divider variant="middle" />
                     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', position: 'unset' }}>
                         {topics.map((vl, idx) => {
                             const labelId = `checkbox-list-secondary-label-${vl.name}`;
@@ -179,7 +191,7 @@ const Main = (props) => {
                 </div>
 
                 <div className="col-9">
-                    <ADDREC />
+                    
                     <Grid container>
                         {menus.map((value, index) => {
                             return (
