@@ -217,12 +217,12 @@ const PagePost = (props) => {
                 <div className="timeclock">
                   <WatchLaterIcon sx={{position:'absolute', left: '50%', transform: 'translateX(-50%)', top: '12px'}}/>
                 </div>
-                <p style={{ marginTop: '10px', marginRight: '100px'}}>COOK: {recipe.time}</p>
+                <p style={{ marginTop: '10px'}}>COOK: {recipe.time} phút</p>
 
                 <div className="timeclock">
                   <RestaurantMenuIcon sx={{position:'absolute', left: '50%', transform: 'translateX(-50%)', top: '12px'}}/>
                 </div>
-                <p style={{ marginTop: '10px'}}>SERVER: {recipe.serving}</p>
+                <p style={{ marginTop: '10px'}}>SERVER: {recipe.serving} người</p>
 
               </Stack>
               <p className='Decitext'>{recipe.title}</p>
