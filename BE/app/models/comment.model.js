@@ -20,10 +20,7 @@ const Comment = mongoose.model(
                 ref: "User"
             },
             content: String,
-            createAt:{
-                type: Date,
-                default: Date.now   
-            }
+            createAt:String
         }],
         createAt: String
     })

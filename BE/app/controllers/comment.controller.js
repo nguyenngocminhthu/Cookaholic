@@ -10,6 +10,7 @@ const formatDistance = require('date-fns/formatDistance')
 exports.create = async (req, res) => {
 
     const data = req.body
+    console.log(data.rate)
     let date = new Date()
     date.setHours(date.getHours() + 7)
     date = format(date, "hh:mm dd/MM/yy")
