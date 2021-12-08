@@ -76,6 +76,7 @@ exports.getByUser = (req, res) => {
 
     RecipeSaved.find({ user: user })
         .populate("recipe")
+        .populate("user")
         .exec(async (err, data) => {
             if (err) {
                 res.status(500).json({ message: err, success: false });
@@ -94,7 +95,7 @@ exports.getByUser = (req, res) => {
             //     success: true,
             // });
 
-            res.status(200).json({data, success: true})
+            res.status(200).json({ data, success: true })
         })
 
 }

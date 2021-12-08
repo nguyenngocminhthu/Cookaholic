@@ -13,7 +13,7 @@ import { FaPlusCircle, FaPlayCircle } from "react-icons/fa";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconChef from '../img/iconcheff.png'
-import { Card, Box, CardHeader, CardMedia, CardContent, CardActions, Grid, Divider  } from '@mui/material';
+import { Card, Box, CardHeader, CardMedia, CardContent, CardActions, Grid, Divider } from '@mui/material';
 
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
@@ -22,7 +22,7 @@ import { red } from '@mui/material/colors';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import '../css/main.css';
-import { getStatusAction, addFavoriteAction } from "../../redux/actions/RecipeSave/recipeSaveAction"
+import { getStatusAction, addFavoriteAction, getFavoriteAction } from "../../redux/actions/RecipeSave/recipeSaveAction"
 import toastNotify from "../Toastify/toastNotify";
 
 
@@ -80,7 +80,19 @@ const Main = (props) => {
         console.log("log at ==> Main.js => menus: ", menus);
     }, [menus])
 
-
+    const user = useSelector((state) => state.auth.user);
+    useEffect(() => {
+        console.log("log at => Main ==> faPost: ", user)
+        if (user._id) {
+            const fetchFaList = async () => {
+                await dispatch(getFavoriteAction(user._id))
+            }
+            fetchFaList();
+        }
+    }, [user])
+    useEffect(() => {
+        //find by id
+    }, [])
 
     const topics = useSelector((state) => state.topic.listTopic) || []
 
@@ -92,6 +104,15 @@ const Main = (props) => {
     }, [topics])
 
     const userID = useSelector((state) => state.auth.user._id) || []
+
+    const faPost = useSelector((state) => state.recipesave.listRecipeSave) || []
+
+    useEffect(() => {
+
+        console.log("log at ==> FavoritePost.js => faPost: ", faPost);
+    }, [])
+
+
     console.log("userID: ", userID);
 
     const recipeID = (value) => {
@@ -113,8 +134,10 @@ const Main = (props) => {
     const saveRecipe = async (value, stt) => {
         const res = await dispatch(addFavoriteAction(recipeID(value), userID, { status: stt }))
         if (res) await dispatch(getAllRecipeAction());
+        await dispatch(getFavoriteAction(userID))
 
     };
+
 
 
     return (
@@ -123,15 +146,15 @@ const Main = (props) => {
             <div className="row">
                 <Box sx={{ width: '100%' }}>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                        <Grid item xs={3} sx={{display: 'flex'}}>
+                        <Grid item xs={3} sx={{ display: 'flex' }}>
                             <h2 className='h2repices'>Repices</h2>
-                            <img style={{ width:'20%', height: '70%'}}src={IconChef}/>
+                            <img style={{ width: '20%', height: '70%' }} src={IconChef} />
                         </Grid>
                         <Grid item xs={6}>
-                        <form class="example" action="/action_page.php">
-                            <input type="text" placeholder="Search repeipes and more..." name="search"/>
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </form>
+                            <form class="example" action="/action_page.php">
+                                <input type="text" placeholder="Search repeipes and more..." name="search" />
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </form>
                         </Grid>
                         <Grid item xs={3}>
                             <ADDREC />
@@ -168,7 +191,7 @@ const Main = (props) => {
                 </div>
 
                 <div className="col-9">
-                    
+
                     <Grid container>
                         {menus.map((value, index) => {
                             return (

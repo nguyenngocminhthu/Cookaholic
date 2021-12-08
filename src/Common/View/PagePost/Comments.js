@@ -69,6 +69,7 @@ const Comments = (props) => {
   useEffect(() => {
     console.log("log at ==> Comment.js => cmt: ", cmt);
   }, [])
+
   const isLogin = useSelector((state) => state.auth.isLogin)
 
   const avt = useSelector((state) => state.auth.user.avt) || []

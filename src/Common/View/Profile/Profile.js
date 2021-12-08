@@ -7,6 +7,7 @@ import {
     findUserByIdAction,
 } from "../../../redux/actions/User/user.action";
 import { findRecipeByUserAction, deletePostAction } from "../../../redux/actions/Recipe/recipe.action"
+import { getFavoriteAction } from "../../../redux/actions/RecipeSave/recipeSaveAction"
 
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -69,8 +70,10 @@ const Profile = (props) => {
 
     const [value, setValue] = useState(0);
     const [popupItem, setPopupItem] = useState({});
+    const [popupItemFa, setPopupItemFa] = useState({});
     const handleChange = (event, newValue) => {
         setValue(newValue);
+
     };
 
     const myPost = useSelector((state) => state.recipe.listRecipe) || [];
@@ -86,7 +89,16 @@ const Profile = (props) => {
         fetchPost();
     }, [deleteSuccess]);
 
+    const faPost = useSelector((state) => state.recipesave.listRecipeSave) || []
 
+    useEffect(() => {
+        dispatch(getFavoriteAction(user._id))
+        console.log("log at ==> FavoritePost.js => user._id: ", user._id);
+    }, [])
+    useEffect(() => {
+
+        console.log("log at ==> FavoritePost.js => faPost: ", faPost);
+    }, [faPost])
 
     const deletePost = async (value) => {
 
@@ -117,6 +129,18 @@ const Profile = (props) => {
         setAnchorEl(null);
     };
 
+    const [popupFa, setPopupFa] = useState(null);
+    const openFa = Boolean(popupFa);
+
+    const handleClickFa = (event, index) => {
+        setPopupItemFa(faPost[index])
+
+        setPopupFa(event.currentTarget);
+    };
+    const handleCloseFa = () => {
+        setPopupFa(null);
+    };
+
     const user = useSelector((state) => state.user.profile);
     console.log("log at => Profile => user: ", user)
 
@@ -128,10 +152,6 @@ const Profile = (props) => {
 
         fetchUser();
     }, []);
-
-    const detail = (id) => {
-        console.log("log at ==> profile ==> detail ==>  id:", id)
-    }
 
     const roles = useSelector((state) => state.auth.user.roles) || []
     console.log("log at ==> Header.js ==> roles: ", roles)
@@ -152,11 +172,10 @@ const Profile = (props) => {
                         >
                             <Tab label="PROFILE" {...a11yProps(0)} />
                             <Tab label="INFORMATION" {...a11yProps(1)} />
-                            <Tab label="EDIT" {...a11yProps(2)} />
-                            <Tab label="FAVORITE LIST" {...a11yProps(3)} />
-                            <Tab label="WAITING LIST" {...a11yProps(4)} />
-                            <Tab label="POSTED LIST" {...a11yProps(5)} />
-                            <Tab label="SECURITY" {...a11yProps(6)} />
+
+                            <Tab label="FAVORITE LIST" {...a11yProps(2)} />
+
+                            <Tab label="SECURITY" {...a11yProps(3)} />
 
                         </Tabs>
                         <TabPanel className="profileRight" value={value} index={0}>
@@ -170,7 +189,7 @@ const Profile = (props) => {
                                         />
                                         <img
                                             className="profileUserImg"
-                                            src={value.avt}
+                                            src={user.avt}
                                             alt={value.username}
                                         />
                                         <div className="Name"> {user.username} </div>
@@ -248,19 +267,73 @@ const Profile = (props) => {
                         <TabPanel value={value} index={1}>
                             <Information user={user} />
                         </TabPanel>
-                        <TabPanel value={value} index={2}>
-                            Item Three
+                        <TabPanel className="profileRight" value={value} index={2}>
+                            <ImageList sx={{ width: "100%", height: 400, marginTop: "50px", textAlign: "left" }}>
+
+                                {faPost.map((vl, idx) => (
+                                    <ImageListItem key={idx}>
+                                        <img
+                                            src={`${vl.recipe.image}?w=248&fit=crop&auto=format`}
+                                            srcSet={`${vl.recipe.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                                            alt={vl.recipe.name}
+                                            loading="lazy"
+                                        />
+                                        <ImageListItemBar
+                                            title={vl.recipe.name}
+                                            subtitle={vl.recipe.username}
+                                            actionIcon={
+                                                <div>
+                                                    <IconButton
+                                                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                                        aria-label={`info about ${vl.recipe.name}`}
+                                                        id="long-button"
+                                                        aria-controls="long-menu"
+                                                        aria-expanded={openFa ? 'true' : undefined}
+                                                        aria-haspopup="true"
+                                                        onClick={(e) => handleClickFa(e, idx, vl._id)}
+                                                    >
+                                                        <InfoIcon />
+                                                    </IconButton>
+                                                </div>
+                                            }
+                                        />
+                                    </ImageListItem>
+                                ))}
+                                <Menu
+                                    id="long-menu"
+                                    MenuListProps={{
+                                        'aria-labelledby': 'long-button',
+                                    }}
+                                    anchorEl={popupFa}
+                                    open={openFa}
+                                    onClose={handleCloseFa}
+                                    PaperProps={{
+                                        style: {
+                                            maxHeight: ITEM_HEIGHT * 4.5,
+                                            width: '20ch',
+                                        },
+                                    }}
+                                >
+                                    <MenuItem disableRipple>
+                                        <VisibilityIcon style={{ marginRight: "10px" }} />
+                                        <NavLink
+                                            className="popDetail"
+                                            to={`/pagepost/${popupItemFa._id}`}>
+                                            Detail
+                                        </NavLink>
+
+                                    </MenuItem>
+
+                                    <MenuItem disableRipple>
+                                        <DeleteIcon style={{ marginRight: "10px" }} />
+                                        Delete
+                                    </MenuItem>
+
+                                </Menu>
+                            </ImageList>
                         </TabPanel>
+
                         <TabPanel value={value} index={3}>
-                            Item Four
-                        </TabPanel>
-                        <TabPanel value={value} index={4}>
-                            Item Five
-                        </TabPanel>
-                        <TabPanel value={value} index={5}>
-                            Item Six
-                        </TabPanel>
-                        <TabPanel value={value} index={6}>
                             <Security user={user} />
                         </TabPanel>
 

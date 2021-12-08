@@ -18,6 +18,7 @@ import {
 
 const initState = {
     listRecipe: [],
+
     updateFlag: false,
     recipeDetail: {},
 };
@@ -38,6 +39,7 @@ export default function (state = initState, action) {
             return {
                 ...state,
                 listRecipe: action.payload,
+
             };
         case ACCEPT_POST_FAIL:
             return { ...state };

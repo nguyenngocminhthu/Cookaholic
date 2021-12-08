@@ -29,7 +29,7 @@ export default function CardPost(props) {
   const dispatch = useDispatch();
 
   const { list } = props;
-  const [currentPost, setCurrentPost] = useState({});
+
 
   const accept = async (value) => {
 

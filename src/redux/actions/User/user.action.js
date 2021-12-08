@@ -8,6 +8,8 @@ import {
     UPDATE_USER_SUCCESS,
     CHANGE_PASS_FAIL,
     CHANGE_PASS_SUCCESS,
+    ADD_ADMIN_FAIL,
+    ADD_ADMIN_SUCCESS,
 
 } from "./type";
 import UserAPI from "../../../apis/User.Api";
@@ -155,6 +157,41 @@ export function changePassAction(id, dataSubmit) {
         } catch {
             dispatch(loading());
             dispatch(changePassFail());
+            return false;
+        }
+    };
+}
+
+function addAdminFail() {
+    return {
+        type: ADD_ADMIN_FAIL,
+        payload: {},
+    };
+}
+
+function addAdminSuccess(data) {
+    return {
+        type: ADD_ADMIN_SUCCESS,
+        payload: data,
+    };
+}
+
+export function addAdminAction(dataSubmit) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await UserAPI.insert(dataSubmit);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(addAdminSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(addAdminFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(addAdminFail());
             return false;
         }
     };
