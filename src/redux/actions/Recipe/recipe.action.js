@@ -13,6 +13,8 @@ import {
     FIND_RECIPE_BY_ID_SUCCESS,
     FIND_RECIPE_BY_USER_FAIL,
     FIND_RECIPE_BY_USER_SUCCESS,
+    UPDATE_RECIPE_FAIL,
+    UPDATE_RECIPE_SUCCESS,
 } from "./type";
 import RecipeAPI from "../../../apis/Recipe.Api";
 import { changeLoading } from "../System/systemActions";
@@ -266,6 +268,41 @@ export function findRecipeByUserAction(id, status) {
         } catch {
             dispatch(loading());
             dispatch(findRecipeByUserFail());
+            return false;
+        }
+    };
+}
+
+export function updateRecipeFail() {
+    return {
+        type: UPDATE_RECIPE_FAIL,
+        payload: {},
+    };
+}
+
+export function updateRecipeSuccess(data) {
+    return {
+        type: UPDATE_RECIPE_SUCCESS,
+        payload: data,
+    };
+}
+
+export function updateRecipeAction(id, dataSubmit) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await RecipeAPI.update(id, dataSubmit);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(updateRecipeSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(updateRecipeFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(updateRecipeFail());
             return false;
         }
     };

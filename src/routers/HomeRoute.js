@@ -10,6 +10,7 @@ import AddRecipes from "../Common/View/AddRecipes/AddRecipes";
 import PagePost from "../Common/View/PagePost/PagePost"
 import NotFound from "../Common/components/404"
 import ContactUs from "../Common/View/ContactUs"
+import EditPost from "../Common/View/PagePost/EditPost"
 import React from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { ComponentTransition, AnimationTypes } from "react-component-transition";
@@ -28,8 +29,9 @@ const HomeRoute = () => {
                 <Route path="/main" component={Auth(Main)} />
                 <Route path="/about" component={Auth(About)} />
                 <Route path="/pagepost/:idRecipe?" component={Auth(PagePost)} />
+                <Route path="/editpost/:idRecipe?" component={Auth(EditPost)} />
                 <Route path="/policy" component={Auth(Policy)} />
-                <Route path="/signin" component={Auth(Login)} /> 
+                <Route path="/signin" component={Auth(Login)} />
                 <Route path="/profile/:idUser?" component={Auth(Profile)} />
                 <Route path="/admin" component={Auth(Admin, false, true)} />
                 <Route path="/addrecipes" component={Auth(AddRecipes)} />

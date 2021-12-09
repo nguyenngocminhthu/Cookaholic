@@ -14,6 +14,8 @@ import {
     FIND_RECIPE_BY_ID_SUCCESS,
     FIND_RECIPE_BY_USER_FAIL,
     FIND_RECIPE_BY_USER_SUCCESS,
+    UPDATE_RECIPE_FAIL,
+    UPDATE_RECIPE_SUCCESS,
 } from "../../actions/Recipe/type";
 
 const initState = {
@@ -83,6 +85,10 @@ export default function (state = initState, action) {
                 ...state,
                 listRecipe: action.payload,
             };
+        case UPDATE_RECIPE_FAIL:
+            return { ...state };
+        case UPDATE_RECIPE_SUCCESS:
+            return { ...state };
         default:
             return state;
     }

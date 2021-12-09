@@ -121,6 +121,22 @@ const filter = async (queryParams) => {
     }
 };
 
-const Recipe = { getAll, filter, create, acceptPost, deletePost, findById, findByUser };
+const update = async (id, body) => {
+    try {
+        const res = await axiosClient.put(`${url}/${id}`, body);
+        toastNotify(res ? res.message : "Update Recipe fail");
+
+        return res && res.data
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Update Recipe fail");
+        return {
+            success: false,
+        };
+    }
+};
+
+const Recipe = { getAll, filter, create, acceptPost, deletePost, findById, findByUser, update };
 
 export default Recipe;

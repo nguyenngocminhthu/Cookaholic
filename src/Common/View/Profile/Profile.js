@@ -263,8 +263,12 @@ const Profile = (props) => {
 
                                         </MenuItem>
                                         <MenuItem onClick={handleClose} disableRipple>
-                                            <EditIcon style={{ marginRight: "10px" }} />
-                                            Edit
+                                            <NavLink
+                                                to={`/editpost/${popupItem._id}`}>
+                                                <EditIcon style={{ marginRight: "10px" }} />
+                                                Edit
+                                            </NavLink>
+
                                         </MenuItem>
                                         <MenuItem onClick={() => handleDelete(popupItem._id)} disableRipple>
                                             <DeleteIcon style={{ marginRight: "10px" }} />

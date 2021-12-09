@@ -30,6 +30,7 @@ import {
     addRecipeAction,
 } from "../../../redux/actions/Recipe/recipe.action";
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/core/ButtonUnstyled';
+import toastNotify from "../../Toastify/toastNotify";
 
 
 const AddRecipes = (props) => {
@@ -188,11 +189,16 @@ const AddRecipes = (props) => {
         }
         const isValid = validateAddRecipe(data.serving)
         if (!isValid) return;
-        const url = await dispatch(uploadImagesToFirebase([images[0].file], "Recipe"));
-        console.log("log at ==> add recipe ==> url: ", url);
-        if (url) {
-            await dispatch(addRecipeAction({ ...data, image: url }))
+        if (images.length > 0) {
+            const url = await dispatch(uploadImagesToFirebase([images[0].file], "Recipe"));
+            console.log("log at ==> add recipe ==> url: ", url);
+            if (url) {
+                await dispatch(addRecipeAction({ ...data, image: url }))
+            }
         }
+        else
+            toastNotify("Please select Image");
+
     };
     const roles = useSelector((state) => state.auth.user.roles) || []
     console.log("log at ==> Header.js ==> roles: ", roles)

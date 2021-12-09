@@ -36,8 +36,6 @@ import SearchNotFound from '../../components/SearchNotFound';
 const TABLE_HEAD = [
   { id: 'username', label: 'Username', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
-  { id: 'password', label: 'Password', alignRight: false },
-  { id: 'googleId', label: 'GoogleID', alignRight: false },
   { id: 'roles', label: 'Role', alignRight: false },
   { id: 'gender', label: 'Gender', alignRight: false },
 
@@ -216,7 +214,7 @@ export default function User() {
                 {filteredUsers
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
-                    const { _id, username, email, password, googleId, roles, gender, avt } = row;
+                    const { _id, username, email, roles, gender, avt } = row;
                     console.log("row: ", row)
                     const isItemSelected = selected.indexOf(username) !== -1;
 
@@ -244,8 +242,8 @@ export default function User() {
                           </Stack>
                         </TableCell>
                         <TableCell align="left">{email}</TableCell>
-                        <TableCell align="left">{password}</TableCell>
-                        <TableCell align="left">{googleId}</TableCell>
+
+
                         <TableCell align="left">{roles[0].name}</TableCell>
                         <TableCell align="left">{gender}</TableCell>
                         <TableCell align="right">

@@ -13,10 +13,10 @@ exports.create = async (req, res) => {
     date = format(date, "hh:mm dd/MM/yy")
 
     const ingredients = data.ingre
-    const ingre = ingredients.split("\n")    
-    
+    const ingre = ingredients.split("\n")
+
     const direc = data.directions
-    const directions = direc.split("\n") 
+    const directions = direc.split("\n")
 
     const recipe = new Recipe({
         user: data.user,
@@ -56,6 +56,7 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
     const status = req.query.status;
     Recipe.find({ status: status })
+        .populate("user")
         .then(data => {
             if (!data) {
                 res.status(404).json({ message: "Not found", success: false })

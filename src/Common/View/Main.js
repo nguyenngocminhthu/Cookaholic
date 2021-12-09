@@ -206,13 +206,13 @@ const Main = (props) => {
                                 <>
                                     <Grid key={index} item xs={4} sm={6} md={3} margin={"30px"}>
 
-                                        <Card className="cardRec" sx={{ minWidth: 240, minHeight: 400, position: "relative" }} >
+                                        <Card className="cardRec" sx={{ minWidth: 240, maxHeight: 400, position: "relative" }} >
                                             <CardHeader
                                                 className="customHeader"
                                                 avatar={
-                                                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                                        {value.user.avt}
-                                                    </Avatar>
+                                                    <Avatar alt={value.user.avt} src={value.user.avt} sx={{ bgcolor: red[500] }} aria-label="recipe" />
+
+
                                                 }
                                                 action={
                                                     <IconButton aria-label="settings">
@@ -220,7 +220,7 @@ const Main = (props) => {
                                                     </IconButton>
                                                 }
                                                 title={value.name}
-                                                subheader={value.createdAt}
+                                                subheader={value.createAt}
                                             />
                                             <CardMedia
                                                 component="img"

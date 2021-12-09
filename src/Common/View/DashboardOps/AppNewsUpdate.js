@@ -38,14 +38,14 @@ export default function AppNewsUpdate() {
             <List key={index} sx={{ width: '100%', maxWidth: 720 }}>
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
-                  <Avatar alt={value.user.avt} src="..." />
+                  <Avatar alt={value.user.avt} src={value.user.avt} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={value.name}
                   secondary={
                     <React.Fragment>
                       <Typography
-                        sx={{ display: 'inline' }}
+                        sx={{ display: 'inline', marginRight: '5px' }}
                         component="span"
                         variant="body2"
                         color="text.primary"
@@ -66,7 +66,7 @@ export default function AppNewsUpdate() {
         }
         <Box sx={{ p: 2, textAlign: 'right' }}>
           <Button
-            to="#"
+            to="/main"
             size="small"
             color="inherit"
             component={RouterLink}
