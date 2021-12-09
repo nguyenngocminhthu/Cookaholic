@@ -17,7 +17,7 @@ const Home = () => {
                     <NavLink className="btnStart fadein" to="/main">GET STARTED  <i className="fa fa-arrow-right" aria-hidden="true"></i></NavLink>
                 </div>
 
-                <img className="egg" src={egg} alt="egg" />
+
 
             </div>
         </div>

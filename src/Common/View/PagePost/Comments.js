@@ -128,7 +128,7 @@ const Comments = (props) => {
         <Grid container spacing={2} mt={3} component="form" onSubmit={addComment}>
           <Grid item xs={12}>
 
-            <Typography component="legend">Rating</Typography>
+            <Typography component="legend"><h3>REVIEW</h3></Typography>
             <StyledRating
               name="rate"
               id="rate"
