@@ -23,6 +23,7 @@ exports.signup = (req, res) => {
         password: bcrypt.hashSync(req.body.password, 8),
         sex: req.body.sex,
         confirmationCode: crypto.randomBytes(32).toString("hex"),
+        avt: "",
     })
 
     user.save((err, user) => {
@@ -52,7 +53,7 @@ exports.signup = (req, res) => {
                         }
 
                         res.json({ message: "User was registered successfully! Please check email!", success: true })
-                        
+
 
                     })
 
@@ -98,7 +99,7 @@ exports.sendLink = async (req, res) => {
             token: crypto.randomBytes(32).toString("hex"),
         }).save()
 
-    
+
 
         const link = `http://localhost:3000/verify?user=${user._id}&token=${token.token}`
         await sendVerifyAccount(user.email, link)
@@ -176,7 +177,7 @@ exports.signin = (req, res) => {
             console.log(user.password)
             if (haveToken) {
 
-                if(haveToken.token !== user.password){
+                if (haveToken.token !== user.password) {
                     res.status(400).json({ message: "Reset password expired", success: false })
                     return
                 }

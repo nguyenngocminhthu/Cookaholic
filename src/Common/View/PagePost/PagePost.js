@@ -174,11 +174,13 @@ const PagePost = (props) => {
 
   useEffect(() => {
     const fetchRecipe = async () => {
+
       await dispatch(findRecipeByIdAction(props.match.params.idRecipe));
       console.log("param: ", props.match.params.idRecipe)
     };
 
     fetchRecipe();
+
   }, []);
 
   const [value, setValue] = useState(0);
@@ -239,13 +241,19 @@ const PagePost = (props) => {
             <div className="ingredients">
               <h2>Nguyên liệu</h2>
               <ul>
-                {recipe.ingre.map((vl, idx) => {
-                  return (
-                    <div key={idx}>
-                      <li>{vl}</li>
-                    </div>
-                  )
-                })}
+                {(recipe._id) ? (
+                  recipe.ingre.map((vl, idx) => {
+                    return (
+                      <div key={idx}>
+                        <li>{vl}</li>
+                      </div>
+                    )
+                  })
+                )
+
+                  : (<></>)
+
+                }
 
               </ul>
 
@@ -260,13 +268,20 @@ const PagePost = (props) => {
             <div style={{ textAlign: 'left' }}>
               <h2>Vào bếp nào!!!</h2>
               <ol>
-                {recipe.directions.map((vl, idx) => {
-                  return (
-                    <div key={idx}>
-                      <li>{vl}</li>
-                    </div>
-                  )
-                })}
+                {(recipe._id) ? (
+                  recipe.directions.map((vl, idx) => {
+                    return (
+                      <div key={idx}>
+                        <li>{vl}</li>
+                      </div>
+                    )
+                  })
+                )
+
+                  : (<></>)
+
+                }
+
               </ol>
             </div>
           </Grid>

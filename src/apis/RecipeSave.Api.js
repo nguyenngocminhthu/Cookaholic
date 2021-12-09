@@ -49,6 +49,21 @@ const getStatus = async (recipe, user) => {
     }
 };
 
-const RecipeSave = { save, getStatus, getAll };
+const deletePost = async (id) => {
+    try {
+        const res = await axiosClient.get(`/api/saved/${id}`);
+        toastNotify(res ? res.message : "Delete Post fail");
+        return res && res.data
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Delete Post fail");
+        return {
+            success: false,
+        };
+    }
+};
+
+const RecipeSave = { save, getStatus, getAll, deletePost };
 
 export default RecipeSave;

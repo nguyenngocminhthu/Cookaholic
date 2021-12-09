@@ -7,7 +7,7 @@ import {
     findUserByIdAction,
 } from "../../../redux/actions/User/user.action";
 import { findRecipeByUserAction, deletePostAction } from "../../../redux/actions/Recipe/recipe.action"
-import { getFavoriteAction } from "../../../redux/actions/RecipeSave/recipeSaveAction"
+import { getFavoriteAction, deleteFaAction } from "../../../redux/actions/RecipeSave/recipeSaveAction"
 
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -114,6 +114,17 @@ const Profile = (props) => {
         console.log("log at => Profile => delete: ", data)
         setDeleteSuccess(deleteSuccess ? false : true)
         handleClose();
+
+    }
+    const [deleteFaSuccess, setDeleteFaSuccess] = useState(false);
+    const deleteFa = async (value) => {
+        await dispatch(deleteFaAction(value))
+    }
+
+    const handleDeleteFa = (data) => {
+        deleteFa(data);
+        setDeleteFaSuccess(deleteFaSuccess ? false : true)
+        handleCloseFa();
 
     }
 
@@ -324,7 +335,7 @@ const Profile = (props) => {
 
                                     </MenuItem>
 
-                                    <MenuItem disableRipple>
+                                    <MenuItem onClick={() => handleDeleteFa(popupItemFa._id)} disableRipple>
                                         <DeleteIcon style={{ marginRight: "10px" }} />
                                         Delete
                                     </MenuItem>

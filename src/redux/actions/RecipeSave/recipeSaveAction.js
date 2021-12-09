@@ -5,6 +5,8 @@ import {
     GET_STATUS_SUCCESS,
     GET_FAVORITE_FAIL,
     GET_FAVORITE_SUCCESS,
+    DELETE_POST_FAIL,
+    DELETE_POST_SUCCESS,
 } from "./types";
 import RecipeSaveAPI from "../../../apis/RecipeSave.Api";
 import { changeLoading } from "../System/systemActions";
@@ -117,6 +119,41 @@ export function getFavoriteAction(user) {
         } catch {
             dispatch(loading());
             dispatch(getFavoriteFail());
+            return false;
+        }
+    };
+}
+
+export function deletePostFail() {
+    return {
+        type: DELETE_POST_FAIL,
+        payload: {},
+    };
+}
+
+export function deletePostSuccess(data) {
+    return {
+        type: DELETE_POST_SUCCESS,
+        payload: data,
+    };
+}
+
+export function deleteFaAction(dataSubmit) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await RecipeSaveAPI.deletePost(dataSubmit);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(deletePostSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(deletePostFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(deletePostFail());
             return false;
         }
     };

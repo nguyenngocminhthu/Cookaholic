@@ -28,9 +28,56 @@ import toastNotify from "../Toastify/toastNotify";
 
 
 const Main = (props) => {
+
+    let stt;
     const dispatch = useDispatch();
 
+    const [checked, setChecked] = useState([1]);
+    const [status, setStatus] = useState();
+    const [clickFaPost, setClickFaPost] = useState(false)
     const isLogin = useSelector((state) => state.auth.isLogin)
+    const menus = useSelector((state) => state.recipe.listRecipe) || []
+    const user = useSelector((state) => state.auth.user);
+    const topics = useSelector((state) => state.topic.listTopic) || []
+    const userID = useSelector((state) => state.auth.user._id) || []
+    const faPost = useSelector((state) => state.recipesave.listRecipeSave) || []
+    console.log("faPost: ", faPost);
+
+    useEffect(() => {
+        dispatch(getAllRecipeAction({ status: 0 }))
+        console.log("log at ==> Main.js => status: ", status);
+    }, [status])
+    useEffect(() => {
+
+        console.log("log at ==> Main.js => menus: ", menus);
+    }, [menus])
+
+
+    useEffect(() => {
+        console.log("log at => Main ==> faPost: ", user)
+        if (user._id) {
+            const fetchFaList = async () => {
+                await dispatch(getFavoriteAction(user._id))
+            }
+            fetchFaList();
+        }
+    }, [user, clickFaPost])
+    useEffect(() => {
+        //find by id
+    }, [])
+
+    useEffect(() => {
+        dispatch(getAllTopicAction())
+    }, [])
+    useEffect(() => {
+        console.log("log at ==> Main.js => topics: ", topics);
+    }, [topics])
+
+    useEffect(() => {
+        console.log("log at ==> Main.js => faPost: ", faPost);
+    }, [])
+
+
     const ADDREC = () => {
         if (isLogin)
             return (
@@ -43,17 +90,14 @@ const Main = (props) => {
         );
     }
 
-    const [checked, setChecked] = useState([1]);
     const filter = async (id) => {
         await dispatch(filterRecipeAction(id))
     }
+
     const handleToggle = (value) => () => {
 
         const currentIndex = checked.indexOf(value);
-
         const newChecked = [...checked];
-
-
         const idList = { id: [value] }
         if (currentIndex === -1) {
             newChecked.push(value);
@@ -64,62 +108,14 @@ const Main = (props) => {
             newChecked.push(currentIndex);
             filter();
         }
-
         setChecked(newChecked);
     };
-
-    const menus = useSelector((state) => state.recipe.listRecipe) || []
-    const [status, setStatus] = useState();
-
-    useEffect(() => {
-        dispatch(getAllRecipeAction({ status: 0 }))
-        console.log("log at ==> Main.js => status: ", status);
-    }, [status])
-    useEffect(() => {
-
-        console.log("log at ==> Main.js => menus: ", menus);
-    }, [menus])
-
-    const user = useSelector((state) => state.auth.user);
-    useEffect(() => {
-        console.log("log at => Main ==> faPost: ", user)
-        if (user._id) {
-            const fetchFaList = async () => {
-                await dispatch(getFavoriteAction(user._id))
-            }
-            fetchFaList();
-        }
-    }, [user])
-    useEffect(() => {
-        //find by id
-    }, [])
-
-    const topics = useSelector((state) => state.topic.listTopic) || []
-
-    useEffect(() => {
-        dispatch(getAllTopicAction())
-    }, [])
-    useEffect(() => {
-        console.log("log at ==> Main.js => topics: ", topics);
-    }, [topics])
-
-    const userID = useSelector((state) => state.auth.user._id) || []
-
-    const faPost = useSelector((state) => state.recipesave.listRecipeSave) || []
-
-    useEffect(() => {
-
-        console.log("log at ==> FavoritePost.js => faPost: ", faPost);
-    }, [])
-
-
-    console.log("userID: ", userID);
 
     const recipeID = (value) => {
         console.log("recipeID: ", value)
         return value;
     }
-    let stt;
+
     const handleSaveRecipe = async (value) => {
         if (!userID.length) {
             toastNotify("Please Sign In before");
@@ -135,10 +131,21 @@ const Main = (props) => {
         const res = await dispatch(addFavoriteAction(recipeID(value), userID, { status: stt }))
         if (res) await dispatch(getAllRecipeAction());
         await dispatch(getFavoriteAction(userID))
-
     };
 
+    const checkFa = (userID, recipeID) => {
+        if (faPost.length > 0) {
+            const faPostArray = faPost.filter(x => {
 
+                return x.recipe._id === recipeID && x.user._id === userID
+            })
+
+            if (faPostArray.length > 0) {
+                return true
+            } else { return false }
+        }
+
+    }
 
     return (
         <div className="main">
@@ -204,7 +211,7 @@ const Main = (props) => {
                                                 className="customHeader"
                                                 avatar={
                                                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                                        R
+                                                        {value.user.avt}
                                                     </Avatar>
                                                 }
                                                 action={
@@ -228,11 +235,29 @@ const Main = (props) => {
                                                 </Typography>
                                             </CardContent>
                                             <CardActions disableSpacing sx={{ position: "absolute", bottom: 0, right: 0 }}>
+                                                {/*<IconButton onClick={() => handleSaveRecipe(recipeID(value._id))}>
 
-                                                <IconButton onClick={() => handleSaveRecipe(recipeID(value._id))}>
-                                                    <FavoriteBorderIcon />
+                                                    <FavoriteIcon />
+                                            </IconButton>*/}
+                                                {checkFa(userID, value._id) ? (
 
-                                                </IconButton>
+                                                    <IconButton onClick={() => { handleSaveRecipe(recipeID(value._id)); setClickFaPost(!clickFaPost) }}>
+
+                                                        <FavoriteIcon style={{ color: 'red' }} />
+                                                    </IconButton>
+                                                )
+                                                    :
+                                                    (
+                                                        <IconButton onClick={() => { handleSaveRecipe(recipeID(value._id)); setClickFaPost(!clickFaPost) }}>
+                                                            <FavoriteBorderIcon style={{ color: 'red' }} />
+                                                        </IconButton>
+
+                                                    )
+                                                }
+
+
+
+
                                                 <IconButton>
                                                     <NavLink
                                                         to={`/pagepost/${value._id}`}>
