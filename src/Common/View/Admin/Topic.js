@@ -14,6 +14,7 @@ import {
     TextField,
 
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import PropTypes from 'prop-types';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import plusFill from '@mui/icons-material/Add';
@@ -110,15 +111,16 @@ const Topic = () => {
                 </Stack>
                 <Box sx={{ overflowY: 'scroll' }}>
                     <ImageList variant="masonry" cols={4} gap={8}>
-                        {topics.map((value, index) => (
-                            <ImageListItem key={index}>
+                        {topics.map((value, index) => ( 
+                            <ImageListItem key={index}>  
                                 <img
                                     src={`${value.image}?w=248&fit=crop&auto=format`}
                                     srcSet={`${value.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
                                     alt={value.name}
                                     loading="lazy"
+                                    style={{maxWidth: '300px', maxHeight: '250px'}}
                                 />
-                                <ImageListItemBar position="below" title={value.name} />
+                                    <ImageListItemBar sx={{ fontWeight: 'bold', fontSize: '24px', backgroundColor: '#d4eff9' }}position="below" title={value.name} />
                             </ImageListItem>
                         ))}
                     </ImageList>
