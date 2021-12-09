@@ -8,3 +8,5 @@ export const CHANGE_PASS_FAIL = "change pass fail";
 export const CHANGE_PASS_SUCCESS = "change pass success";
 export const ADD_ADMIN_FAIL = "add admin fail";
 export const ADD_ADMIN_SUCCESS = "add admin success";
+export const DELETE_USER_FAIL = "delete user fail";
+export const DELETE_USER_SUCCESS = "delete user success";

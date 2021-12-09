@@ -30,11 +30,9 @@ import {
 
 } from '@mui/material';
 // components
-import Label from '../../components/Labels'
-import SearchNotFound from '../../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../UserManager';
 import { validateAdmin } from "../Authentication/Validate";
-
+import SearchNotFound from '../../components/SearchNotFound';
 const TABLE_HEAD = [
   { id: 'username', label: 'Username', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
@@ -115,15 +113,16 @@ export default function User() {
   const [orderBy, setOrderBy] = useState('username');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
   const USERLIST = useSelector((state) => state.user.listUser) || []
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+
   useEffect(() => {
     dispatch(getAllUserAction())
   }, [])
   useEffect(() => {
 
     console.log("log at ==> User.js => LISTUSER: ", USERLIST);
-  }, [USERLIST])
+  }, [USERLIST, deleteSuccess])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -250,7 +249,7 @@ export default function User() {
                         <TableCell align="left">{roles[0].name}</TableCell>
                         <TableCell align="left">{gender}</TableCell>
                         <TableCell align="right">
-                          <UserMoreMenu />
+                          <UserMoreMenu USERLIST={USERLIST} deleteSuccess={deleteSuccess} setDeleteSuccess={setDeleteSuccess} />
                         </TableCell>
                       </TableRow>
                     );
@@ -261,7 +260,7 @@ export default function User() {
                   </TableRow>
                 )}
               </TableBody>
-              {/* {isUserNotFound && (
+              {isUserNotFound && (
                 <TableBody>
                   <TableRow>
                     <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -269,7 +268,7 @@ export default function User() {
                     </TableCell>
                   </TableRow>
                 </TableBody>
-              )} */}
+              )}
             </Table>
           </TableContainer>
 

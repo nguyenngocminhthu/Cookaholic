@@ -98,6 +98,22 @@ const filter = async (queryParams) => {
   }
 };
 
-const User = { insert, filter, getAll, update, findById, changePass };
+const deleteUser = async (id) => {
+  try {
+    const res = await axiosClient.get(`${url}/${id}`);
+    toastNotify(res ? res.message : "Delete User fail");
+
+    return res && res.data
+      ? { data: res.data || {}, success: true }
+      : { success: false };
+  } catch (error) {
+    toastNotify("Delete User fail");
+    return {
+      success: false,
+    };
+  }
+};
+
+const User = { insert, filter, getAll, update, findById, changePass, deleteUser };
 
 export default User;

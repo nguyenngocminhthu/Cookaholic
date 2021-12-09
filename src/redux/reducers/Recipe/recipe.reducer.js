@@ -44,11 +44,11 @@ export default function (state = initState, action) {
         case ACCEPT_POST_FAIL:
             return { ...state };
         case ACCEPT_POST_SUCCESS:
-            return { ...state, updateFlag: !state.updateFlag };
+            return { ...state };
         case DELETE_POST_FAIL:
             return { ...state };
         case DELETE_POST_SUCCESS:
-            return { ...state, updateFlag: !state.updateFlag };
+            return { ...state };
         case FILTER_RECIPE_FAIL:
             return {
                 ...state,

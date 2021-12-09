@@ -55,13 +55,13 @@ const acceptPost = async (id) => {
 const deletePost = async (id) => {
     try {
         const res = await axiosClient.get(`/api/recipe/delete/${id}`);
-        toastNotify(res ? res.message : "Xoá bài viết thất bại");
+        toastNotify(res ? res.message : "Delete Post fail");
         console.log("log at ==> Recipe Api ==> res: ", res)
         return res && res.data
             ? { data: res.data || {}, success: true }
             : { success: false };
     } catch (error) {
-        toastNotify("Xoá bài viết thất bại");
+        toastNotify("Delete Post success");
         return {
             success: false,
         };
