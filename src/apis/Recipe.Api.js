@@ -54,7 +54,7 @@ const acceptPost = async (id) => {
 
 const deletePost = async (id) => {
     try {
-        const res = await axiosClient.get(`/api/recipe/delete/${id}`);
+        const res = await axiosClient.delete(`/api/recipe/${id}`);
         toastNotify(res ? res.message : "Delete Post fail");
         console.log("log at ==> Recipe Api ==> res: ", res)
         return res && res.data
