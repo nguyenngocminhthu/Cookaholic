@@ -28,12 +28,13 @@ export default function AppNewsUpdate() {
 
   return (
     <>
-      {menus.map((value, index) => {
-        return (
-          <Card style={{ width: "50vw" }}>
-            <Box sx={{ p: 2, textAlign: 'left', fontSize: '24px' }}>
-              News Update
-            </Box>
+
+      <Card style={{ width: "50vw" }}>
+        <Box sx={{ p: 2, textAlign: 'left', fontSize: '24px' }}>
+          News Update
+        </Box>
+        {menus.map((value, index) => {
+          return (
             <List key={index} sx={{ width: '100%', maxWidth: 720 }}>
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
@@ -59,22 +60,23 @@ export default function AppNewsUpdate() {
               <Divider variant="inset" component="li" />
 
             </List>
-            <Box sx={{ p: 2, textAlign: 'right' }}>
-              <Button
-                to="#"
-                size="small"
-                color="inherit"
-                component={RouterLink}
-                endIcon={<ArrowForwardIcon />}
-              >
-                View all
-              </Button>
-            </Box>
-          </Card>
+          )
+        }
         )
-      }
-      )
-      }
+        }
+        <Box sx={{ p: 2, textAlign: 'right' }}>
+          <Button
+            to="#"
+            size="small"
+            color="inherit"
+            component={RouterLink}
+            endIcon={<ArrowForwardIcon />}
+          >
+            View all
+          </Button>
+        </Box>
+      </Card>
+
     </>
   );
 }

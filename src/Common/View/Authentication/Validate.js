@@ -25,6 +25,12 @@ const validateRegister = (data) => {
         toastNotify("Email không hợp lệ");
         return false;
     }
+    const isStrongPassword = validator.isStrongPassword(data.password, { minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 });
+    if (!isStrongPassword) {
+        toastNotify("Password is not strong enough");
+        return false;
+    }
+
     const isPassword = validator.isEmpty(data.password);
     if (isPassword) {
         toastNotify("Mật khẩu không được bỏ trống");

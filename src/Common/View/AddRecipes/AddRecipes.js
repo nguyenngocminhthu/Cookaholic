@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import ImageUploading from 'react-images-uploading';
 import imgUpload from '../../img/imgUpload.png'
 import { useHistory } from "react-router";
+import { validateAddRecipe } from "./Validate";
 
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -184,7 +184,10 @@ const AddRecipes = (props) => {
             ingre: [e.target.ingredients.value],
             directions: [e.target.direction.value],
             user: e.target.user.value,
+
         }
+        const isValid = validateAddRecipe(data.serving)
+        if (!isValid) return;
         const url = await dispatch(uploadImagesToFirebase([images[0].file], "Recipe"));
         console.log("log at ==> add recipe ==> url: ", url);
         if (url) {
