@@ -15,6 +15,7 @@ const User = db.user
 const Role = db.role
 const format = require('date-fns/format')
 const bcrypt = require("bcrypt");
+const { user } = require('../models');
 
 exports.getAllUser = (req, res) => {
     User.find()
@@ -153,4 +154,41 @@ exports.delete = (req, res) => {
 
         res.status(200).json({ message: "Delete success!", success: true })
     })
+}
+
+//=============//
+
+// Search by username
+exports.search = (req, res) => {
+    let search = req.body.search
+    // search = '['+search+']'
+    search = new RegExp(search, "i")
+    console.log(1)
+    console.log(search)
+
+    User.find()
+        .then(user => {
+            if (!user) {
+                res.status(404).json({ message: "Not found User", success: false })
+                return
+            }
+
+            let data = []
+            user.forEach(x => {
+                console.log(x.username)
+
+                if (search.test(x.username)) {
+                    data.push(x)
+                }
+            })
+
+            console.log(data)
+
+            res.json({ data, success: true })
+
+        })
+        .catch(err => {
+            res.status(err.status).json({ message: err, success: false });
+            console.log(err)
+        })
 }

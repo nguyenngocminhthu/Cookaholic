@@ -30,6 +30,6 @@ module.exports = (app) => {
     app.put("/api/user/:id", [verifySignUp.checkDuplicatePhone], controller.update)
     app.delete("/api/user/:id", [authJwt.verifyToken], controller.delete)
     app.put("/api/user/changePassword/:id", [authJwt.verifyToken], controller.changePassword)
-    app.post("/api/admin", controller.createAdmin)
+    app.post("/api/admin", [authJwt.verifyToken], controller.createAdmin)
     // app.get("/api/getauth", controller.handleGetAuth)
 }
