@@ -10,7 +10,8 @@ import {
     CHANGE_PASS_SUCCESS,
     ADD_ADMIN_FAIL,
     ADD_ADMIN_SUCCESS,
-
+    DELETE_USER_FAIL,
+    DELETE_USER_SUCCESS,
 } from "./type";
 import UserAPI from "../../../apis/User.Api";
 import { changeLoading } from "../System/systemActions";
@@ -192,6 +193,41 @@ export function addAdminAction(dataSubmit) {
         } catch {
             dispatch(loading());
             dispatch(addAdminFail());
+            return false;
+        }
+    };
+}
+
+export function deleteUserFail() {
+    return {
+        type: DELETE_USER_FAIL,
+        payload: {},
+    };
+}
+
+export function deleteUserSuccess(data) {
+    return {
+        type: DELETE_USER_SUCCESS,
+        payload: data,
+    };
+}
+
+export function deleteUserAction(dataSubmit) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await UserAPI.deleteUser(dataSubmit);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(deleteUserSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(deleteUserFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(deleteUserFail());
             return false;
         }
     };

@@ -10,13 +10,11 @@ import { getAllRecipeAction } from "../../../redux/actions/Recipe/recipe.action"
 import { useSelector, useDispatch } from "react-redux";
 const Post = (props) => {
 
+    const dispatch = useDispatch();
     const [acceptSuccess, setAcceptSuccess] = useState(false);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
-
-    const dispatch = useDispatch();
-    const posts = useSelector((state) => state.recipe.listRecipe) || []
     const [status, setStatus] = useState(1.5);
-
+    const posts = useSelector((state) => state.recipe.listRecipe) || []
 
     useEffect(() => {
         dispatch(getAllRecipeAction({ status: 1.5 }))
