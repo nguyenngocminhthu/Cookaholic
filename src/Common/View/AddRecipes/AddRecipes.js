@@ -181,8 +181,8 @@ const AddRecipes = (props) => {
             topic: e.target.topic.value,
             time: e.target.time.value,
             serving: e.target.serving.value,
-            ingre: [e.target.ingredients.value],
-            directions: [e.target.direction.value],
+            ingre: e.target.ingredients.value,
+            directions: e.target.direction.value,
             user: e.target.user.value,
         }
         const url = await dispatch(uploadImagesToFirebase([images[0].file], "Recipe"));

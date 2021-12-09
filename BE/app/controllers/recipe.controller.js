@@ -2,6 +2,7 @@ const db = require('../models')
 const Recipe = db.recipe
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId
+const format = require('date-fns/format')
 
 exports.create = async (req, res) => {
     const data = req.body
@@ -11,6 +12,12 @@ exports.create = async (req, res) => {
     date.setHours(date.getHours() + 7)
     date = format(date, "hh:mm dd/MM/yy")
 
+    const ingredients = data.ingre
+    const ingre = ingredients.split("\n")    
+    
+    const direc = data.directions
+    const directions = direc.split("\n") 
+
     const recipe = new Recipe({
         user: data.user,
         topic: data.topic,
@@ -19,8 +26,8 @@ exports.create = async (req, res) => {
         title: data.title,
         time: data.time,
         serving: data.serving,
-        ingre: data.ingre,
-        directions: data.directions,
+        ingre: ingre,
+        directions: directions,
         rate: 0,
         status: 1.5,
         createAt: date
@@ -41,7 +48,7 @@ exports.create = async (req, res) => {
             return
         }
 
-        res.status(200).json({ data, success: true })
+        res.status(200).json({ data, message: "Add recipe success!", success: true })
     })
 }
 
@@ -168,14 +175,14 @@ exports.deleteOne = async (req, res) => {
     Recipe.findByIdAndDelete(id)
         .then(data => {
             if (!data) {
-                res.status(404).send({ message: "Not found recipe with id " + id })
+                res.status(404).json({ message: "Not found recipe with id " + id })
                 return
             }
             else
-                res.send({ mesage: "Delete success!" })
+                res.json({ mesage: "Delete success!" })
         })
         .catch(err => {
-            res.status(500).send({ message: "Error delete topic with id=" + id });
+            res.status(500).json({ message: "Error delete topic with id=" + id });
         })
 }
 
