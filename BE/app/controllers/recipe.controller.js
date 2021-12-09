@@ -6,6 +6,11 @@ const ObjectId = mongoose.Types.ObjectId
 exports.create = async (req, res) => {
     const data = req.body
     console.log(data)
+
+    let date = new Date()
+    date.setHours(date.getHours() + 7)
+    date = format(date, "hh:mm dd/MM/yy")
+
     const recipe = new Recipe({
         user: data.user,
         topic: data.topic,
@@ -17,7 +22,8 @@ exports.create = async (req, res) => {
         ingre: data.ingre,
         directions: data.directions,
         rate: 0,
-        status: 1.5
+        status: 1.5,
+        createAt: date
     })
 
     // recipe.ingre = [{ "_id": 1, "name": "aaa" }]
