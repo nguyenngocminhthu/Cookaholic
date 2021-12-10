@@ -13,4 +13,7 @@ module.exports=(app)=>{
 
     // Xoa 1 Recipe duoc luu trong profile
     app.delete('/api/saved/:id', controller.delete)
+
+    // Xem chi tiet Recipe duoc luu
+    app.get('/api/saved', controller.findOne)
 }
