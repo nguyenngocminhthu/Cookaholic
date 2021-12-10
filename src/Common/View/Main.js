@@ -224,7 +224,7 @@ const Main = (props) => {
                                 <>
                                     <Grid key={index} item xs={4} sm={6} md={3} margin={"30px"}>
 
-                                        <Card className="cardRec" sx={{ minWidth: 240, maxHeight: 400, position: "relative" }} >
+                                        <Card className="cardRec" sx={{ minWidth: 240, height: 400, position: "relative" }} >
                                             <CardHeader
                                                 className="customHeader"
                                                 avatar={

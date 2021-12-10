@@ -65,7 +65,7 @@ export default function CardPost(props) {
       <>
         <Grid key={index} item xs={3} sm={6} md={3} mb={3}>
 
-          <Card className="cardRec" sx={{ maxWidth: 240, minHeight: 400, position: "relative" }}>
+          <Card className="cardRec" sx={{ maxWidth: 240, height: 400, position: "relative" }}>
             <CardHeader
               className="customHeader"
               avatar={
