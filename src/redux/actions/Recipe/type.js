@@ -14,3 +14,5 @@ export const FIND_RECIPE_BY_USER_FAIL = "find recipe by user fail";
 export const FIND_RECIPE_BY_USER_SUCCESS = "find recipe by user success";
 export const UPDATE_RECIPE_FAIL = "update recipe fail";
 export const UPDATE_RECIPE_SUCCESS = "update recipe success";
+export const SEARCH_RECIPE_FAIL = "search recipe fail";
+export const SEARCH_RECIPE_SUCCESS = "search recipe success";

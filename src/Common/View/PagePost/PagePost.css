@@ -154,3 +154,7 @@
   height: 500px;
   width: 100%;
 }
+
+.reply {
+  padding-top: "0px" !important;
+}

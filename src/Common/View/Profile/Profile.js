@@ -68,92 +68,22 @@ const Profile = (props) => {
 
     const dispatch = useDispatch();
 
+
     const [value, setValue] = useState(0);
     const [popupItem, setPopupItem] = useState({});
     const [popupItemFa, setPopupItemFa] = useState({});
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-
-    };
+    const [popupItemFaDel, setPopupItemFaDel] = useState({});
+    const [deleteSuccess, setDeleteSuccess] = useState(false);
+    const [deleteFaSuccess, setDeleteFaSuccess] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [popupFa, setPopupFa] = useState(null);
 
     const myPost = useSelector((state) => state.recipe.listRecipe) || [];
-    console.log("log at => Profile => myPost: ", myPost)
-
-    const [deleteSuccess, setDeleteSuccess] = useState(false);
-    useEffect(() => {
-        const fetchPost = async () => {
-            await dispatch(findRecipeByUserAction(props.match.params.idUser, { status: 0 }));
-            console.log("Recipeparam: ", props.match.params.idUser)
-        };
-
-        fetchPost();
-    }, [deleteSuccess]);
-
     const faPost = useSelector((state) => state.recipesave.listRecipeSave) || []
-
-    useEffect(() => {
-        dispatch(getFavoriteAction(user._id))
-        console.log("log at ==> FavoritePost.js => user._id: ", user._id);
-    }, [])
-    useEffect(() => {
-
-        console.log("log at ==> FavoritePost.js => faPost: ", faPost);
-    }, [faPost])
-
-    const deletePost = async (value) => {
-
-        await dispatch(deletePostAction(value))
-        console.log("log at => Profile => delete => value: ", value);
-
-    }
-
-    const handleDelete = (data) => {
-
-        deletePost(data);
-
-        console.log("log at => Profile => delete: ", data)
-        setDeleteSuccess(deleteSuccess ? false : true)
-        handleClose();
-
-    }
-    const [deleteFaSuccess, setDeleteFaSuccess] = useState(false);
-    const deleteFa = async (value) => {
-        await dispatch(deleteFaAction(value))
-    }
-
-    const handleDeleteFa = (data) => {
-        deleteFa(data);
-        setDeleteFaSuccess(deleteFaSuccess ? false : true)
-        handleCloseFa();
-
-    }
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-
-    const handleClick = (event, index) => {
-        setPopupItem(myPost[index])
-
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const [popupFa, setPopupFa] = useState(null);
-    const openFa = Boolean(popupFa);
-
-    const handleClickFa = (event, index) => {
-        setPopupItemFa(faPost[index])
-
-        setPopupFa(event.currentTarget);
-    };
-    const handleCloseFa = () => {
-        setPopupFa(null);
-    };
-
     const user = useSelector((state) => state.user.profile);
-    console.log("log at => Profile => user: ", user)
+
+    const open = Boolean(anchorEl);
+    const openFa = Boolean(popupFa);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -162,7 +92,82 @@ const Profile = (props) => {
         };
 
         fetchUser();
-    }, []);
+    }, [deleteSuccess, deleteFaSuccess]);
+
+    useEffect(() => {
+        const fetchPost = async () => {
+            await dispatch(findRecipeByUserAction(props.match.params.idUser, { status: 0 }));
+            console.log("Recipeparam: ", props.match.params.idUser)
+        };
+
+        fetchPost();
+    }, [deleteSuccess, deleteFaSuccess]);
+
+    useEffect(() => {
+        console.log("log at => Profile ==> faPost: ", user)
+        if (user._id) {
+            const fetchFaList = async () => {
+                await dispatch(getFavoriteAction(user._id))
+            }
+            fetchFaList();
+        }
+    }, [user, deleteFaSuccess, deleteSuccess])
+    useEffect(() => {
+        //find by id
+    }, [faPost, deleteFaSuccess])
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    const deletePost = async (value) => {
+        await dispatch(deletePostAction(value))
+        console.log("log at => Profile => delete => value: ", value);
+    }
+
+    const handleDelete = (data) => {
+        deletePost(data);
+        console.log("log at => Profile => delete: ", data)
+        setDeleteSuccess(deleteSuccess ? false : true)
+        handleClose();
+    }
+
+    const deleteFa = async (value) => {
+        await dispatch(deleteFaAction(value))
+    }
+
+    const handleDeleteFa = (data) => {
+        if (data) {
+            deleteFa(data);
+            setDeleteFaSuccess(deleteFaSuccess ? false : true)
+            handleCloseFa();
+        }
+        return deleteFaSuccess;
+
+    }
+
+    const handleClick = (event, index) => {
+        setPopupItem(myPost[index])
+
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleClickFa = (event, index) => {
+        setPopupItemFa(faPost[index].recipe)
+
+        setPopupFa(event.currentTarget);
+
+        setPopupItemFaDel(faPost[index])
+        console.log("popupItemFaDel: ", popupItemFaDel)
+
+    };
+    const handleCloseFa = () => {
+        setPopupFa(null);
+    };
 
     const roles = useSelector((state) => state.auth.user.roles) || []
     console.log("log at ==> Header.js ==> roles: ", roles)
@@ -263,9 +268,11 @@ const Profile = (props) => {
 
                                         </MenuItem>
                                         <MenuItem onClick={handleClose} disableRipple>
+                                            <EditIcon style={{ marginRight: "10px" }} />
                                             <NavLink
+                                                style={{ textDecoration: 'none' }}
                                                 to={`/editpost/${popupItem._id}`}>
-                                                <EditIcon style={{ marginRight: "10px" }} />
+
                                                 Edit
                                             </NavLink>
 
@@ -305,7 +312,7 @@ const Profile = (props) => {
                                                         aria-controls="long-menu"
                                                         aria-expanded={openFa ? 'true' : undefined}
                                                         aria-haspopup="true"
-                                                        onClick={(e) => handleClickFa(e, idx, vl._id)}
+                                                        onClick={(e) => handleClickFa(e, idx, vl.recipe._id)}
                                                     >
                                                         <InfoIcon />
                                                     </IconButton>
@@ -339,7 +346,7 @@ const Profile = (props) => {
 
                                     </MenuItem>
 
-                                    <MenuItem onClick={() => handleDeleteFa(popupItemFa._id)} disableRipple>
+                                    <MenuItem onClick={() => handleDeleteFa(popupItemFaDel._id)} disableRipple>
                                         <DeleteIcon style={{ marginRight: "10px" }} />
                                         Delete
                                     </MenuItem>

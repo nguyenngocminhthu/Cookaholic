@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect } from 'react'
-import './custom.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -12,8 +11,9 @@ import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import ReplyIcon from '@mui/icons-material/Reply';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-import { addCommentAction, getCommentAction, replyCommentAction } from '../../../redux/actions/Comment/comment.action'
+import { addCommentAction, getCommentAction, replyCommentAction, deleteCmtAction, deleteReplyAction } from '../../../redux/actions/Comment/comment.action'
 import Grid from '@mui/material/Grid';
 import toastNotify from "../../Toastify/toastNotify";
 
@@ -30,9 +30,19 @@ const StyledRating = styled(Rating)({
 
 
 const Comments = (props) => {
-  const recipe = useSelector((state) => state.recipe.recipeDetail);
+
+  const dispatch = useDispatch();
+
   const [commentInput, setCommentInput] = useState("")
   const [replyInput, setReplyInput] = useState("")
+  const [showReply, setShowReply] = useState(null)
+  const recipe = useSelector((state) => state.recipe.recipeDetail);
+  const userId = useSelector((state) => state.auth.user._id) || []
+  const cmt = useSelector((state) => state.comment.listComment) || []
+  const isLogin = useSelector((state) => state.auth.isLogin)
+  const avt = useSelector((state) => state.auth.user.avt) || []
+  const recipeId = recipe._id;
+
   const onChangeState = (e, type) => {
     switch (type) {
       case "comment":
@@ -60,21 +70,9 @@ const Comments = (props) => {
     //find by id
   }, [])
 
-  const dispatch = useDispatch();
-
-  const userId = useSelector((state) => state.auth.user._id) || []
-  const recipeId = recipe._id;
-
-  const cmt = useSelector((state) => state.comment.listComment) || []
   useEffect(() => {
     console.log("log at ==> Comment.js => cmt: ", cmt);
   }, [])
-
-  const isLogin = useSelector((state) => state.auth.isLogin)
-
-  const avt = useSelector((state) => state.auth.user.avt) || []
-
-  let count = 0
 
   const addComment = async (e) => {
     e.preventDefault();
@@ -89,11 +87,8 @@ const Comments = (props) => {
     toastNotify("Please Sign In before");
   };
 
-
-
   const addReply = async (cmtId) => {
 
-    console.log("cmtId: ", cmtId)
     if (isLogin) {
       const res = await dispatch(replyCommentAction({ id: cmtId, content: replyInput, user: userId, recipe: recipeId }))
       if (res) await dispatch(getCommentAction(recipe._id))
@@ -105,8 +100,6 @@ const Comments = (props) => {
 
   };
 
-
-  const [showReply, setShowReply] = useState(null)
   const handleClick = (event, index) => {
     if (showReply === null) {
       setShowReply(event.currentTarget)
@@ -115,6 +108,17 @@ const Comments = (props) => {
       setShowReply(null)
   };
 
+  const deleteCmt = async (value) => {
+    const res = await dispatch(deleteCmtAction({ comment: value }))
+    if (res) await dispatch(getCommentAction(recipe._id))
+    return;
+  }
+
+  const deleteRep = async (value, rep) => {
+    const res = await dispatch(deleteReplyAction({ comment: value, reply: rep }))
+    if (res) await dispatch(getCommentAction(recipe._id))
+    return;
+  }
 
 
   return (
@@ -174,10 +178,12 @@ const Comments = (props) => {
                 </Grid>
                 <Grid item xs={2} sx={{ marginTop: 'auto', marginBottom: 'auto', textAlign: 'right' }}>
 
-                  <Typography sx={{ color: 'gray' }}>{value.createdAt}</Typography>
+                  <Typography sx={{ color: 'gray' }}>{value.createAt}</Typography>
 
                 </Grid>
                 <Box sx={{ textAlign: 'right', paddingTop: "0px", width: "100%" }}>
+                  {(value.user._id === userId) ? <Button variant="text" onClick={() => deleteCmt(value._id)}><DeleteIcon /> </Button>
+                    : <> </>}
 
                   <Button variant="text" onClick={(e) => handleClick(e, value._id)}><ReplyIcon /> Reply</Button>
                   {showReply ? (
@@ -218,14 +224,20 @@ const Comments = (props) => {
                           <Avatar sx={{ marginLeft: 'auto' }} src={vl.user.avt} />
 
                         </Grid>
-                        <Grid item xs={8} sx={{ textAlign: 'left' }}>
+                        <Grid item xs={7} sx={{ textAlign: 'left' }}>
                           <Typography><b>{vl.user.username}</b></Typography>
                           <Typography>{vl.content}</Typography>
 
                         </Grid>
+                        <Grid item xs={1} sx={{ marginTop: 'auto', marginBottom: 'auto', textAlign: 'right' }}>
+
+                          {(vl.user._id === userId) ? <Button variant="text" onClick={() => deleteRep(value._id, vl._id)}><DeleteIcon /> </Button>
+                            : <> </>}
+
+                        </Grid>
                         <Grid item xs={2} sx={{ marginTop: 'auto', marginBottom: 'auto', textAlign: 'right' }}>
 
-                          <Typography sx={{ color: 'gray' }}>15:34 12/07/2021</Typography>
+                          <Typography sx={{ color: 'gray' }}>{vl.createAt}</Typography>
 
                         </Grid>
 

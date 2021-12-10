@@ -35,13 +35,15 @@ const Main = (props) => {
     const [checked, setChecked] = useState([1]);
     const [status, setStatus] = useState();
     const [clickFaPost, setClickFaPost] = useState(false)
+    const [searchText, setSearchText] = useState("")
+    const [newMenus, setNewMenus] = useState([])
     const isLogin = useSelector((state) => state.auth.isLogin)
     const menus = useSelector((state) => state.recipe.listRecipe) || []
     const user = useSelector((state) => state.auth.user);
     const topics = useSelector((state) => state.topic.listTopic) || []
     const userID = useSelector((state) => state.auth.user._id) || []
     const faPost = useSelector((state) => state.recipesave.listRecipeSave) || []
-    console.log("faPost: ", faPost);
+
 
     useEffect(() => {
         dispatch(getAllRecipeAction({ status: 0 }))
@@ -77,6 +79,18 @@ const Main = (props) => {
         console.log("log at ==> Main.js => faPost: ", faPost);
     }, [])
 
+    useEffect(() => {
+
+        const MenuSearch = menus.filter(x => {
+            return x.name.toLowerCase().includes(searchText.toLowerCase())
+        })
+
+        setNewMenus(MenuSearch)
+
+        // if (MenuSearch.length )
+        console.log(newMenus)
+    }, [searchText])
+
 
     const ADDREC = () => {
         if (isLogin)
@@ -88,6 +102,10 @@ const Main = (props) => {
         return (
             <></>
         );
+    }
+
+    const handleSearch = (e) => {
+        setSearchText(e.target.value)
     }
 
     const filter = async (id) => {
@@ -159,7 +177,7 @@ const Main = (props) => {
                         </Grid>
                         <Grid item xs={6}>
                             <form class="example" action="/action_page.php">
-                                <input type="text" placeholder="Search repeipes and more..." name="search" />
+                                <input onChange={handleSearch} value={searchText} type="text" placeholder="Search repeipes and more..." name="search" />
                                 <button type="submit"><i class="fa fa-search"></i></button>
                             </form>
                         </Grid>
@@ -200,7 +218,7 @@ const Main = (props) => {
                 <div className="col-9">
 
                     <Grid container>
-                        {menus.map((value, index) => {
+                        {(searchText === "") ? (menus.map((value, index) => {
                             return (
 
                                 <>
@@ -211,13 +229,23 @@ const Main = (props) => {
                                                 className="customHeader"
                                                 avatar={
                                                     <Avatar alt={value.user.avt} src={value.user.avt} sx={{ bgcolor: red[500] }} aria-label="recipe" />
-
-
                                                 }
                                                 action={
-                                                    <IconButton aria-label="settings">
-                                                        <MoreVertIcon />
-                                                    </IconButton>
+                                                    checkFa(userID, value._id) ? (
+
+                                                        <IconButton onClick={() => { handleSaveRecipe(recipeID(value._id)); setClickFaPost(!clickFaPost) }}>
+
+                                                            <FavoriteIcon style={{ color: 'red' }} />
+                                                        </IconButton>
+                                                    )
+                                                        :
+                                                        (
+                                                            <IconButton onClick={() => { handleSaveRecipe(recipeID(value._id)); setClickFaPost(!clickFaPost) }}>
+                                                                <FavoriteBorderIcon style={{ color: 'red' }} />
+                                                            </IconButton>
+
+                                                        )
+
                                                 }
                                                 title={value.name}
                                                 subheader={value.createAt}
@@ -229,34 +257,12 @@ const Main = (props) => {
                                                 image={value.image}
                                                 alt={value.name}
                                             />
-                                            <CardContent>
-                                                <Typography variant="body2" color="text.secondary">
+                                            <CardContent >
+                                                <Typography variant="body2" color="text.secondary" sx={{ maxHeight: '100px' }}>
                                                     {value.title}
                                                 </Typography>
                                             </CardContent>
                                             <CardActions disableSpacing sx={{ position: "absolute", bottom: 0, right: 0 }}>
-                                                {/*<IconButton onClick={() => handleSaveRecipe(recipeID(value._id))}>
-
-                                                    <FavoriteIcon />
-                                            </IconButton>*/}
-                                                {checkFa(userID, value._id) ? (
-
-                                                    <IconButton onClick={() => { handleSaveRecipe(recipeID(value._id)); setClickFaPost(!clickFaPost) }}>
-
-                                                        <FavoriteIcon style={{ color: 'red' }} />
-                                                    </IconButton>
-                                                )
-                                                    :
-                                                    (
-                                                        <IconButton onClick={() => { handleSaveRecipe(recipeID(value._id)); setClickFaPost(!clickFaPost) }}>
-                                                            <FavoriteBorderIcon style={{ color: 'red' }} />
-                                                        </IconButton>
-
-                                                    )
-                                                }
-
-
-
 
                                                 <IconButton>
                                                     <NavLink
@@ -274,15 +280,74 @@ const Main = (props) => {
 
 
                             )
-                        })}
+                        })) : (newMenus.map((value, index) => {
+                            return (
+
+                                <>
+                                    <Grid key={index} item xs={4} sm={6} md={3} margin={"30px"}>
+
+                                        <Card className="cardRec" sx={{ minWidth: 240, maxHeight: 400, position: "relative" }} >
+                                            <CardHeader
+                                                className="customHeader"
+                                                avatar={
+                                                    <Avatar alt={value.user.avt} src={value.user.avt} sx={{ bgcolor: red[500] }} aria-label="recipe" />
+                                                }
+                                                action={
+                                                    checkFa(userID, value._id) ? (
+
+                                                        <IconButton onClick={() => { handleSaveRecipe(recipeID(value._id)); setClickFaPost(!clickFaPost) }}>
+
+                                                            <FavoriteIcon style={{ color: 'red' }} />
+                                                        </IconButton>
+                                                    )
+                                                        :
+                                                        (
+                                                            <IconButton onClick={() => { handleSaveRecipe(recipeID(value._id)); setClickFaPost(!clickFaPost) }}>
+                                                                <FavoriteBorderIcon style={{ color: 'red' }} />
+                                                            </IconButton>
+
+                                                        )
+
+                                                }
+                                                title={value.name}
+                                                subheader={value.createAt}
+                                            />
+                                            <CardMedia
+                                                component="img"
+                                                height="194"
+                                                width="80%"
+                                                image={value.image}
+                                                alt={value.name}
+                                            />
+                                            <CardContent >
+                                                <Typography variant="body2" color="text.secondary" sx={{ maxHeight: '100px' }}>
+                                                    {value.title}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions disableSpacing sx={{ position: "absolute", bottom: 0, right: 0 }}>
+
+                                                <IconButton>
+                                                    <NavLink
+                                                        to={`/pagepost/${value._id}`}>
+                                                        <FaPlayCircle />
+                                                    </NavLink>
+                                                </IconButton>
+                                            </CardActions>
+                                        </Card>
+
+
+                                    </Grid >
+
+                                </>
+
+
+                            )
+                        }))}
+
 
                     </Grid>
 
                 </div>
-            </div>
-
-            <div className="footer">
-                <p>Resize the browser window to see how the content respond to the resizing.</p>
             </div>
 
         </div>

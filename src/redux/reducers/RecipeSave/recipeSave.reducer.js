@@ -12,6 +12,7 @@ import {
 const initState = {
     listRecipeSave: [],
     recipeStatus: {},
+    fa: {},
 };
 
 export default function (state = initState, action) {

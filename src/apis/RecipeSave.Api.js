@@ -51,7 +51,7 @@ const getStatus = async (recipe, user) => {
 
 const deletePost = async (id) => {
     try {
-        const res = await axiosClient.get(`/api/saved/${id}`);
+        const res = await axiosClient.delete(`/api/saved/${id}`);
         toastNotify(res ? res.message : "Delete Post fail");
         return res && res.data
             ? { data: res.data || {}, success: true }
@@ -63,6 +63,7 @@ const deletePost = async (id) => {
         };
     }
 };
+
 
 const RecipeSave = { save, getStatus, getAll, deletePost };
 

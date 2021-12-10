@@ -52,6 +52,41 @@ const getByRecipe = async (recipe) => {
     }
 };
 
-const Comment = { getByRecipe, create, reply };
+const deleteCmt = async (queryParams) => {
+    try {
+        const query = queryString.stringify(queryParams);
+        const res = await axiosClient.delete(`${url}?${query}`);
+        toastNotify(res ? res.message : "Delete Comment fail");
+
+        return res.success
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Delete Comment success");
+        return {
+            success: false,
+        };
+    }
+};
+
+const deleteReply = async (queryParams, reply) => {
+    try {
+        const query = queryString.stringify(queryParams);
+        const queryRep = queryString.stringify(reply);
+        const res = await axiosClient.delete(`/api/comment/reply?${query}${queryRep}`);
+        toastNotify(res ? res.message : "Delete Reply fail");
+
+        return res.success
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+        toastNotify("Delete Reply success");
+        return {
+            success: false,
+        };
+    }
+};
+
+const Comment = { getByRecipe, create, reply, deleteCmt, deleteReply };
 
 export default Comment;

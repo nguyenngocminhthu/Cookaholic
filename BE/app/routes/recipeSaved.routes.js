@@ -1,6 +1,6 @@
 const controller = require('../controllers/recipeSaved.controller')
 
-module.exports=(app)=>{
+module.exports = (app) => {
     // Get status cua recipe theo user
     app.get('/api/saved/:recipe/:user', controller.show)
     // Status == 1 ==> Luu Recipe 
@@ -14,6 +14,4 @@ module.exports=(app)=>{
     // Xoa 1 Recipe duoc luu trong profile
     app.delete('/api/saved/:id', controller.delete)
 
-    // Xem chi tiet Recipe duoc luu
-    app.get('/api/saved', controller.findOne)
 }

@@ -6,6 +6,10 @@ import {
     REPLY_COMMENT_SUCCESS,
     GET_COMMENT_FAIL,
     GET_COMMENT_SUCCESS,
+    DELETE_CMT_FAIL,
+    DELETE_CMT_SUCCESS,
+    DELETE_REPLY_FAIL,
+    DELETE_REPLY_SUCCESS,
 } from "../../actions/Comment/type";
 
 const initState = {
@@ -34,6 +38,14 @@ export default function (state = initState, action) {
                 ...state,
                 listComment: action.payload,
             };
+        case DELETE_CMT_FAIL:
+            return { ...state };
+        case DELETE_CMT_SUCCESS:
+            return { ...state };
+        case DELETE_REPLY_FAIL:
+            return { ...state };
+        case DELETE_REPLY_SUCCESS:
+            return { ...state };
         default:
             return state;
     }

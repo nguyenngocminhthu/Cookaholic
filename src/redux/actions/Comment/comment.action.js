@@ -5,7 +5,10 @@ import {
     REPLY_COMMENT_SUCCESS,
     GET_COMMENT_FAIL,
     GET_COMMENT_SUCCESS,
-
+    DELETE_CMT_FAIL,
+    DELETE_CMT_SUCCESS,
+    DELETE_REPLY_FAIL,
+    DELETE_REPLY_SUCCESS,
 } from "./type";
 import CommentAPI from "../../../apis/Comment.Api";
 import { changeLoading } from "../System/systemActions";
@@ -120,6 +123,76 @@ export function getCommentAction(recipe) {
         } catch {
             dispatch(loading());
             dispatch(getCommentFail());
+            return false;
+        }
+    };
+}
+
+export function deleteCmtFail() {
+    return {
+        type: DELETE_CMT_FAIL,
+        payload: {},
+    };
+}
+
+export function deleteCmtSuccess(data) {
+    return {
+        type: DELETE_CMT_SUCCESS,
+        payload: data,
+    };
+}
+
+export function deleteCmtAction(dataSubmit) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await CommentAPI.deleteCmt(dataSubmit);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(deleteCmtSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(deleteCmtFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(deleteCmtFail());
+            return false;
+        }
+    };
+}
+
+export function deleteReplyFail() {
+    return {
+        type: DELETE_REPLY_FAIL,
+        payload: {},
+    };
+}
+
+export function deleteReplySuccess(data) {
+    return {
+        type: DELETE_REPLY_SUCCESS,
+        payload: data,
+    };
+}
+
+export function deleteReplyAction(dataSubmit, rep) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await CommentAPI.deleteReply(dataSubmit, rep);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(deleteReplySuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(deleteReplyFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(deleteReplyFail());
             return false;
         }
     };

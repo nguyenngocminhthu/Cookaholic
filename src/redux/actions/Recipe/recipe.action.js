@@ -15,6 +15,8 @@ import {
     FIND_RECIPE_BY_USER_SUCCESS,
     UPDATE_RECIPE_FAIL,
     UPDATE_RECIPE_SUCCESS,
+    SEARCH_RECIPE_FAIL,
+    SEARCH_RECIPE_SUCCESS,
 } from "./type";
 import RecipeAPI from "../../../apis/Recipe.Api";
 import { changeLoading } from "../System/systemActions";
@@ -303,6 +305,41 @@ export function updateRecipeAction(id, dataSubmit) {
         } catch {
             dispatch(loading());
             dispatch(updateRecipeFail());
+            return false;
+        }
+    };
+}
+
+export function searchRecipeFail() {
+    return {
+        type: SEARCH_RECIPE_FAIL,
+        payload: {},
+    };
+}
+
+export function searchRecipeSuccess(data) {
+    return {
+        type: SEARCH_RECIPE_SUCCESS,
+        payload: data,
+    };
+}
+
+export function searchRecipeAction(queryParams) {
+    return async (dispatch) => {
+        try {
+            dispatch(loading(true));
+            const res = await RecipeAPI.search(queryParams);
+            if (res.success) {
+                dispatch(loading());
+                dispatch(searchRecipeSuccess(res.data));
+                return true;
+            }
+            dispatch(loading());
+            dispatch(searchRecipeFail());
+            return false;
+        } catch {
+            dispatch(loading());
+            dispatch(searchRecipeFail());
             return false;
         }
     };

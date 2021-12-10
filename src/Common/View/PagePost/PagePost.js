@@ -9,6 +9,7 @@ import Clock from '../../img/clock.gif'
 import {
   findRecipeByIdAction,
 } from "../../../redux/actions/Recipe/recipe.action";
+import { findFaByIdAction } from '../../../redux/actions/RecipeSave/recipeSaveAction';
 import { styled } from '@mui/material/styles';
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/core/ButtonUnstyled';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
@@ -159,18 +160,11 @@ function a11yProps(index) {
 
 const PagePost = (props) => {
 
-  const history = useHistory();
-
-  const handleGoBack = () => {
-    history.goBack();
-    return;
-  };
-
   const dispatch = useDispatch();
+  const history = useHistory();
+  const [value, setValue] = useState(0);
 
   const recipe = useSelector((state) => state.recipe.recipeDetail);
-  console.log("log at => pagepost => recipe: ", recipe)
-
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -183,11 +177,15 @@ const PagePost = (props) => {
 
   }, []);
 
-  const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const handleGoBack = () => {
+    history.goBack();
+    return;
+  };
+
   return (
     <div className="Center">
       <Box sx={{ flexGrow: 1, marginTop: 5 }}>

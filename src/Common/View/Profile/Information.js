@@ -272,7 +272,7 @@ export const Information = (props) => {
                         label="Email Address"
                         name="email"
                         onChange={handleChange}
-                        required
+                        disabled
                         value={values.email}
                         variant="outlined"
                       />

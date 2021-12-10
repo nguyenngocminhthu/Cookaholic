@@ -11,10 +11,10 @@ exports.create = async (req, res) => {
 
     const data = req.body
     console.log(data)
-    
-    let rate=data.rate
-    if(rate=='')
-        rate=0
+
+    let rate = data.rate
+    if (rate == '')
+        rate = 0
 
     let date = new Date()
     date.setHours(date.getHours() + 7)
@@ -112,7 +112,6 @@ exports.getByRecipe = async (req, res) => {
 
 exports.delete = (req, res) => {
     const comment = req.query.comment
-    const user = req.query.user
     console.log(comment)
 
     Comment.findOne({ _id: comment })
@@ -125,13 +124,9 @@ exports.delete = (req, res) => {
             }
             console.log(data)
 
-            if (data.user == user || data.recipe.user == user) {
-                data.delete()
-                res.status(200).json({ message: "Delete success!", success: true })
-                return
-            }
-
-            res.status(400).json({ message: "No permission to delete!", success: false })
+            data.delete()
+            res.status(200).json({ message: "Delete success!", success: true })
+            return
 
         })
         .catch(err => {
@@ -143,7 +138,6 @@ exports.delete = (req, res) => {
 exports.deleteReply = (req, res) => {
     const comment = req.query.comment
     const reply = req.query.reply
-    const user = req.query.user
 
     console.log(comment)
 
@@ -159,37 +153,16 @@ exports.deleteReply = (req, res) => {
 
             const replies = data.replies
             for (let i = 0; i < replies.length; i++) {
-                if (replies[i].user == user || data.recipe.user == user) {
-                    if (replies[i]._id == reply) {
-                        data.replies.splice(i, 1)
-                        data.save()
-                        res.status(200).json({ message: "Delete success!", success: true })
-                        return
-                    }
+                if (replies[i]._id == reply) {
+                    data.replies.splice(i, 1)
+                    data.save()
+                    res.status(200).json({ message: "Delete success!", success: true })
+                    return
                 }
             }
-
-            res.status(400).json({ message: "You can't delete this comment!", success: false })
-
-
-            console.log(replies)
-
-            // if (data.user == user || data.recipe.user == user) {
-            //     Comment.updateOne({ _id: comment }, { $pull: { replies: { _id: reply } } }, (err) => {
-            //         if (err) {
-            //             res.status(40).json({ message: err, success: false })
-            //             return
-            //         }
-            //         res.status(200).json({ message: "Delete success!", success: true })
-            //         return
-            //     })
-            // }
-
-            // res.status(400).json({ message: "No permission to delete!", success: false })
 
         })
         .catch(err => {
             return res.status(err.status).json({ message: err, success: false })
         })
-
 }

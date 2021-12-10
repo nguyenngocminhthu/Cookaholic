@@ -71,12 +71,12 @@ const deletePost = async (id) => {
 const findById = async (id) => {
     try {
         const res = await axiosClient.get(`${url}/${id}`);
-        // toastNotify(res ? res.message.VN : "Tìm kiếm điện thoại thất bại");
+
         return res && res.data
             ? { data: res.data || {}, success: true }
             : { success: false };
     } catch (error) {
-        // toastNotify("Tìm kiếm điện thoại thất bại");
+
         return {
             success: false,
         };
@@ -137,6 +137,22 @@ const update = async (id, body) => {
     }
 };
 
-const Recipe = { getAll, filter, create, acceptPost, deletePost, findById, findByUser, update };
+const search = async (queryParams) => {
+    try {
+        const query = queryString.stringify(queryParams);
+        const res = await axiosClient.get(`/api/searchrecipe?${query}`);
+
+        return res && res.data
+            ? { data: res.data || {}, success: true }
+            : { success: false };
+    } catch (error) {
+
+        return {
+            success: false,
+        };
+    }
+};
+
+const Recipe = { getAll, filter, create, acceptPost, deletePost, findById, findByUser, update, search };
 
 export default Recipe;

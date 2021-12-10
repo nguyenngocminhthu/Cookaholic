@@ -4,3 +4,7 @@ export const ADD_COMMENT_FAIL = "add comment fail";
 export const ADD_COMMENT_SUCCESS = "add comment success";
 export const REPLY_COMMENT_FAIL = "reply comment fail";
 export const REPLY_COMMENT_SUCCESS = "reply comment success";
+export const DELETE_CMT_FAIL = "delete cmt fail";
+export const DELETE_CMT_SUCCESS = "delete cmt success";
+export const DELETE_REPLY_FAIL = "delete reply fail";
+export const DELETE_REPLY_SUCCESS = "delete reply success";
