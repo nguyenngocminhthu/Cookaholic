@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import HomeRoute from "./HomeRoute";
 import Navbar from '../Common/components/Navbar'
-import Footer from '../Common/components/Footer'
+
 import '../index.css'
 
 import food1 from '../Common/img/food1.png'
@@ -26,7 +26,7 @@ const Routers = () => {
                 <div className="test2">
                     <img className="food" src={food3} alt="food3" />
                 </div>
-                <Footer />
+
                 <Loader />
             </Suspense>
         </Router>

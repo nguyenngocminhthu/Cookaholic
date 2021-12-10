@@ -331,6 +331,7 @@ const Login = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <FacebookLogin
+
                         appId="876160799940732"
                         autoLoad={false}
                         callback={responseFacebook}

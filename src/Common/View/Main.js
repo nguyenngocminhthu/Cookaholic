@@ -20,7 +20,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Footer from '../components/Footer'
 import '../css/main.css';
 import { getStatusAction, addFavoriteAction, getFavoriteAction } from "../../redux/actions/RecipeSave/recipeSaveAction"
 import toastNotify from "../Toastify/toastNotify";
@@ -349,7 +349,7 @@ const Main = (props) => {
 
                 </div>
             </div>
-
+            <Footer />
         </div>
     );
 
